@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Proggeto mobile</string>
+    <string name="qr_code_default_text">Please focus camera to QR Code</string>
 </resources>

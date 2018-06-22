@@ -5,4 +5,7 @@ package it.uniba.di.nitwx.progettoMobile;
  */
 
 public class Constants {
+
+    static final int REQUEST_QR_CODE = 1;
+
 }
