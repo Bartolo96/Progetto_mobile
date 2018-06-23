@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,12 +19,13 @@ import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.w3c.dom.Text;
+
 
 public class MainActivity extends AppCompatActivity {
 
-
     private Button scan_btn;
-    RequestQueue queue = Volley.newRequestQueue(this);
+    private TextView linkView;
 
 
     @Override
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         scan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 IntentIntegrator integrator = new IntentIntegrator(activity);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setPrompt("Scan");
@@ -42,24 +45,26 @@ public class MainActivity extends AppCompatActivity {
                 integrator.setBeepEnabled(false);
                 integrator.setBarcodeImageEnabled(false);
                 integrator.initiateScan();
+
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        linkView = (TextView) findViewById(R.id.linkView);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null){
             if(result.getContents()==null){
                 Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
             }
             else {
-                 StringRequest request = new StringRequest(Request.Method.GET, "http://nitwx.000webhostapp.com/api/products/001",
+                RequestQueue queue = Volley.newRequestQueue(this);
+                StringRequest request = new StringRequest(Request.Method.GET, "http://nitwx.000webhostapp.com/api/products/001",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-
+                                linkView.setText(response);
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -68,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 queue.add(request);
+
+
             }
         }
         else {
