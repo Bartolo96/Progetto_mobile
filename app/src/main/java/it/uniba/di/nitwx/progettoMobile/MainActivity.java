@@ -9,6 +9,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -17,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Button scan_btn;
+    RequestQueue queue = Volley.newRequestQueue(this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +55,19 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
             }
             else {
-                Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+                 StringRequest request = new StringRequest(Request.Method.GET, "http://nitwx.000webhostapp.com/api/products/001",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+                queue.add(request);
             }
         }
         else {
