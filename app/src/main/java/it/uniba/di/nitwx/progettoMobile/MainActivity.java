@@ -19,7 +19,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.w3c.dom.Text;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         scan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 IntentIntegrator integrator = new IntentIntegrator(activity);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setPrompt("Scan");
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
                 integrator.setBeepEnabled(false);
                 integrator.setBarcodeImageEnabled(false);
                 integrator.initiateScan();
-
             }
         });
     }
@@ -60,18 +59,27 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 RequestQueue queue = Volley.newRequestQueue(this);
-                StringRequest request = new StringRequest(Request.Method.GET, "http://nitwx.000webhostapp.com/api/products/001",
+                StringRequest request = new StringRequest(Request.Method.GET, "http://nitwx.000webhostapp.com/api/products/"+result.getContents(),
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                linkView.setText(response);
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                                try {
+                                    JSONObject parsedJson = new JSONObject(response);
+                                    String productName = parsedJson.getString("name");
+                                    linkView.setText(productName);
 
-                    }
-                });
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                            }
+                        }
+                );
                 queue.add(request);
 
 
