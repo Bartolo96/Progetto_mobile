@@ -16,7 +16,10 @@ import com.facebook.login.widget.LoginButton;
 import com.facebook.login.LoginResult;
 import com.facebook.*;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.List;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.Task;
