@@ -8,21 +8,23 @@
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/btnLogIn"
-        android:layout_width="wrap_content"
+        android:layout_width="204dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="276dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:gravity="bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/txtPwd"
+        app:layout_constraintStart_toStartOf="@+id/txtPwd"
+        app:layout_constraintTop_toBottomOf="@+id/txtPwd" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
-        android:layout_width="187dp"
+        android:layout_width="200dp"
         android:layout_height="35dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/btnLogIn"
-        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/btnLogIn"
         app:layout_constraintTop_toBottomOf="@+id/btnLogIn" />
 
@@ -30,9 +32,52 @@
         android:id="@+id/testMail"
         android:layout_width="206dp"
         android:layout_height="27dp"
-        android:layout_marginTop="68dp"
-        app:layout_constraintLeft_toLeftOf="@+id/sign_in_button"
+        android:layout_marginTop="116dp"
         android:text="TextView"
         app:layout_constraintTop_toTopOf="@+id/sign_in_button"
-        tools:layout_editor_absoluteX="103dp" />
+        tools:layout_editor_absoluteX="89dp" />
+
+    <EditText
+        android:id="@+id/txtUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Es.Cornetto91"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/txtPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/txtUsername"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/txtUsername"
+        tools:layout_editor_absoluteY="206dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Username"
+        android:textSize="14dp"
+        tools:layout_editor_absoluteX="89dp"
+        tools:layout_editor_absoluteY="99dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Password"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="178dp" />
 </android.support.constraint.ConstraintLayout>
