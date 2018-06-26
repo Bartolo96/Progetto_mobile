@@ -4,5 +4,5 @@
     <string name="fb_login_protocol_scheme" translatable="false">fb180288829318826</string>
     <string name="Username">Username</string>
     <string name="Password" translatable="false">Password</string>
-
+    <string name="SignIn" translatable="true">Sign In</string>
 </resources>

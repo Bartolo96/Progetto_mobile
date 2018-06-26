@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Proggeto mobile</string>
     <string name="Username">Nome Utente</string>
+    <string name="SignIn">Accedi</string>
 </resources>

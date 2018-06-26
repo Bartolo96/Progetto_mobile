@@ -1,12 +1,19 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.content.Context;
+import android.view.View;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -19,36 +26,28 @@ import java.util.Map;
 
 public class HttpController {
     private JSONObject jsonResponse;
-
-    public JSONObject post(String url,String ContentType,Map<String,String> customHeaders,JSONObject body){
+    /**
+     * This method generalizes and customizes Volley's post hhtp request method.
+     *
+     **/
+    private static void post(Context context,String url, Map<String,String> customHeaders,
+                             JSONObject body, Response.Listener<String> responseHandler, Response.ErrorListener errorHandler ){
         final Map<String,String> tmpHeaders=customHeaders;
         final String requestBody = body.toString();
-
-        JSONObject returnObj=new JSONObject();
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        jsonResponse=response;
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-
-                    }
-                }){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,responseHandler,errorHandler){
                 @Override
                 public Map<String,String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
                     //headers.put("Content-Type", "application/json");
-                    for (String cazzo: headers.keySet()) {
-                         headers.put(cazzo,tmpHeaders.get(cazzo));
+                    for (String headerName: headers.keySet()) {
+                         headers.put(headerName,tmpHeaders.get(headerName));
                     }
                     return headers;
+                }
+                @Override
+                public String getBodyContentType() {
+                    return "application/json";
                 }
                 @Override
                 public byte[] getBody(){
@@ -63,8 +62,19 @@ public class HttpController {
         };
 
 
-// Access the RequestQueue through your singleton class.
-        //MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-        return returnObj;
+        // Access the RequestQueue through your singleton class.
+        requestQueue.add(stringRequest);
+    }
+    /**
+     * This method authenticates the user and recieves as response authentication tokens
+     **/
+    public static void login (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+        String url="http://nitwx.000webhostapp.com/auth/authenticate_user";
+        HashMap<String,String> headers = new HashMap<>();
+        JSONObject body= new JSONObject();
+        body.put("email","test");
+        body.put("password","test");
+        body.put("remember_me",true);
+        post(context,url,headers,body,responseHandler,errorHandler);
     }
 }
