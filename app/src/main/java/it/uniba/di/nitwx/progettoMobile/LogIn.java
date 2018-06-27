@@ -40,17 +40,27 @@ public class LogIn extends AppCompatActivity {
     EditText username;
     Response.Listener<String> logInResponseHandler = new Response.Listener<String>() {
         @Override
-        public void onResponse(String response) {
-            email.setText(response);
+        public void onResponse(String response){
+            try {
+                HttpController.setCustomHeaders(new JSONObject(response));
+                email.setText(response);
+                Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
+                startActivity(goToHomeIntent);
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
         }
     };
     Response.ErrorListener logInErrorHandler = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            email.setText("test");
+            email.setText("Error in Volley Response");
         }
     };
+
     private static final int RC_SIGN_IN = 9001;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==RC_SIGN_IN){

@@ -5,4 +5,6 @@
     <string name="Username">Username</string>
     <string name="Password" translatable="false">Password</string>
     <string name="SignIn" translatable="true">Sign In</string>
+    <string name="title_product_list">Products</string>
+    <string name="title_product_detail">Product Detail</string>
 </resources>

@@ -20,22 +20,21 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by nicol on 25/06/2018.
- */
 
 public class HttpController {
     private JSONObject jsonResponse;
+    private static HashMap<String,String> customHeaders = null;
     /**
      * This method generalizes and customizes Volley's post hhtp request method.
      *
      **/
-    private static void post(Context context,String url, Map<String,String> customHeaders,
+    private static void http_request(int requestType, Context context,String url, Map<String,String> customHeaders,
                              JSONObject body, Response.Listener<String> responseHandler, Response.ErrorListener errorHandler ){
         final Map<String,String> tmpHeaders=customHeaders;
         final String requestBody = body.toString();
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,responseHandler,errorHandler){
+
+        StringRequest stringRequest = new StringRequest(requestType, url,responseHandler,errorHandler){
                 @Override
                 public Map<String,String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
@@ -47,7 +46,7 @@ public class HttpController {
                 }
                 @Override
                 public String getBodyContentType() {
-                    return "application/json";
+                    return Constants.CONTENT_TYPE_APPLICATION_JSON;
                 }
                 @Override
                 public byte[] getBody(){
@@ -68,6 +67,17 @@ public class HttpController {
     /**
      * This method authenticates the user and recieves as response authentication tokens
      **/
+
+    public static void setCustomHeaders (JSONObject jsonHeaders) throws JSONException{
+        customHeaders = new HashMap<>();
+        if(jsonHeaders.has(Constants.AUTH_TOKEN)){
+            customHeaders.put(Constants.AUTH_TOKEN,jsonHeaders.getString(Constants.AUTH_TOKEN));
+        }
+        if(jsonHeaders.has(Constants.REFRESH_TOKEN)){
+            customHeaders.put(Constants.REFRESH_TOKEN,jsonHeaders.getString(Constants.REFRESH_TOKEN));
+        }
+
+    }
     public static void login (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
         String url="http://nitwx.000webhostapp.com/auth/authenticate_user";
         HashMap<String,String> headers = new HashMap<>();
@@ -75,6 +85,14 @@ public class HttpController {
         body.put("email","test");
         body.put("password","test");
         body.put("remember_me",true);
-        post(context,url,headers,body,responseHandler,errorHandler);
+        http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
+    }
+
+    public static void getProducts (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+
+        String url="http://nitwx.000webhostapp.com/api/products";
+        HashMap<String,String> headers = customHeaders;
+
+        http_request(Request.Method.GET,context,url,headers,null,responseHandler,errorHandler);
     }
 }
