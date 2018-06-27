@@ -50,7 +50,7 @@ public class LogIn extends AppCompatActivity {
         public void onResponse(String response){
             try {
                 JSONObject temp = new JSONObject(response);
-                if(temp.has("authtoken")){
+                if(temp.has(Constants.AUTH_TOKEN)){
                     HttpController.setCustomHeaders(new JSONObject(response));
                     email.setText(response);
                     Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
