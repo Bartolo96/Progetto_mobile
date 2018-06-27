@@ -3,4 +3,11 @@
     <string name="app_name">Proggeto mobile</string>
     <string name="Username">Nome Utente</string>
     <string name="SignIn">Accedi</string>
+    <string name="title_product_list">Prodotti</string>
+    <string name="title_product_detail">Dettagli Prodotto</string>
+    <string name="Or">Oppure</string>
+    <string name="IfNoAccount">Se non hai un account</string>
+    <string name="TapHere">Clicca qui</string>
+    <string name="RememberMe">Ricordami</string>
+    <string name="LogInFail">Email o Password errati!</string>
 </resources>

@@ -85,13 +85,13 @@ public class HttpController {
         }
 
     }
-    public static void login (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+    public static void login (String username,String password, boolean rememberMe,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
         String url=Constants.URL_AUTH_USER;
         HashMap<String,String> headers = new HashMap<>();
         JSONObject body= new JSONObject();
-        body.put("email","test");
-        body.put("password","test");
-        body.put("remember_me",true);
+        body.put("email",username);
+        body.put("password",password);
+        body.put("remember_me",rememberMe);
         http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
     }
 

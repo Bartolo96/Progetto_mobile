@@ -7,4 +7,9 @@
     <string name="SignIn" translatable="true">Sign In</string>
     <string name="title_product_list">Products</string>
     <string name="title_product_detail">Product Detail</string>
+    <string name="Or">Or</string>
+    <string name="IfNoAccount">If you don\'t have an account</string>
+    <string name="TapHere">Tap Here</string>
+    <string name="RememberMe">Remember me</string>
+    <string name="LogInFail">Email or password are wrong!</string>
 </resources>

@@ -3,9 +3,11 @@ package it.uniba.di.nitwx.progettoMobile;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.Login;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.LoginResult;
@@ -38,14 +41,24 @@ public class LogIn extends AppCompatActivity {
     GoogleSignInClient  mGoogleSignInClient;
     TextView email;
     EditText username;
+    EditText password;
+    TextView register;
+    Switch remember;
+
     Response.Listener<String> logInResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response){
             try {
-                HttpController.setCustomHeaders(new JSONObject(response));
-                email.setText(response);
-                Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
-                startActivity(goToHomeIntent);
+                JSONObject temp = new JSONObject(response);
+                if(temp.has("authtoken")){
+                    HttpController.setCustomHeaders(new JSONObject(response));
+                    email.setText(response);
+                    Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
+                    startActivity(goToHomeIntent);
+                }
+                else{
+                    Toast.makeText(LogIn.this,"",Toast.LENGTH_SHORT).show();
+                }
             }
             catch (JSONException e){
                 e.printStackTrace();
@@ -68,9 +81,12 @@ public class LogIn extends AppCompatActivity {
             GoogleSignInAccount user=task.getResult();
             String userEmail=user.getEmail();
             email.setText(userEmail);
+            Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
+            goToHomeIntent.putExtra("name",userEmail);
+            startActivity(goToHomeIntent);
         }
-        super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -88,20 +104,29 @@ public class LogIn extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         LoginButton btn = (LoginButton) findViewById(R.id.btnLogInFacebook);
-        btn.setReadPermissions( Arrays.asList("public_profile"));
+        btn.setOnClickListener(facebookSignIn);
         Button logInBtn=(Button) findViewById(R.id.btnLogIn);
         logInBtn.setOnClickListener(logInListener);
         username = findViewById(R.id.txtUsername);
+        password = findViewById(R.id.txtPwd);
+        remember= findViewById(R.id.swtRemember);
+        register = (TextView)findViewById(R.id.txtTapHere);
+        register.setOnClickListener(goToRegisterPage);
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        // App code
-                        AccessToken accessToken = loginResult.getAccessToken();
-                        if (accessToken != null) {
-                            Toast.makeText(LogIn.this, "successo", Toast.LENGTH_LONG);
-                        }
+
+                        Log.d("Culo", "onSuccess");
+
+
+                        Profile profile = Profile.getCurrentProfile();
+                        Log.d("Culo",  "" + profile.getName());
+                        email.setText(profile.getName()+profile.getLastName());
+                        Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
+                        goToHomeIntent.putExtra("name",profile.getName());
+                        startActivity(goToHomeIntent);
                     }
 
                     @Override
@@ -114,22 +139,40 @@ public class LogIn extends AppCompatActivity {
                         // App code
                     }
                 });
+        AccessToken accessToken= AccessToken.getCurrentAccessToken();
+
     }
+
     public View.OnClickListener googleSignIn = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             signIn();
         }
     };
+    public View.OnClickListener facebookSignIn = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            LoginManager.getInstance().logInWithReadPermissions(LogIn.this, Arrays.asList("public_profile"));
+
+        }
+    };
     public View.OnClickListener logInListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             try {
-                HttpController.login(logInResponseHandler, logInErrorHandler, LogIn.this);
+                HttpController.login(username.getText().toString(),password.getText().toString(),remember.isChecked(),logInResponseHandler, logInErrorHandler, LogIn.this);
             }
             catch (JSONException e){
                 email.setText(e.getMessage());
             }
+        }
+    };
+
+    public View.OnClickListener goToRegisterPage = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(LogIn.this,RegisterActivity.class);
+            startActivity(intent);
         }
     };
     private void signIn() {
