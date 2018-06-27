@@ -9,14 +9,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Helper class for providing sample content for user interfaces created by
+ * Android template wizards.
+ * <p>
+ * TODO: Replace all uses of this class before publishing your app.
+ */
 public class ProductContent {
 
+    /**
+     * An array of sample (dummy) items.
+     */
     public static final List<ProductItem> ITEMS = new ArrayList<ProductItem>();
+
+    /**
+     * A map of sample (dummy) items, by ID.
+     */
     public static final Map<String, ProductItem> ITEM_MAP = new HashMap<String, ProductItem>();
 
-    public static void populate(JSONArray response) throws JSONException{
+    private static final int COUNT = 25;
+
+    public static void populate(JSONArray response) throws JSONException {
         for(int i=0; i<response.length();i++){
-            createProductItem(response.getJSONObject(i));
+            ProductItem temp = createProductItem(response.getJSONObject(i));
+            addItem(temp);
         }
     }
     private static void addItem(ProductItem item) {
@@ -24,29 +40,36 @@ public class ProductContent {
         ITEM_MAP.put(item.id, item);
     }
 
-    private static ProductItem createProductItem(JSONObject product) throws JSONException {
-        return new ProductItem(product.getString("id"),product.getString("name") , product.getString("description"), Float.parseFloat(product.getString("price")),product.getString("code"));
+    private static ProductItem createProductItem(JSONObject product) throws JSONException{
+        return new ProductItem(product.getString("id"), product.getString("name"), product.getString("description"));
     }
 
+    private static String makeDetails(int position) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Details about Item: ").append(position);
+        for (int i = 0; i < position; i++) {
+            builder.append("\nMore details information here.");
+        }
+        return builder.toString();
+    }
 
+    /**
+     * A dummy item representing a piece of content.
+     */
     public static class ProductItem {
         public final String id;
-        public final String name;
-        public final String description;
-        public final float price;
-        public final String code;
+        public final String content;
+        public final String details;
 
-        public ProductItem(String id, String name, String description, float price ,String code) {
+        public ProductItem(String id, String content, String details) {
             this.id = id;
-            this.name=name;
-            this.description=description;
-            this.price=price;
-            this.code=code;
+            this.content = content;
+            this.details = details;
         }
 
         @Override
         public String toString() {
-            return "Name: " + name + "\nDescription: "+ description;
+            return content;
         }
     }
 }
