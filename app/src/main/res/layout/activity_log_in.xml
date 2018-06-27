@@ -6,39 +6,27 @@
     android:layout_height="match_parent"
     tools:context="it.uniba.di.nitwx.progettoMobile.LogIn">
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/btnLogInFacebook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:gravity="bottom"
-        app:layout_constraintEnd_toEndOf="@+id/txtPwd"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtPwd"
-        app:layout_constraintTop_toBottomOf="@+id/txtPwd" />
-
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button_Google"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="@+id/btnLogInFacebook"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/btnLogInFacebook"
         app:layout_constraintTop_toBottomOf="@+id/btnLogInFacebook" />
 
     <TextView
         android:id="@+id/testMail"
-        android:layout_width="206dp"
-        android:layout_height="27dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="28dp"
         android:text="TextView"
+        android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sign_in_button_Google" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button_Google" />
 
     <EditText
         android:id="@+id/txtUsername"
@@ -86,10 +74,72 @@
 
     <Button
         android:id="@+id/btnLogIn"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:text="@string/SignIn"
-        app:layout_constraintStart_toEndOf="@+id/sign_in_button_Google"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogInFacebook" />
+        app:layout_constraintStart_toStartOf="@+id/txtPwd"
+        app:layout_constraintTop_toBottomOf="@+id/txtPwd" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/Or"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/txtPwd"
+        app:layout_constraintStart_toStartOf="@+id/txtPwd"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogIn" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/btnLogInFacebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="bottom"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+
+    <TextView
+        android:id="@+id/txt"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="72dp"
+        android:text="@string/IfNoAccount"
+        app:layout_constraintEnd_toStartOf="@+id/txtTapHere"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button_Google" />
+
+    <TextView
+        android:id="@+id/txtTapHere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="80dp"
+        android:layout_marginTop="72dp"
+        android:text="@string/TapHere"
+        android:textColor="	#0645AD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button_Google" />
+
+    <Switch
+        android:id="@+id/swtRemember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/RememberMe"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLogIn"
+        app:layout_constraintEnd_toEndOf="@+id/txtPwd"
+        app:layout_constraintTop_toTopOf="@+id/btnLogIn" />
+
 </android.support.constraint.ConstraintLayout>
