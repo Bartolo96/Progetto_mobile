@@ -17,5 +17,6 @@ public class Constants {
 
         /*URLs*/
 
-
+    public static final String URL_PRODUCTS="http://nitwx.000webhostapp.com/api/products";
+    public static final String URL_AUTH_USER="http://nitwx.000webhostapp.com/auth/authenticate_user";
 }

@@ -1,6 +1,7 @@
 package it.uniba.di.nitwx.progettoMobile;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import com.android.volley.AuthFailureError;
@@ -22,7 +23,7 @@ import java.util.Map;
 
 
 public class HttpController {
-    private JSONObject jsonResponse;
+
     private static HashMap<String,String> customHeaders = null;
     /**
      * This method generalizes and customizes Volley's post hhtp request method.
@@ -31,7 +32,12 @@ public class HttpController {
     private static void http_request(int requestType, Context context,String url, Map<String,String> customHeaders,
                              JSONObject body, Response.Listener<String> responseHandler, Response.ErrorListener errorHandler ){
         final Map<String,String> tmpHeaders=customHeaders;
-        final String requestBody = body.toString();
+        final String requestBody;
+        if(body!=null)
+            requestBody = body.toString();
+        else
+            requestBody=null;
+
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         StringRequest stringRequest = new StringRequest(requestType, url,responseHandler,errorHandler){
@@ -39,7 +45,7 @@ public class HttpController {
                 public Map<String,String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
                     //headers.put("Content-Type", "application/json");
-                    for (String headerName: headers.keySet()) {
+                    for (String headerName: tmpHeaders.keySet()) {
                          headers.put(headerName,tmpHeaders.get(headerName));
                     }
                     return headers;
@@ -72,6 +78,7 @@ public class HttpController {
         customHeaders = new HashMap<>();
         if(jsonHeaders.has(Constants.AUTH_TOKEN)){
             customHeaders.put(Constants.AUTH_TOKEN,jsonHeaders.getString(Constants.AUTH_TOKEN));
+
         }
         if(jsonHeaders.has(Constants.REFRESH_TOKEN)){
             customHeaders.put(Constants.REFRESH_TOKEN,jsonHeaders.getString(Constants.REFRESH_TOKEN));
@@ -79,7 +86,7 @@ public class HttpController {
 
     }
     public static void login (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
-        String url="http://nitwx.000webhostapp.com/auth/authenticate_user";
+        String url=Constants.URL_AUTH_USER;
         HashMap<String,String> headers = new HashMap<>();
         JSONObject body= new JSONObject();
         body.put("email","test");
@@ -90,9 +97,8 @@ public class HttpController {
 
     public static void getProducts (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
 
-        String url="http://nitwx.000webhostapp.com/api/products";
-        HashMap<String,String> headers = customHeaders;
+        String url=Constants.URL_PRODUCTS;
 
-        http_request(Request.Method.GET,context,url,headers,null,responseHandler,errorHandler);
+        http_request(Request.Method.GET,context,url,customHeaders,null,responseHandler,errorHandler);
     }
 }
