@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
 
@@ -36,14 +36,20 @@ import java.util.List;
  */
 public class ProductListActivity extends AppCompatActivity {
 
+    /**
+     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
+     * device.
+     */
     private boolean mTwoPane;
+    private View recyclerView;
 
     Response.Listener<String> productsResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
             try {
                 ProductContent.populate(new JSONArray(response));
-                View recyclerView = findViewById(R.id.product_list);
+                Log.d("Prova",response);
+                recyclerView = findViewById(R.id.product_list);
                 assert recyclerView != null;
                 setupRecyclerView((RecyclerView) recyclerView);
             }
@@ -52,14 +58,12 @@ public class ProductListActivity extends AppCompatActivity {
             }
         }
     };
-
     Response.ErrorListener productsErrorHandler = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
             error.getStackTrace();
         }
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,17 +74,25 @@ public class ProductListActivity extends AppCompatActivity {
         toolbar.setTitle(getTitle());
 
         if (findViewById(R.id.product_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
             mTwoPane = true;
         }
 
-        /*View recyclerView = findViewById(R.id.product_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);*/
 
-        try {
-            HttpController.getProducts(productsResponseHandler,productsErrorHandler,ProductListActivity.this);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (ProductContent.ITEMS.isEmpty()){
+            try {
+                HttpController.getProducts(productsResponseHandler, productsErrorHandler, ProductListActivity.this);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            recyclerView = findViewById(R.id.product_list);
+            assert recyclerView != null;
+            setupRecyclerView((RecyclerView) recyclerView);
         }
     }
 
@@ -134,7 +146,7 @@ public class ProductListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).description);
+            holder.mContentView.setText(mValues.get(position).content);
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
