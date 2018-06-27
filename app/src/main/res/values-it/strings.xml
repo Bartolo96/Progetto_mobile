@@ -3,4 +3,6 @@
     <string name="app_name">Proggeto mobile</string>
     <string name="Username">Nome Utente</string>
     <string name="SignIn">Accedi</string>
+    <string name="title_product_list">Prodotti</string>
+    <string name="title_product_detail">Dettaglio Prodotti</string>
 </resources>
