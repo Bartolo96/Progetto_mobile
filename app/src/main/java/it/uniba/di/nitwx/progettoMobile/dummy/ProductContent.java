@@ -1,5 +1,8 @@
 package it.uniba.di.nitwx.progettoMobile.dummy;
 
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import it.uniba.di.nitwx.progettoMobile.R;
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -60,11 +65,13 @@ public class ProductContent {
         public final String id;
         public final String content;
         public final String details;
+        public final int imageId;
 
         public ProductItem(String id, String content, String details) {
             this.id = id;
             this.content = content;
             this.details = details;
+            this.imageId = R.drawable.cucciolone_algida;
         }
 
         @Override
