@@ -16,4 +16,5 @@
     <string name="Male">Maschio</string>
     <string name="Female">Femmina</string>
     <string name="Register">Registrati!</string>
+    <string name="Bday">Data di Nascita</string>
 </resources>
