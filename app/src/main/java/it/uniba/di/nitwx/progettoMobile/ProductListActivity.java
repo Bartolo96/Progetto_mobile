@@ -2,32 +2,27 @@ package it.uniba.di.nitwx.progettoMobile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.android.gms.common.api.ResolvingResultCallbacks;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -51,11 +46,12 @@ public class ProductListActivity extends AppCompatActivity {
         @Override
         public void onResponse(String response) {
             try {
+                Log.d("JSONResponse", response.toString() );
                 ProductContent.populate(new JSONArray(response));
-                Log.d("Prova",response);
                 recyclerView = findViewById(R.id.product_list);
                 assert recyclerView != null;
                 setupRecyclerView((RecyclerView) recyclerView);
+
             }
             catch (JSONException e){
                 e.printStackTrace();
@@ -150,11 +146,26 @@ public class ProductListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             /*Una volta inserite tutte le immagini utilizzare questa riga mValues.get(position).content*/
-
-            holder.mIdView.setImageDrawable(getResources().getDrawable(mValues.get(position).imageId));
-            holder.mIdView.setMaxHeight(360);
-            holder.mIdView.setMaxWidth(360);
-            holder.mContentView.setText(mValues.get(position).content);
+            Log.d("pollo", "OnBindViewHolder" );
+            int drawableId = -1;
+            /*int drawableId= Resources.getSystem().getIdentifier("productimage"+mValues.get(position).code,"drawable",getPackageName());*/
+            try {
+                Field c= Drawable.class.getDeclaredField("productimage"+mValues.get(position).code);
+                drawableId = c.getInt(c);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            if(drawableId==-1) {
+                holder.mIdView.setImageDrawable(getResources().getDrawable(R.drawable.questionmark));
+            }
+            else{
+                holder.mIdView.setImageDrawable(getResources().getDrawable(drawableId));
+            }
+            holder.mIdView.setMaxHeight(50);
+            holder.mIdView.setMaxWidth(50);
+            holder.mContentView.setText(mValues.get(position).name);
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);

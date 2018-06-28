@@ -32,8 +32,6 @@ public class ProductContent {
      */
     public static final Map<String, ProductItem> ITEM_MAP = new HashMap<String, ProductItem>();
 
-    private static final int COUNT = 25;
-
     public static void populate(JSONArray response) throws JSONException {
         for(int i=0; i<response.length();i++){
             ProductItem temp = createProductItem(response.getJSONObject(i));
@@ -46,37 +44,31 @@ public class ProductContent {
     }
 
     private static ProductItem createProductItem(JSONObject product) throws JSONException{
-        return new ProductItem(product.getString("id"), product.getString("name"), product.getString("description"));
+        return new ProductItem(product.getString("id"), product.getString("name"), product.getString("description"), product.getDouble("price"), product.getInt("code"));
     }
 
-    private static String makeDetails(int position) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Details about Item: ").append(position);
-        for (int i = 0; i < position; i++) {
-            builder.append("\nMore details information here.");
-        }
-        return builder.toString();
-    }
 
     /**
      * A dummy item representing a piece of content.
      */
     public static class ProductItem {
         public final String id;
-        public final String content;
-        public final String details;
-        public final int imageId;
+        public final String name;
+        public final String description;
+        public final double price;
+        public final int code;
 
-        public ProductItem(String id, String content, String details) {
+        public ProductItem(String id, String name, String description, double price, int code) {
             this.id = id;
-            this.content = content;
-            this.details = details;
-            this.imageId = R.drawable.cucciolone_algida;
+            this.name = name;
+            this.description = description;
+            this.price=price;
+            this.code=code;
         }
 
         @Override
         public String toString() {
-            return content;
+            return name;
         }
     }
 }
