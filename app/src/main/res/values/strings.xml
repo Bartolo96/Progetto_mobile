@@ -12,4 +12,11 @@
     <string name="TapHere">Tap Here</string>
     <string name="RememberMe">Remember me</string>
     <string name="LogInFail">Email or password are wrong!</string>
+    <string name="Email">Email</string>
+    <string name="SampleEmail" translatable="false">abcde@domain.xxx</string>
+    <string name="ConfirmPassword">Confirm Password</string>
+    <string name="Gender">Gender</string>
+    <string name="Male">Male</string>
+    <string name="Female">Female</string>
+    <string name="Register">Register!</string>
 </resources>

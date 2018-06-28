@@ -10,4 +10,10 @@
     <string name="TapHere">Clicca qui</string>
     <string name="RememberMe">Ricordami</string>
     <string name="LogInFail">Email o Password errati!</string>
+    <string name="Email">Email</string>
+    <string name="ConfirmPassword">Conferma Password</string>
+    <string name="Gender">Sesso</string>
+    <string name="Male">Maschio</string>
+    <string name="Female">Femmina</string>
+    <string name="Register">Registrati!</string>
 </resources>

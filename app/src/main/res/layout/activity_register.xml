@@ -6,13 +6,110 @@
     android:layout_height="match_parent"
     tools:context="it.uniba.di.nitwx.progettoMobile.RegisterActivity">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PUTTANA DI TUA MADRE"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="221dp" />
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/txtEmailReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Email"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+            <EditText
+                android:id="@+id/edTextEmailReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/SampleEmail"
+                android:textAppearance="@android:style/TextAppearance.Material.Small"
+                android:textColor="@color/com_facebook_button_background_color_focused_disabled" />
+
+            <TextView
+                android:id="@+id/txtPwdReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Password"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+            <EditText
+                android:id="@+id/edTextPwdReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:textColor="@color/com_facebook_button_background_color_focused_disabled" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ConfirmPassword"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+            <EditText
+                android:id="@+id/edTextPwdConfReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Gender"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupGender"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:id="@+id/radioBtnMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/Male" />
+
+                <RadioButton
+                    android:id="@+id/radioBtnFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/Female" />
+
+            </RadioGroup>
+
+            <DatePicker
+                android:id="@+id/datePickerBday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnRegister"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Register" />
+
+        </LinearLayout>
+
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>
