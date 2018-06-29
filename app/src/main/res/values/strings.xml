@@ -27,4 +27,8 @@
         <item name="price">Price</item>
         <item name="code">Code</item>
     </string-array>
+    <string name="Bday">Birthday</string>
+    <string name="LogOut">Log Out</string>
+    <string name="RegistrationOk">Your account was successfully registered!</string>
+    <string name="WrongMail">Not valid Email</string>
 </resources>

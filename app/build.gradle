@@ -14,7 +14,7 @@ android {
     signingConfigs {
 
         debug {
-            storeFile file("C:/Users/Tonio/.android/debug.keystore")
+            storeFile file("$System.env.ANDROID_SDK_HOME/debug.keystore")
             storePassword "android"
             keyAlias "myfirstkey"
             keyPassword "android"
