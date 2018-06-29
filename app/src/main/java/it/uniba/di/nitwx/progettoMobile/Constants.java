@@ -17,10 +17,13 @@ public class Constants {
 
     protected static final String AUTH_TOKEN = "authtoken";
     protected static final String REFRESH_TOKEN = "refreshtoken";
+    protected static final String REGISTER_RESPONSE = "register";
+
 
         /*URLs*/
 
     protected static final String URL_PRODUCTS="http://nitwx.000webhostapp.com/api/products";
     protected static final String URL_AUTH_USER="http://nitwx.000webhostapp.com/auth/authenticate_user";
     protected static final String URL_AUTH_THIRD_PARTY_USER="http://nitwx.000webhostapp.com/auth/authenticate_third_party_user";
+    protected static  final String URL_ADD_USER="http://nitwx.000webhostapp.com/api/users/add";
 }

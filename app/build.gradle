@@ -14,7 +14,7 @@ android {
     signingConfigs {
 
         debug {
-            storeFile file("C:/Users/Bartolo/.android/debug.keystore")
+            storeFile file("C:/Users/nicol/.android/debug.keystore")
             storePassword "android"
             keyAlias "myfirstkey"
             keyPassword "android"

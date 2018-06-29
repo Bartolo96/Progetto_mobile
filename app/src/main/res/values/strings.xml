@@ -21,4 +21,7 @@
     <string name="server_client_id" translatable="false">542722246940-ovn0ocouer53386u1nv16up08n0cqr3n.apps.googleusercontent.com</string>
     <string name="Register">Register!</string>
     <string name="Bday">Birthday</string>
+    <string name="LogOut">Log Out</string>
+    <string name="RegistrationOk">Your account was successfully registered!</string>
+    <string name="WrongMail">Not valid Email</string>
 </resources>

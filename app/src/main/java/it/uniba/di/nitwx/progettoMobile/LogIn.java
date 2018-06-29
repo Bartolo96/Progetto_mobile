@@ -45,7 +45,6 @@ public class LogIn extends AppCompatActivity {
     CallbackManager callbackManager;
 
     GoogleSignInClient  mGoogleSignInClient;
-    TextView email;
     EditText username;
     EditText password;
     TextView register;
@@ -61,7 +60,6 @@ public class LogIn extends AppCompatActivity {
                 Log.d("prova",response);
                 if(temp.has(Constants.AUTH_TOKEN)){
                     HttpController.setCustomHeaders(new JSONObject(response));
-                    email.setText(response);
                     Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
                     startActivity(goToHomeIntent);
                 }
@@ -80,7 +78,7 @@ public class LogIn extends AppCompatActivity {
     Response.ErrorListener logInErrorHandler = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            email.setText("Error in Volley Response");
+            error.printStackTrace();
         }
     };
 
@@ -175,7 +173,6 @@ public class LogIn extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        email = (TextView) findViewById(R.id.testMail);
         PackageManager pm = this.getPackageManager();
         String packageName =this.getPackageName();
 
@@ -188,8 +185,6 @@ public class LogIn extends AppCompatActivity {
             Signature[] signatures = packageInfo.signatures;
 
             byte[] cert = signatures[0].toByteArray();
-
-            email.setText(computeFingerPrint(cert));
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -233,7 +228,6 @@ public class LogIn extends AppCompatActivity {
 
                         Profile profile = Profile.getCurrentProfile();
                         Log.d("Culo",  "" + profile.getName());
-                        email.setText(profile.getName()+profile.getLastName());
                         Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
                         goToHomeIntent.putExtra("name",profile.getName());
                         startActivity(goToHomeIntent);
@@ -267,13 +261,13 @@ public class LogIn extends AppCompatActivity {
             try {
                 JSONObject body= new JSONObject();
                 body.put("email",username.getText().toString());
-                body.put("password",password.getText().toString());
+                body.put("password",HttpController.get_SHA_512_SecurePassword(password.getText().toString()));
                 body.put("remember_me",remember.isChecked());
                 body.put("user_type",Constants.REGISTERD_USER);
                 HttpController.login(body,logInResponseHandler, logInErrorHandler, LogIn.this);
             }
             catch (JSONException e){
-                email.setText(e.getMessage());
+                e.printStackTrace();
             }
         }
     };

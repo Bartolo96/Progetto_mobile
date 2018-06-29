@@ -17,4 +17,7 @@
     <string name="Female">Femmina</string>
     <string name="Register">Registrati!</string>
     <string name="Bday">Data di Nascita</string>
+    <string name="LogOut">Esci</string>
+    <string name="RegistrationOk">Account registrato correttamente!</string>
+    <string name="WrongMail">Email non valida</string>
 </resources>
