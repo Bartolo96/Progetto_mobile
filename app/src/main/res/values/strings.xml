@@ -20,4 +20,11 @@
     <string name="Female">Female</string>
     <string name="server_client_id" translatable="false">542722246940-ovn0ocouer53386u1nv16up08n0cqr3n.apps.googleusercontent.com</string>
     <string name="Register">Register!</string>
+    <string-array name="productAttributes">
+        <item name="id">Id</item>
+        <item name="name">Name</item>
+        <item name="description">Description</item>
+        <item name="price">Price</item>
+        <item name="code">Code</item>
+    </string-array>
 </resources>

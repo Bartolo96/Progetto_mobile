@@ -72,6 +72,7 @@ public class ProductListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
+
         if (findViewById(R.id.product_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -139,6 +140,7 @@ public class ProductListActivity extends AppCompatActivity {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.product_list_content, parent, false);
+
             return new ViewHolder(view);
         }
 
@@ -151,6 +153,12 @@ public class ProductListActivity extends AppCompatActivity {
             //Field c= Drawable.class.getDeclaredField("productimage"+mValues.get(position).code);
             drawableId=getResources().getIdentifier("productimage"+mValues.get(position).code,"drawable",getPackageName());
 
+            if((position%2)==0){
+                holder.itemView.setBackgroundResource(R.drawable.list_item_shade1);
+            }
+            else{
+                holder.itemView.setBackgroundResource(R.drawable.list_item_shade2);
+            }
 
             if(drawableId==-1) {
                 holder.mIdView.setImageDrawable(getResources().getDrawable(R.drawable.questionmark));

@@ -16,4 +16,11 @@
     <string name="Male">Maschio</string>
     <string name="Female">Femmina</string>
     <string name="Register">Registrati!</string>
+    <string-array name="productAttributes">
+        <item name="id">Id</item>
+        <item name="name">Nome</item>
+        <item name="description">Descrizione</item>
+        <item name="price">Prezzo</item>
+        <item name="code">Codice</item>
+    </string-array>
 </resources>

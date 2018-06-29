@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
@@ -61,7 +62,30 @@ public class ProductDetailFragment extends Fragment {
 
         // Show the dummy name as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.product_detail)).setText(mItem.description);
+
+            /*Ottengo i riferimenti a immagine prodotto, nome, prezzo, codice e descrizione e li
+                mostro all'interno del ProductDetailFragment
+             */
+            int drawableId = -1;
+
+            drawableId=getResources().getIdentifier("productimage"+mItem.code,"drawable",this.getClass().getPackage().getName());
+
+
+            if(drawableId==-1) {
+                ((ImageView) rootView.findViewById(R.id.productImage)).setImageDrawable(getResources().getDrawable(R.drawable.questionmark));
+            }
+            else{
+                ((ImageView) rootView.findViewById(R.id.productImage)).setImageDrawable(getResources().getDrawable(drawableId));
+            }
+
+            ((TextView) rootView.findViewById(R.id.productDescription)).setText(mItem.description);
+            String stringArrayProduct[] = getResources().getStringArray(R.array.productAttributes);
+
+            String toSetText= stringArrayProduct[1]+": "+mItem.name+"\n"+
+                                stringArrayProduct[3]+": €"+mItem.price+"\n"+
+                                stringArrayProduct[4]+": "+mItem.code;
+
+            ((TextView) rootView.findViewById(R.id.productName)).setText(toSetText);
         }
 
         return rootView;
