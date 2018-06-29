@@ -46,7 +46,6 @@ public class ProductListActivity extends AppCompatActivity {
         @Override
         public void onResponse(String response) {
             try {
-                Log.d("JSONResponse", response.toString() );
                 ProductContent.populate(new JSONArray(response));
                 recyclerView = findViewById(R.id.product_list);
                 assert recyclerView != null;
@@ -146,17 +145,13 @@ public class ProductListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             /*Una volta inserite tutte le immagini utilizzare questa riga mValues.get(position).content*/
-            Log.d("pollo", "OnBindViewHolder" );
             int drawableId = -1;
             /*int drawableId= Resources.getSystem().getIdentifier("productimage"+mValues.get(position).code,"drawable",getPackageName());*/
-            try {
-                Field c= Drawable.class.getDeclaredField("productimage"+mValues.get(position).code);
-                drawableId = c.getInt(c);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+
+            //Field c= Drawable.class.getDeclaredField("productimage"+mValues.get(position).code);
+            drawableId=getResources().getIdentifier("productimage"+mValues.get(position).code,"drawable",getPackageName());
+
+
             if(drawableId==-1) {
                 holder.mIdView.setImageDrawable(getResources().getDrawable(R.drawable.questionmark));
             }

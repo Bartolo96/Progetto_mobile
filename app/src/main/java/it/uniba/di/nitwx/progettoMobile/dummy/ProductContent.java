@@ -44,7 +44,7 @@ public class ProductContent {
     }
 
     private static ProductItem createProductItem(JSONObject product) throws JSONException{
-        return new ProductItem(product.getString("id"), product.getString("name"), product.getString("description"), product.getDouble("price"), product.getInt("code"));
+        return new ProductItem(product.getString("id"), product.getString("name"), product.getString("description"), product.getDouble("price"), product.getString("code"));
     }
 
 
@@ -56,9 +56,9 @@ public class ProductContent {
         public final String name;
         public final String description;
         public final double price;
-        public final int code;
+        public final String code;
 
-        public ProductItem(String id, String name, String description, double price, int code) {
+        public ProductItem(String id, String name, String description, double price, String code) {
             this.id = id;
             this.name = name;
             this.description = description;
