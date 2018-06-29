@@ -44,9 +44,11 @@ public class HttpController {
                 @Override
                 public Map<String,String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
-                    //headers.put("Content-Type", "application/json");
-                    for (String headerName: tmpHeaders.keySet()) {
-                         headers.put(headerName,tmpHeaders.get(headerName));
+                    if (tmpHeaders!=null){
+                        //headers.put("Content-Type", "application/json");
+                        for (String headerName : tmpHeaders.keySet()) {
+                            headers.put(headerName, tmpHeaders.get(headerName));
+                        }
                     }
                     return headers;
                 }
@@ -85,13 +87,14 @@ public class HttpController {
         }
 
     }
-    public static void login (String username,String password, boolean rememberMe,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+    public static void login (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
         String url=Constants.URL_AUTH_USER;
         HashMap<String,String> headers = new HashMap<>();
-        JSONObject body= new JSONObject();
-        body.put("email",username);
-        body.put("password",password);
-        body.put("remember_me",rememberMe);
+        http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
+    }
+    public static void thirdPartyLogin (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+        String url=Constants.URL_AUTH_THIRD_PARTY_USER;
+        HashMap<String,String> headers = new HashMap<>();
         http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
     }
 
