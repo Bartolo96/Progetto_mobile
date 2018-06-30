@@ -1,5 +1,7 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -57,6 +59,7 @@ public class LogIn extends AppCompatActivity {
     SignInButton googleBtn;
     GoogleSignInOptions gso;
     RelativeLayout progressBar;
+    AccountManager accountManager;
 
     Response.Listener<String> logInResponseHandler = new Response.Listener<String>() {
         @Override
@@ -65,6 +68,10 @@ public class LogIn extends AppCompatActivity {
                 Log.d("Prova",response);
                 JSONObject temp = new JSONObject(response);
                 if(temp.has(Constants.AUTH_TOKEN)){
+
+                    if(temp.has(Constants.REFRESH_TOKEN)){
+                    }
+
                     if(progressBar!=null)progressBar.setVisibility(View.VISIBLE);
                     HttpController.setCustomHeaders(new JSONObject(response));
                     Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
@@ -162,7 +169,8 @@ public class LogIn extends AppCompatActivity {
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
-
+        //ACCOUNT MANAGER
+        accountManager = AccountManager.get(LogIn.this);
         //SIGN IN GOOGLE
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         googleBtn = (SignInButton) findViewById(R.id.sign_in_button_Google);
@@ -174,7 +182,7 @@ public class LogIn extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         LoginButton btn = (LoginButton) findViewById(R.id.btnLogInFacebook);
         btn.setReadPermissions("email");
-        //btn.setOnClickListener(facebookSignIn);
+        btn.setOnClickListener(facebookSignIn);
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -193,7 +201,7 @@ public class LogIn extends AppCompatActivity {
 
                     @Override
                     public void onCancel() {
-                        // App code
+                        Log.d("porco","porcoDio");
                     }
 
                     @Override

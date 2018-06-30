@@ -1,5 +1,7 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,7 +34,8 @@ public class RegisterActivity extends AppCompatActivity {
     RadioButton female;
     RadioGroup gender;
     String sex;
-
+    Account userAccount;
+    private AccountManager accountManager;
     Response.Listener<String> addUserResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response){
@@ -41,6 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                 Log.d("prova",response);
                 if(temp.has(Constants.REGISTER_RESPONSE) && temp.getBoolean(Constants.REGISTER_RESPONSE)){
+                    userAccount=new Account(email.getText().toString(),"nitwx_type");
+                    accountManager.addAccountExplicitly(userAccount,password.getText().toString(),null);
                     Toast.makeText(RegisterActivity.this,getString(R.string.RegistrationOk),Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(RegisterActivity.this,LogIn.class);
                     startActivity(intent);
@@ -71,6 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         register = (Button)findViewById(R.id.btnRegister);
         register.setOnClickListener(registerListener);
+        accountManager = AccountManager.get(RegisterActivity.this);
 
     }
 
