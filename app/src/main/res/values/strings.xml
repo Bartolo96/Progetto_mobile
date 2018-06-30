@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Proggeto mobile</string>
-    <string name="facebook_app_id" translatable="false">180288829318826</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb180288829318826</string>
+    <string name="facebook_app_id" translatable="false">185450658798188</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb185450658798188</string>
     <string name="Username">Username</string>
     <string name="Password" translatable="false">Password</string>
     <string name="SignIn" translatable="true">Sign In</string>

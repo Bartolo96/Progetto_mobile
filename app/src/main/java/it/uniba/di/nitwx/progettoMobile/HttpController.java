@@ -44,6 +44,7 @@ public class HttpController {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         StringRequest stringRequest = new StringRequest(requestType, url,responseHandler,errorHandler){
+
                 @Override
                 public Map<String,String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();

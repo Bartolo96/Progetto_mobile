@@ -65,7 +65,7 @@ public class LogIn extends AppCompatActivity {
                 Log.d("Prova",response);
                 JSONObject temp = new JSONObject(response);
                 if(temp.has(Constants.AUTH_TOKEN)){
-                    progressBar.setVisibility(View.VISIBLE);
+                    if(progressBar!=null)progressBar.setVisibility(View.VISIBLE);
                     HttpController.setCustomHeaders(new JSONObject(response));
                     Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
                     startActivity(goToHomeIntent);
@@ -123,7 +123,7 @@ public class LogIn extends AppCompatActivity {
     public View.OnClickListener googleSignIn = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            progressBar.setVisibility(View.VISIBLE);
+            if(progressBar!=null)progressBar.setVisibility(View.VISIBLE);
             signIn();
         }
     };
@@ -136,7 +136,7 @@ public class LogIn extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
-        progressBar.setVisibility(View.INVISIBLE);
+        if(progressBar!=null) progressBar.setVisibility(View.INVISIBLE);
 
     }
     @Override
@@ -180,7 +180,7 @@ public class LogIn extends AppCompatActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         try {
-                            progressBar.setVisibility(View.VISIBLE);
+                            if(progressBar!=null)progressBar.setVisibility(View.VISIBLE);
                             JSONObject body = new JSONObject();
                             body.put("token",AccessToken.getCurrentAccessToken().getToken());
                             body.put("user_type",Constants.FACEBOOK_USER);
@@ -230,7 +230,7 @@ public class LogIn extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             try {
-                progressBar.setVisibility(View.VISIBLE);
+                if(progressBar!=null)progressBar.setVisibility(View.VISIBLE);
                 JSONObject body= new JSONObject();
                 body.put("email",username.getText().toString());
                 body.put("password",HttpController.get_SHA_512_SecurePassword(password.getText().toString()));
