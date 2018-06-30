@@ -1,5 +1,6 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -8,9 +9,13 @@ import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,14 +56,16 @@ public class LogIn extends AppCompatActivity {
     Switch remember;
     SignInButton googleBtn;
     GoogleSignInOptions gso;
+    RelativeLayout progressBar;
+
     Response.Listener<String> logInResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response){
             try {
+                Log.d("Prova",response);
                 JSONObject temp = new JSONObject(response);
-
-                Log.d("prova",response);
                 if(temp.has(Constants.AUTH_TOKEN)){
+                    progressBar.setVisibility(View.VISIBLE);
                     HttpController.setCustomHeaders(new JSONObject(response));
                     Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
                     startActivity(goToHomeIntent);
@@ -87,13 +94,14 @@ public class LogIn extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-            super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == RC_SIGN_IN) {
+
+        if (requestCode == RC_SIGN_IN) {
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 handleSignInResult(task);
-            }
+        }
 
-        //callbackManager.onActivityResult(requestCode,resultCode,data);
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode,resultCode,data);
 
     }
 
@@ -101,7 +109,6 @@ public class LogIn extends AppCompatActivity {
         try {
             GoogleSignInAccount account = task.getResult(ApiException.class);
             String idToken = account.getIdToken();
-            Log.d("prova",idToken);
             JSONObject body = new JSONObject();
             body.put("token",idToken);
             body.put("user_type",Constants.GOOGLE_USER);
@@ -116,6 +123,7 @@ public class LogIn extends AppCompatActivity {
     public View.OnClickListener googleSignIn = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            progressBar.setVisibility(View.VISIBLE);
             signIn();
         }
     };
@@ -124,27 +132,12 @@ public class LogIn extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    public String computeFingerPrint(final byte[] certRaw) {
 
-        String strResult = "";
+    @Override
+    protected void onStop(){
+        super.onStop();
+        progressBar.setVisibility(View.INVISIBLE);
 
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance("SHA1");
-            md.update(certRaw);
-            for (byte b : md.digest()) {
-                String strAppend = Integer.toString(b & 0xff, 16);
-                if (strAppend.length() == 1)
-                    strResult += "0";
-                strResult += strAppend;
-            }
-            strResult = strResult.toUpperCase();
-        }
-        catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-        }
-
-        return strResult;
     }
     @Override
     protected void onStart(){
@@ -162,51 +155,53 @@ public class LogIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //Tries to do a silent sign in
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
-                //.requestServerAuthCode(getString(R.string.server_client_id))
-                .requestEmail()
-                .build();
-
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        PackageManager pm = this.getPackageManager();
-        String packageName =this.getPackageName();
-
-        int flags = PackageManager.GET_SIGNATURES;
-
-        PackageInfo packageInfo = null;
-
-        try {
-            packageInfo = pm.getPackageInfo(packageName, flags);
-            Signature[] signatures = packageInfo.signatures;
-
-            byte[] cert = signatures[0].toByteArray();
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
+        progressBar = findViewById(R.id.progress_bar);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
 
         //SIGN IN GOOGLE
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         googleBtn = (SignInButton) findViewById(R.id.sign_in_button_Google);
         googleBtn.setOnClickListener(googleSignIn);
 
-
-
-
-        //facebook sign in
-         callbackManager = CallbackManager.Factory.create();
-        //get info about user.app interaction.
+        //FACEBOOK SIGN IN
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-
+        callbackManager = CallbackManager.Factory.create();
         LoginButton btn = (LoginButton) findViewById(R.id.btnLogInFacebook);
-        btn.setOnClickListener(facebookSignIn);
+        btn.setReadPermissions("email");
+        //btn.setOnClickListener(facebookSignIn);
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        try {
+                            progressBar.setVisibility(View.VISIBLE);
+                            JSONObject body = new JSONObject();
+                            body.put("token",AccessToken.getCurrentAccessToken().getToken());
+                            body.put("user_type",Constants.FACEBOOK_USER);
+                            HttpController.thirdPartyLogin(body,logInResponseHandler,logInErrorHandler,getApplicationContext());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        exception.printStackTrace();
+                    }
+                });
+
 
         Button logInBtn=(Button) findViewById(R.id.btnLogIn);
         logInBtn.setOnClickListener(logInListener);
@@ -218,31 +213,7 @@ public class LogIn extends AppCompatActivity {
         register = (TextView)findViewById(R.id.txtTapHere);
         register.setOnClickListener(goToRegisterPage);
 
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
 
-                        Log.d("Culo", "onSuccess");
-
-
-                        Profile profile = Profile.getCurrentProfile();
-                        Log.d("Culo",  "" + profile.getName());
-                        Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
-                        goToHomeIntent.putExtra("name",profile.getName());
-                        startActivity(goToHomeIntent);
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                    }
-                });
         AccessToken accessToken= AccessToken.getCurrentAccessToken();
 
     }
@@ -259,6 +230,7 @@ public class LogIn extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             try {
+                progressBar.setVisibility(View.VISIBLE);
                 JSONObject body= new JSONObject();
                 body.put("email",username.getText().toString());
                 body.put("password",HttpController.get_SHA_512_SecurePassword(password.getText().toString()));
