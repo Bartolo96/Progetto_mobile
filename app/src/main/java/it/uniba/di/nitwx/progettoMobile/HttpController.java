@@ -1,6 +1,7 @@
 package it.uniba.di.nitwx.progettoMobile;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 
@@ -19,10 +20,18 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.crypto.RsaSignatureValidator;
 
 
 public class HttpController {
@@ -32,6 +41,7 @@ public class HttpController {
      * This method generalizes and customizes Volley's post hhtp request method.
      *
      **/
+    protected static HashMap<String,String> authorizationHeaders = new HashMap<>();
     private static void http_request(int requestType, Context context,String url, Map<String,String> customHeaders,
                              JSONObject body, Response.Listener<String> responseHandler, Response.ErrorListener errorHandler ){
         final Map<String,String> tmpHeaders=customHeaders;
@@ -57,10 +67,6 @@ public class HttpController {
                     return headers;
                 }
                 @Override
-                public String getBodyContentType() {
-                    return Constants.CONTENT_TYPE_APPLICATION_JSON;
-                }
-                @Override
                 public byte[] getBody(){
                 try {
                     return requestBody == null ? null : requestBody.getBytes("utf-8");
@@ -71,7 +77,6 @@ public class HttpController {
                 }
             }
         };
-
 
         // Access the RequestQueue through your singleton class.
         requestQueue.add(stringRequest);
@@ -94,25 +99,55 @@ public class HttpController {
     public static void login (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
         String url=Constants.URL_AUTH_USER;
         HashMap<String,String> headers = new HashMap<>();
+        headers.put(Constants.CONTENT_TYPE,Constants.CONTENT_TYPE_APPLICATION_JSON);
         http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
     }
     public static void thirdPartyLogin (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
         String url=Constants.URL_AUTH_THIRD_PARTY_USER;
         HashMap<String,String> headers = new HashMap<>();
+        headers.put(Constants.CONTENT_TYPE,Constants.CONTENT_TYPE_APPLICATION_JSON);
         http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
     }
 
     public static void getProducts (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
 
         String url=Constants.URL_PRODUCTS;
-
-        http_request(Request.Method.GET,context,url,customHeaders,null,responseHandler,errorHandler);
+        HashMap<String,String> headers = new HashMap<>();
+        headers.put(Constants.AUTHORIZATON_HEADER,"Bearer "+authorizationHeaders.get(Constants.AUTH_TOKEN));
+        http_request(Request.Method.GET,context,url,headers,null,responseHandler,errorHandler);
     }
     public static void addUser (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
         String url = Constants.URL_ADD_USER;
         HashMap<String,String> headers = new HashMap<>();
+        headers.put(Constants.CONTENT_TYPE,Constants.CONTENT_TYPE_APPLICATION_JSON);
         http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
     }
+
+
+
+    public static PublicKey getKey(){
+        try{
+            byte[] byteKey = Base64.decode(Constants.PUBLIC_KEY.getBytes(), Base64.DEFAULT);
+            X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(byteKey);
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+
+            return kf.generatePublic(X509publicKey);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static RsaSignatureValidator v =new RsaSignatureValidator(SignatureAlgorithm.RS256, getKey()) {
+        @Override
+        protected boolean doVerify(Signature sig, PublicKey pk, byte[] data, byte[] signature) throws InvalidKeyException, java.security.SignatureException {
+            throw new InvalidKeyException("prova");
+        }
+    };
+
+
     public static String get_SHA_512_SecurePassword(String passwordToHash){
         String generatedPassword = null;
         try {
