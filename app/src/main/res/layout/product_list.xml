@@ -6,8 +6,6 @@
     android:name="it.uniba.di.nitwx.progettoMobile.ProductListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="it.uniba.di.nitwx.progettoMobile.ProductListActivity"
     tools:listitem="@layout/product_list_content" />

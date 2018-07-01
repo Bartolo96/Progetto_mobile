@@ -15,21 +15,45 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/productImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:adjustViewBounds="true"
-            android:scaleType="centerInside"
-            android:src="@color/accent" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="300dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@color/accent" />
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/productName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                    <TextView
+                    android:id="@+id/productName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                        android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/ButtonBuyNow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/BuyNow" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
     </LinearLayout>
 
     <TextView

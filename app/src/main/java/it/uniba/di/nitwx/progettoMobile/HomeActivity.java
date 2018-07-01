@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -23,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
 
 
     @Override
@@ -48,6 +51,8 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(goToProductsIntent);
             }
         });
+
+
     }
     private void signOut() {
         mGoogleSignInClient.signOut()
@@ -71,4 +76,28 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu_home,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        switch(id)
+        {
+            case R.id.productsItemMenu:
+            Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
+            startActivity(goToProductsActivityIntent);
+                break;
+            case R.id.MENU_2:
+            /*
+                Codice di gestione della voce MENU_2
+             */
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

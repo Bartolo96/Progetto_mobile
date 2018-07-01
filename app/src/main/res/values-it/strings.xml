@@ -27,4 +27,5 @@
     <string name="LogOut">Esci</string>
     <string name="RegistrationOk">Account registrato correttamente!</string>
     <string name="WrongMail">Email non valida</string>
+    <string name="BuyNow">Acquista ora!</string>
 </resources>

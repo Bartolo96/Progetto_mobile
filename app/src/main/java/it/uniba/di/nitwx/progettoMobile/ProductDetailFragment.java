@@ -1,14 +1,27 @@
 package it.uniba.di.nitwx.progettoMobile;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import net.glxn.qrgen.android.QRCode;
+import net.glxn.qrgen.core.image.ImageType;
 
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
 
@@ -34,6 +47,9 @@ public class ProductDetailFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
+
+    private android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+
     public ProductDetailFragment() {
     }
 
@@ -86,6 +102,21 @@ public class ProductDetailFragment extends Fragment {
                                 stringArrayProduct[4]+": "+mItem.code;
 
             ((TextView) rootView.findViewById(R.id.productName)).setText(toSetText);
+
+            Button buyNow = (Button) rootView.findViewById(R.id.ButtonBuyNow);
+            buyNow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bitmap mImage = QRCode.from("Ciao").bitmap();
+                    BitmapDrawable qrCode = new BitmapDrawable(getResources(), mImage);
+                    final Dialog dialog = new Dialog(getContext());
+                    dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
+                    dialog.setContentView(R.layout.qrcode_dialog_fragment);
+                    ImageView qrCodeImage = dialog.findViewById(R.id.qrCodeImageView);
+                    qrCodeImage.setImageDrawable(qrCode);
+                    dialog.show();
+                }
+            });
         }
 
         return rootView;

@@ -31,4 +31,5 @@
     <string name="LogOut">Log Out</string>
     <string name="RegistrationOk">Your account was successfully registered!</string>
     <string name="WrongMail">Not valid Email</string>
+    <string name="BuyNow">Buy Now!</string>
 </resources>
