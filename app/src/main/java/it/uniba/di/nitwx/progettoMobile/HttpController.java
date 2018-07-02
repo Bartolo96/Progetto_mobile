@@ -41,7 +41,7 @@ public class HttpController {
      * This method generalizes and customizes Volley's post hhtp request method.
      *
      **/
-    protected static HashMap<String,String> authorizationHeaders = new HashMap<>();
+    protected static HashMap<String,String> authorizationHeader = new HashMap<>();
     private static void http_request(int requestType, Context context,String url, Map<String,String> customHeaders,
                              JSONObject body, Response.Listener<String> responseHandler, Response.ErrorListener errorHandler ){
         final Map<String,String> tmpHeaders=customHeaders;
@@ -112,9 +112,8 @@ public class HttpController {
     public static void getProducts (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
 
         String url=Constants.URL_PRODUCTS;
-        HashMap<String,String> headers = new HashMap<>();
-        headers.put(Constants.AUTHORIZATON_HEADER,"Bearer "+authorizationHeaders.get(Constants.AUTH_TOKEN));
-        http_request(Request.Method.GET,context,url,headers,null,responseHandler,errorHandler);
+        //HashMap<String,String> headers = new HashMap<>();
+        http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
     }
     public static void addUser (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
         String url = Constants.URL_ADD_USER;

@@ -1,22 +1,15 @@
 package it.uniba.di.nitwx.progettoMobile;
 
-import android.accounts.Account;
+
 import android.accounts.AccountManager;
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -34,10 +27,17 @@ import com.facebook.login.widget.LoginButton;
 import com.facebook.login.LoginResult;
 import com.facebook.*;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.InvalidKeyException;
+import java.security.PublicKey;
+import java.security.Signature;
 import java.util.Arrays;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.impl.crypto.MacProvider;
+import io.jsonwebtoken.impl.crypto.RsaSignatureValidator;
 
+import java.security.Key;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
@@ -46,6 +46,8 @@ import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static io.jsonwebtoken.Jwts.parser;
 
 
 public class LogIn extends AppCompatActivity {
@@ -61,24 +63,36 @@ public class LogIn extends AppCompatActivity {
     RelativeLayout progressBar;
     AccountManager accountManager;
 
+
     Response.Listener<String> logInResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response){
             try {
+
+                if(progressBar!=null)progressBar.setVisibility(View.INVISIBLE);
                 Log.d("Prova",response);
-                JSONObject temp = new JSONObject(response);
-                if(temp.has(Constants.AUTH_TOKEN)){
+                JSONObject jsonResponse = new JSONObject(response);
 
-                    if(temp.has(Constants.REFRESH_TOKEN)){
-                    }
-
-                    if(progressBar!=null)progressBar.setVisibility(View.VISIBLE);
-                    HttpController.setCustomHeaders(new JSONObject(response));
-                    Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
-                    startActivity(goToHomeIntent);
+                if(jsonResponse.has(Constants.AUTH_TOKEN)){
+                    JSONObject jsonAccessTOken = jsonResponse.getJSONObject(Constants.AUTH_TOKEN);
+                    try{
+                        Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonAccessTOken.getString(Constants.AUTH_TOKEN));
+                        String token_type = jsonAccessTOken.getString(Constants.TOKEN_TYPE);
+                        if(token_type!= null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
+                            HttpController.authorizationHeader.put(Constants.AUTH_TOKEN,token_type+" "+jsonAccessTOken.getString(Constants.AUTH_TOKEN));
+                        if(jsonResponse.has(Constants.REFRESH_TOKEN)){
+                            JSONObject jsonRefreshToken = jsonResponse.getJSONObject(Constants.REFRESH_TOKEN);
+                            Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                            //HttpController.authorizationHeaders.put(Constants.REFRESH_TOKEN,jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                        }
+                        Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
+                        startActivity(goToHomeIntent);
+                    }catch(SignatureException e){
+                        e.printStackTrace();
+                   }
                 }
                 else{
-                    Toast.makeText(LogIn.this,"",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LogIn.this,"Da mettere stringa login",Toast.LENGTH_SHORT).show();
                 }
             }
             catch (JSONException e){
