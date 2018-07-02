@@ -107,11 +107,13 @@ public class ProductDetailFragment extends Fragment {
             buyNow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bitmap mImage = QRCode.from("Ciao").bitmap();
+                    Bitmap mImage = QRCode.from("Ciao").withSize(750,750).bitmap();
                     BitmapDrawable qrCode = new BitmapDrawable(getResources(), mImage);
                     final Dialog dialog = new Dialog(getContext());
-                    dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
                     dialog.setContentView(R.layout.qrcode_dialog_fragment);
+                    TextView qrCodeText = dialog.findViewById(R.id.qrCodeTextView);
+                    qrCodeText.setText(R.string.qrCodeDialogTitle);
+
                     ImageView qrCodeImage = dialog.findViewById(R.id.qrCodeImageView);
                     qrCodeImage.setImageDrawable(qrCode);
                     dialog.show();
