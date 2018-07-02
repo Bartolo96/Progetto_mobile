@@ -74,12 +74,12 @@ public class LogIn extends AppCompatActivity {
                 JSONObject jsonResponse = new JSONObject(response);
 
                 if(jsonResponse.has(Constants.AUTH_TOKEN)){
-                    JSONObject jsonAccessTOken = jsonResponse.getJSONObject(Constants.AUTH_TOKEN);
+                    JSONObject jsonAccessToken = jsonResponse.getJSONObject(Constants.AUTH_TOKEN);
                     try{
-                        Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonAccessTOken.getString(Constants.AUTH_TOKEN));
-                        String token_type = jsonAccessTOken.getString(Constants.TOKEN_TYPE);
+                        Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonAccessToken.getString(Constants.AUTH_TOKEN));
+                        String token_type = jsonAccessToken.getString(Constants.TOKEN_TYPE);
                         if(token_type!= null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
-                            HttpController.authorizationHeader.put(Constants.AUTH_TOKEN,token_type+" "+jsonAccessTOken.getString(Constants.AUTH_TOKEN));
+                            HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER,token_type+" "+jsonAccessToken.getString(Constants.AUTH_TOKEN));
                         if(jsonResponse.has(Constants.REFRESH_TOKEN)){
                             JSONObject jsonRefreshToken = jsonResponse.getJSONObject(Constants.REFRESH_TOKEN);
                             Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
