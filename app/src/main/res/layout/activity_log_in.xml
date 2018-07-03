@@ -114,7 +114,9 @@
             android:gravity="bottom"
             app:layout_constraintEnd_toEndOf="@+id/textView4"
             app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/textView4"
+            xmlns:facebook="http://schemas.android.com/apk/res-auto"
+            facebook:com_facebook_logout_text="@string/com_facebook_loginview_log_in_button_continue"/>
 
         <TextView
             android:id="@+id/txt"
