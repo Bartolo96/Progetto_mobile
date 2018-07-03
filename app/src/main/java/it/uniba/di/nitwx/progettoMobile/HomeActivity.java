@@ -2,6 +2,10 @@ package it.uniba.di.nitwx.progettoMobile;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,7 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     GoogleSignInClient  mGoogleSignInClient;
     GoogleSignInOptions gso;
     GoogleSignInAccount mGoogleSignInAccount;
@@ -29,18 +33,24 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
 
         Toolbar homeToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(homeToolbar);
-        homeToolbar.setTitle("Home");
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, homeToolbar,R.string.app_name,R.string.app_name);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+
         Intent srcIntent = getIntent();
         final String name = srcIntent.getStringExtra("name");
         Button goToProductsBtn = (Button) findViewById(R.id.btnProducts);
@@ -84,8 +94,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.drawer_menu_home,menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -104,5 +113,22 @@ public class HomeActivity extends AppCompatActivity {
              */
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id=item.getItemId();
+        switch(id)
+        {
+            case R.id.productsItemMenu:
+                Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
+                startActivity(goToProductsActivityIntent);
+                break;
+            case R.id.MENU_2:
+            /*
+                Codice di gestione della voce MENU_2
+             */
+        }
+        return false;
     }
 }

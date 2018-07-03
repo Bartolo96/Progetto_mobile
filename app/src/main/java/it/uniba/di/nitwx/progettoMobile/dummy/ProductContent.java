@@ -2,6 +2,9 @@ package it.uniba.di.nitwx.progettoMobile.dummy;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -30,18 +34,22 @@ public class ProductContent {
      */
     public static final Map<String, Product> ITEM_MAP = new HashMap<String, Product>();
 
-    public static List<it.uniba.di.nitwx.progettoMobile.Product> populate(JSONArray response) throws JSONException {
-        List<it.uniba.di.nitwx.progettoMobile.Product> prova = new ArrayList<it.uniba.di.nitwx.progettoMobile.Product>();
+    public static List<Product> populate(JSONArray response) throws JSONException {
+        List<Product> prova = new ArrayList<Product>();
         for(int i=0; i<response.length();i++){
-            Product temp = createProductItem(response.getJSONObject(i));
-            prova.add(new it.uniba.di.nitwx.progettoMobile.Product(response.getJSONObject(i)));
-            addItem(temp);
+            ;
+            addItem(createProductItem(response.getJSONObject(i)));
         }
-        return prova;
+        return ITEMS;
+    }
+    public static void populate(List<Product> list) throws JSONException {
+        for(Product p: list){
+            addItem(p);
+        }
     }
     private static void addItem(Product item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.getuId(), item);
+        ITEM_MAP.put(item.id, item);
     }
 
     private static Product createProductItem(JSONObject product) throws JSONException{
@@ -54,53 +62,22 @@ public class ProductContent {
      */
     @Entity
     public static class Product {
-        public int getuId() {
-            return uId;
-        }
-
-        public void setuId(int uId) {
-            this.uId = uId;
-        }
-
-        public void setPrice(Double price) {
-            this.price = price;
-        }
-
-        public Double getPrice() {
-            return price;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public Product(){};
-
-        public Product(JSONObject json) throws JSONException{
-            this.uId = json.getInt("id");
-            this.name = json.getString("name");
-            this.price = json.getDouble("price");
-            this.code = json.getString("code");
-        }
 
         @PrimaryKey
-        int uId;
+        @NonNull public String id;
+        public  String name;
+        public  String description;
+        public  double price;
+        public  String code;
 
-        private String name;
-        private Double price;
-        private String code;
+        public Product(@NonNull String id, String name, String description, double price, String code) {
+            this.id = id;
+            this.name = name;
+            this.description = description;
+            this.price=price;
+            this.code=code;
+        }
+
         @Override
         public String toString() {
             return name;

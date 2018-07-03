@@ -8,6 +8,8 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
+import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent.Product;
+
 
 @Dao
 public interface ProductDao {
@@ -18,7 +20,7 @@ public interface ProductDao {
     public void updateProductslist (Product... product);
 
     @Query("SELECT* FROM product")
-    public Product[] loadAllProducts();
+    List<Product> loadAllProducts();
 
 
 }
