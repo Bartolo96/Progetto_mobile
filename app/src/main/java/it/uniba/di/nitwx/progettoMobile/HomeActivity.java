@@ -32,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar homeToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(homeToolbar);
+        homeToolbar.setTitle("Home");
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -84,7 +85,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu_home,menu);
+        inflater.inflate(R.menu.drawer_menu_home,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
