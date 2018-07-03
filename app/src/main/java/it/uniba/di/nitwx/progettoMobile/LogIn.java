@@ -1,8 +1,5 @@
 package it.uniba.di.nitwx.progettoMobile;
 
-
-import android.accounts.AccountManager;
-
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,45 +11,35 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.Login;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.LoginResult;
 import com.facebook.*;
-
-import java.security.InvalidKeyException;
-import java.security.PublicKey;
-import java.security.Signature;
 import java.util.Arrays;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.impl.crypto.MacProvider;
-import io.jsonwebtoken.impl.crypto.RsaSignatureValidator;
+import java.util.HashMap;
 
-import java.security.Key;
+import io.jsonwebtoken.IncorrectClaimException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MissingClaimException;
+
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static io.jsonwebtoken.Jwts.parser;
 
 
 public class LogIn extends AppCompatActivity {
     CallbackManager callbackManager;
-
     GoogleSignInClient  mGoogleSignInClient;
     EditText username;
     EditText password;
@@ -61,7 +48,6 @@ public class LogIn extends AppCompatActivity {
     SignInButton googleBtn;
     GoogleSignInOptions gso;
     RelativeLayout progressBar;
-    AccountManager accountManager;
 
 
     Response.Listener<String> logInResponseHandler = new Response.Listener<String>() {
@@ -75,7 +61,6 @@ public class LogIn extends AppCompatActivity {
 
                 if(jsonResponse.has(Constants.AUTH_TOKEN)){
                     JSONObject jsonAccessToken = jsonResponse.getJSONObject(Constants.AUTH_TOKEN);
-                    try{
                         Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonAccessToken.getString(Constants.AUTH_TOKEN));
                         String token_type = jsonAccessToken.getString(Constants.TOKEN_TYPE);
                         if(token_type!= null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
@@ -83,13 +68,44 @@ public class LogIn extends AppCompatActivity {
                         if(jsonResponse.has(Constants.REFRESH_TOKEN)){
                             JSONObject jsonRefreshToken = jsonResponse.getJSONObject(Constants.REFRESH_TOKEN);
                             Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
-                            //HttpController.authorizationHeaders.put(Constants.REFRESH_TOKEN,jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                            Log.d("Token Salvato",jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                            HttpController.saveToken(jsonRefreshToken.getString(Constants.REFRESH_TOKEN),LogIn.this);
                         }
                         Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
                         startActivity(goToHomeIntent);
-                    }catch(SignatureException e){
-                        e.printStackTrace();
-                   }
+
+                }
+                else{
+                    Toast.makeText(LogIn.this,"Da mettere stringa login",Toast.LENGTH_SHORT).show();
+                }
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+    };
+    Response.Listener<String> refreshTOkenResponseHandler = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response){
+            try {
+                if(progressBar!=null)progressBar.setVisibility(View.INVISIBLE);
+                Log.d("Prova",response);
+                JSONObject jsonResponse = new JSONObject(response);
+                if(jsonResponse.has(Constants.AUTH_TOKEN) && jsonResponse.has(Constants.REFRESH_TOKEN)){
+                    JSONObject jsonAccessToken = jsonResponse.getJSONObject(Constants.AUTH_TOKEN);
+                        Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonAccessToken.getString(Constants.AUTH_TOKEN));
+                        String token_type = jsonAccessToken.getString(Constants.TOKEN_TYPE);
+                        if(token_type!= null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
+                            HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER,token_type+" "+jsonAccessToken.getString(Constants.AUTH_TOKEN));
+                        if(jsonResponse.has(Constants.REFRESH_TOKEN)){
+                            JSONObject jsonRefreshToken = jsonResponse.getJSONObject(Constants.REFRESH_TOKEN);
+                            Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                            Log.d("Token Salvato",jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                            HttpController.saveToken(jsonRefreshToken.getString(Constants.REFRESH_TOKEN),LogIn.this);
+                        }
+                        Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
+                        startActivity(goToHomeIntent);
+
                 }
                 else{
                     Toast.makeText(LogIn.this,"Da mettere stringa login",Toast.LENGTH_SHORT).show();
@@ -172,6 +188,26 @@ public class LogIn extends AppCompatActivity {
 
         });
 
+        String token;
+        try {
+            if((token = HttpController.getToken(LogIn.this))!=null){
+                Log.d("Token Caricato",token);
+                Jwts.parser().require(Constants.USER_TYPE, Constants.REGISTERD_USER).require(Constants.TOKEN_TYPE,Constants.TOKEN_TYPE_BEARER);
+                HttpController.authorizationHeader = new HashMap<>();
+                HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER,Constants.TOKEN_TYPE_BEARER+" "+token);
+                HttpController.refreshAccessToken(logInResponseHandler,logInErrorHandler,LogIn.this);
+            }
+        } catch (MissingClaimException|IncorrectClaimException e) {
+
+            // we get here if the required claim is not present
+            // we get here if the required claim has the wrong value
+            e.printStackTrace();
+        } catch ( JSONException e) {
+            e.printStackTrace();
+
+
+        }
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,13 +219,16 @@ public class LogIn extends AppCompatActivity {
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
-        //ACCOUNT MANAGER
-        accountManager = AccountManager.get(LogIn.this);
-        //SIGN IN GOOGLE
+        //GOOGLE SIGN IN
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         googleBtn = (SignInButton) findViewById(R.id.sign_in_button_Google);
         googleBtn.setOnClickListener(googleSignIn);
 
+
+        AccessToken accessToken= AccessToken.getCurrentAccessToken();
+        if(accessToken!= null && !accessToken.isExpired()){
+            LoginManager.getInstance().logInWithReadPermissions(LogIn.this, Arrays.asList("public_profile","email"));
+        }
         //FACEBOOK SIGN IN
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -235,16 +274,13 @@ public class LogIn extends AppCompatActivity {
         register = (TextView)findViewById(R.id.txtTapHere);
         register.setOnClickListener(goToRegisterPage);
 
-
-        AccessToken accessToken= AccessToken.getCurrentAccessToken();
-
     }
 
 
     public View.OnClickListener facebookSignIn = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            LoginManager.getInstance().logInWithReadPermissions(LogIn.this, Arrays.asList("public_profile"));
+            LoginManager.getInstance().logInWithReadPermissions(LogIn.this, Arrays.asList("public_profile","email"));
 
         }
     };
