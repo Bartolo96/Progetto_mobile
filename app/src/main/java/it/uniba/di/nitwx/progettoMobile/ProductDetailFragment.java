@@ -23,6 +23,10 @@ import android.widget.TextView;
 import net.glxn.qrgen.android.QRCode;
 import net.glxn.qrgen.core.image.ImageType;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import io.jsonwebtoken.Jwts;
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
 
 /**
@@ -107,18 +111,32 @@ public class ProductDetailFragment extends Fragment {
             buyNow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bitmap mImage = QRCode.from("Ciao").bitmap();
-                    BitmapDrawable qrCode = new BitmapDrawable(getResources(), mImage);
-                    final Dialog dialog = new Dialog(getContext());
-                    dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
-                    dialog.setContentView(R.layout.qrcode_dialog_fragment);
-                    ImageView qrCodeImage = dialog.findViewById(R.id.qrCodeImageView);
-                    qrCodeImage.setImageDrawable(qrCode);
-                    dialog.show();
-                }
-            });
-        }
+                    /**Creazione QrCode: Json composto da: token utente + prodotto**/
+                    try {
 
+                        JSONObject json = new JSONObject();
+                        Jwts.parser();
+                        json.put("token",HttpController.authorizationHeader.get(Constants.AUTH_TOKEN));
+                        json.put("product", mItem);
+                        json.put("timestamp_qrCode_created",System.currentTimeMillis());
+
+                        final Dialog dialog = new Dialog(getContext());
+                        dialog.setContentView(R.layout.qrcode_dialog_fragment);
+                        int dialogHeight= dialog.getWindow().getWindowManager().getDefaultDisplay().getHeight();
+                        int dialogWidth= dialog.getWindow().getWindowManager().getDefaultDisplay().getWidth();
+                        Bitmap mImage = QRCode.from(json.toString()).withSize(dialogWidth*2,dialogHeight*2).bitmap();
+                        BitmapDrawable qrCode = new BitmapDrawable(getResources(), mImage);
+                        TextView qrCodeText = dialog.findViewById(R.id.qrCodeTextView);
+                        qrCodeText.setText(R.string.qrCodeDialogTitle);
+
+                        ImageView qrCodeImage = dialog.findViewById(R.id.qrCodeImageView);
+                        qrCodeImage.setImageDrawable(qrCode);
+                        dialog.show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }});
+        }
         return rootView;
     }
 }

@@ -8,6 +8,7 @@ import java.security.Key;
 
 public class Constants {
     /*USER KINDS*/
+    protected static final String USER_TYPE = "user_type";
     protected static final int REGISTERD_USER = 1;
     protected static final int FACEBOOK_USER = 2;
     protected static final int GOOGLE_USER = 3;
@@ -28,11 +29,12 @@ public class Constants {
 
         /*URLs*/
 
-    protected static final String URL_PRODUCTS="http://nitwx.000webhostapp.com/api/products";
-    protected static final String URL_AUTH_USER="http://nitwx.000webhostapp.com/auth/authenticate_user";
-    protected static final String URL_AUTH_THIRD_PARTY_USER="http://nitwx.000webhostapp.com/auth/authenticate_third_party_user";
-    protected static  final String URL_ADD_USER="http://nitwx.000webhostapp.com/api/users/add";
-
+    protected static final String URL_PRODUCTS="https://nitwx.000webhostapp.com/api/products";
+    protected static final String URL_AUTH_USER="https://nitwx.000webhostapp.com/auth/authenticate_user";
+    protected static final String URL_AUTH_THIRD_PARTY_USER="https://nitwx.000webhostapp.com/auth/authenticate_third_party_user";
+    protected static final String URL_ADD_USER="https://nitwx.000webhostapp.com/api/users/add";
+    protected static final String URL_REFRESH_ACCESS_TOKEN = "https://nitwx.000webhostapp.com/auth/refresh_access_token";
+    protected static final String PACKAGE_NAME = "it.uniba.di.nitwx.progettoMobile";
     protected static final String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnvFS6Gw3FuGmekhEHy3FSF03ylSPesIrU1YR7liNPz4XTfilmdxP1dX8s8/Uwq+2KRqmYDzb28jM2ANmtIgsNzg7I5x5HCjAGobhtbFfr2yXD3C33ZfjEt4ENRS8nRpKsSpUKMjx/TVnKnnkbdjgit8PC8vQBoanIYwBWKJWWiwIDAQAB";
 
 }

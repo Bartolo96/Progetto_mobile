@@ -1,14 +1,9 @@
 package it.uniba.di.nitwx.progettoMobile;
 
 
-import android.Manifest;
 import android.accounts.AccountManager;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -23,14 +18,12 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.Login;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.LoginResult;
@@ -42,11 +35,11 @@ import java.security.Signature;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import java.util.HashMap;
+
+import io.jsonwebtoken.IncorrectClaimException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.impl.crypto.MacProvider;
-import io.jsonwebtoken.impl.crypto.RsaSignatureValidator;
+import io.jsonwebtoken.MissingClaimException;
 
 import java.security.Key;
 
@@ -60,11 +53,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static io.jsonwebtoken.Jwts.parser;
 
 import com.google.android.gms.location.Geofence;
 
@@ -72,6 +63,7 @@ public class LogIn extends AppCompatActivity {
     //geofence
     //end geofence
     CallbackManager callbackManager;
+    GoogleSignInClient  mGoogleSignInClient;
 
     GoogleSignInClient mGoogleSignInClient;
     EditText username;
@@ -81,6 +73,7 @@ public class LogIn extends AppCompatActivity {
     SignInButton googleBtn;
     GoogleSignInOptions gso;
     RelativeLayout progressBar;
+
     AccountManager accountManager;
     private final static int GEOFENCE_RADIUS_IN_METERS = 300;
     private final static long GEOFENCE_EXPIRATION_IN_MILLISECONDS = Geofence.NEVER_EXPIRE;
@@ -108,7 +101,8 @@ public class LogIn extends AppCompatActivity {
                         if (jsonResponse.has(Constants.REFRESH_TOKEN)) {
                             JSONObject jsonRefreshToken = jsonResponse.getJSONObject(Constants.REFRESH_TOKEN);
                             Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
-                            //HttpController.authorizationHeaders.put(Constants.REFRESH_TOKEN,jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                            Log.d("Token Salvato",jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                            HttpController.saveToken(jsonRefreshToken.getString(Constants.REFRESH_TOKEN),LogIn.this);
                         }
                         Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
                         startActivity(goToHomeIntent);
@@ -117,12 +111,49 @@ public class LogIn extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(LogIn.this, "Da mettere stringa login", Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+                    Toast.makeText(LogIn.this,"Da mettere stringa login",Toast.LENGTH_SHORT).show();
+                }
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+    };
+    Response.Listener<String> refreshTOkenResponseHandler = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response){
+            try {
+                if(progressBar!=null)progressBar.setVisibility(View.INVISIBLE);
+                Log.d("Prova",response);
+                JSONObject jsonResponse = new JSONObject(response);
+                if(jsonResponse.has(Constants.AUTH_TOKEN) && jsonResponse.has(Constants.REFRESH_TOKEN)){
+                    JSONObject jsonAccessToken = jsonResponse.getJSONObject(Constants.AUTH_TOKEN);
+                        Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonAccessToken.getString(Constants.AUTH_TOKEN));
+                        String token_type = jsonAccessToken.getString(Constants.TOKEN_TYPE);
+                        if(token_type!= null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
+                            HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER,token_type+" "+jsonAccessToken.getString(Constants.AUTH_TOKEN));
+                        if(jsonResponse.has(Constants.REFRESH_TOKEN)){
+                            JSONObject jsonRefreshToken = jsonResponse.getJSONObject(Constants.REFRESH_TOKEN);
+                            Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                            Log.d("Token Salvato",jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                            HttpController.saveToken(jsonRefreshToken.getString(Constants.REFRESH_TOKEN),LogIn.this);
+                        }
+                        Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
+                        startActivity(goToHomeIntent);
+
+                }
+                else{
+                    Toast.makeText(LogIn.this,"Da mettere stringa login",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     };
+
 
 
     Response.ErrorListener logInErrorHandler = new Response.ErrorListener() {
@@ -197,6 +228,26 @@ public class LogIn extends AppCompatActivity {
 
         });
 
+        String token;
+        try {
+            if((token = HttpController.getToken(LogIn.this))!=null){
+                Log.d("Token Caricato",token);
+                Jwts.parser().require(Constants.USER_TYPE, Constants.REGISTERD_USER).require(Constants.TOKEN_TYPE,Constants.TOKEN_TYPE_BEARER);
+                HttpController.authorizationHeader = new HashMap<>();
+                HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER,Constants.TOKEN_TYPE_BEARER+" "+token);
+                HttpController.refreshAccessToken(logInResponseHandler,logInErrorHandler,LogIn.this);
+            }
+        } catch (MissingClaimException|IncorrectClaimException e) {
+
+            // we get here if the required claim is not present
+            // we get here if the required claim has the wrong value
+            e.printStackTrace();
+        } catch ( JSONException e) {
+            e.printStackTrace();
+
+
+        }
+
     }
 
     @Override
@@ -244,6 +295,7 @@ public class LogIn extends AppCompatActivity {
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
+        //GOOGLE SIGN IN
 
         //ACCOUNT MANAGER
         accountManager = AccountManager.get(LogIn.this);
@@ -252,6 +304,11 @@ public class LogIn extends AppCompatActivity {
         googleBtn = (SignInButton) findViewById(R.id.sign_in_button_Google);
         googleBtn.setOnClickListener(googleSignIn);
 
+
+        AccessToken accessToken= AccessToken.getCurrentAccessToken();
+        if(accessToken!= null && !accessToken.isExpired()){
+            LoginManager.getInstance().logInWithReadPermissions(LogIn.this, Arrays.asList("public_profile","email"));
+        }
         //FACEBOOK SIGN IN
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -306,7 +363,7 @@ public class LogIn extends AppCompatActivity {
     public View.OnClickListener facebookSignIn = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            LoginManager.getInstance().logInWithReadPermissions(LogIn.this, Arrays.asList("public_profile"));
+            LoginManager.getInstance().logInWithReadPermissions(LogIn.this, Arrays.asList("public_profile","email"));
 
         }
     };
@@ -330,7 +387,7 @@ public class LogIn extends AppCompatActivity {
     public View.OnClickListener goToRegisterPage = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(LogIn.this, RegisterActivity.class);
+            Intent intent = new Intent(LogIn.this,RegisterActivity.class);
             startActivity(intent);
         }
     };
