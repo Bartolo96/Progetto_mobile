@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,10 +27,12 @@ public class HomeActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Toolbar homeToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(homeToolbar);
+
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
@@ -54,6 +57,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+
     private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
