@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.uniba.di.nitwx.progettoMobile">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <service android:name=".GeofenceTransitionsIntentService"/>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -32,29 +34,44 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
         <activity android:name=".LogIn">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--
+          <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ProductListActivity"
-            android:label="@string/title_product_list"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ProductDetailActivity"
-            android:label="@string/title_product_detail"
-            android:parentActivityName=".ProductListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="it.uniba.di.nitwx.progettoMobile.ProductListActivity" />
-        </activity>
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".HomeActivity"></activity>
-    </application>
+              <category android:name="android.intent.category.LAUNCHER" />
+          </intent-filter>
+          -->
+      </activity>
+      <activity
+          android:name=".ProductListActivity"
+          android:label="@string/title_product_list"
+          android:theme="@style/AppTheme.NoActionBar" />
+      <activity
+          android:name=".ProductDetailActivity"
+          android:label="@string/title_product_detail"
+          android:parentActivityName=".ProductListActivity"
+          android:theme="@style/AppTheme.NoActionBar">
+          <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value="it.uniba.di.nitwx.progettoMobile.ProductListActivity" />
+      </activity>
+      <activity android:name=".RegisterActivity" />
+      <activity android:name=".HomeActivity" />
+      <activity
+          android:name=".OfferListActivity"
+          android:label="@string/title_offer_list"
+          android:theme="@style/AppTheme.NoActionBar" />
+      <activity
+          android:name=".OfferDetailActivity"
+          android:label="@string/title_offer_detail"
+          android:parentActivityName=".OfferListActivity"
+          android:theme="@style/AppTheme.NoActionBar">
+          <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value="it.uniba.di.nitwx.progettoMobile.OfferListActivity" />
+      </activity>
+
+  </application>
 
 </manifest>
