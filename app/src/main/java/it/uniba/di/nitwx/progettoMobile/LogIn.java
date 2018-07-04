@@ -3,7 +3,6 @@ package it.uniba.di.nitwx.progettoMobile;
 
 import android.accounts.AccountManager;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
