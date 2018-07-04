@@ -2,8 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/productsItemMenu"
-        android:title="Prodotti"/>
+        android:title="@string/title_product_list"/>
     <item
-        android:id="@+id/MENU_2"
-        android:title="Elenco note"/>
+        android:id="@+id/myProfile"
+        android:title="@string/myProfile"/>
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings"/>
 </menu>

@@ -21,14 +21,14 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <include layout="@layout/offer_list" />
-    </LinearLayout>
+    </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

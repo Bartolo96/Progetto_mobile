@@ -1,5 +1,8 @@
 package it.uniba.di.nitwx.progettoMobile.dummy;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 
@@ -12,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.uniba.di.nitwx.progettoMobile.R;
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -25,40 +27,50 @@ public class ProductContent {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<ProductItem> ITEMS = new ArrayList<ProductItem>();
+    public static final List<Product> ITEMS = new ArrayList<Product>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, ProductItem> ITEM_MAP = new HashMap<String, ProductItem>();
+    public static final Map<String, Product> ITEM_MAP = new HashMap<String, Product>();
 
-    public static void populate(JSONArray response) throws JSONException {
+    public static List<Product> populate(JSONArray response) throws JSONException {
+        List<Product> prova = new ArrayList<Product>();
         for(int i=0; i<response.length();i++){
-            ProductItem temp = createProductItem(response.getJSONObject(i));
-            addItem(temp);
+            ;
+            addItem(createProductItem(response.getJSONObject(i)));
+        }
+        return ITEMS;
+    }
+    public static void populate(List<Product> list) throws JSONException {
+        for(Product p: list){
+            addItem(p);
         }
     }
-    private static void addItem(ProductItem item) {
+    private static void addItem(Product item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    private static ProductItem createProductItem(JSONObject product) throws JSONException{
-        return new ProductItem(product.getString("id"), product.getString("name"), product.getString("description"), product.getDouble("price"), product.getString("code"));
+    private static Product createProductItem(JSONObject product) throws JSONException{
+        return new Product(product.getString("id"), product.getString("name"), product.getString("description"), product.getDouble("price"), product.getString("code"));
     }
 
 
     /**
      * A dummy item representing a piece of content.
      */
-    public static class ProductItem {
-        public final String id;
-        public final String name;
-        public final String description;
-        public final double price;
-        public final String code;
+    @Entity
+    public static class Product {
 
-        public ProductItem(String id, String name, String description, double price, String code) {
+        @PrimaryKey
+        @NonNull public String id;
+        public  String name;
+        public  String description;
+        public  double price;
+        public  String code;
+
+        public Product(@NonNull String id, String name, String description, double price, String code) {
             this.id = id;
             this.name = name;
             this.description = description;

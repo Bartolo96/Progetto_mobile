@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import it.uniba.di.nitwx.progettoMobile.dummy.OfferContet;
+import it.uniba.di.nitwx.progettoMobile.dummy.DummyContent;
 
 import java.util.List;
 
@@ -67,19 +67,19 @@ public class OfferListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, OfferContet.ITEMS, mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final OfferListActivity mParentActivity;
-        private final List<OfferContet.DummyItem> mValues;
+        private final ItemListActivity mParentActivity;
+        private final List<DummyContent.DummyItem> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OfferContet.DummyItem item = (OfferContet.DummyItem) view.getTag();
+                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putString(OfferDetailFragment.ARG_ITEM_ID, item.id);
@@ -99,7 +99,7 @@ public class OfferListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(OfferListActivity parent,
-                                      List<OfferContet.DummyItem> items,
+                                      List<DummyContent.DummyItem> items,
                                       boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
