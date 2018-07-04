@@ -40,4 +40,6 @@
     <string name="surname">Surname</string>
     <string name="action_settings">Settings</string>
     <string name="Bday">Birthday</string>
+    <string name="title_offer_list">Offers</string>
+    <string name="title_offer_detail">Offer Detail</string>
 </resources>
