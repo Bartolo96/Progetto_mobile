@@ -1,6 +1,8 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.TaskStackBuilder;
@@ -22,6 +24,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     GoogleSignInClient  mGoogleSignInClient;
     GoogleSignInOptions gso;
@@ -36,14 +41,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        /**Inserimento toolbar**/
         Toolbar homeToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(homeToolbar);
-
+        /**Inserimento drawerLayout + set Listener per la Navigation View**/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, homeToolbar,R.string.app_name,R.string.app_name);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -83,18 +91,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     View.OnClickListener logOutListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.button_sign_out:
+            int userType = (int) Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(HttpController.authorizationHeader.get(Constants.AUTHORIZATON_HEADER)).getBody().get(Constants.USER_TYPE);
+            switch (userType){
+                case Constants.REGISTERD_USER:
+
+                    break;
+                case Constants.FACEBOOK_USER:
+
+                    break;
+                case Constants.GOOGLE_USER:
                     signOut();
                     break;
-                // ...
             }
+
+            SharedPreferences sharedPref = HomeActivity.this.getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.remove(Constants.REFRESH_TOKEN);
+            editor.commit();
         }
     };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.right_menu_home,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -107,7 +127,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
             startActivity(goToProductsActivityIntent);
                 break;
-            case R.id.MENU_2:
+            case R.id.settings:
             /*
                 Codice di gestione della voce MENU_2
              */
@@ -124,10 +144,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
                 startActivity(goToProductsActivityIntent);
                 break;
-            case R.id.MENU_2:
+            case R.id.settings:
             /*
                 Codice di gestione della voce MENU_2
              */
+            case R.id.myProfile:
+                Intent goToProfileActivityIntent = new Intent(HomeActivity.this,ProfileActivity.class);
+                startActivity(goToProfileActivityIntent);
         }
         return false;
     }

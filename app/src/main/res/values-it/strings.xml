@@ -23,10 +23,16 @@
         <item name="price">Prezzo</item>
         <item name="code">Codice</item>
     </string-array>
-    <string name="Bday">Data di Nascita</string>
     <string name="LogOut">Esci</string>
     <string name="RegistrationOk">Account registrato correttamente!</string>
     <string name="WrongMail">Email non valida</string>
     <string name="BuyNow">Acquista ora!</string>
     <string name="qrCodeDialogTitle">Ecco il tuo codice QR!\nMostralo in cassa</string>
+    <string name="settings">Impostazioni</string>
+    <string name="search">Cerca</string>
+    <string name="myProfile">Il Mio Profilo</string>
+    <string name="name">Nome</string>
+    <string name="surname">Cognome</string>
+    <string name="Bday">Data di Nascita</string>
+    <string name="help">Aiuto</string>
 </resources>
