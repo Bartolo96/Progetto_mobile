@@ -36,14 +36,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        /**Inserimento toolbar**/
         Toolbar homeToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(homeToolbar);
-
+        /**Inserimento drawerLayout + set Listener per la Navigation View**/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, homeToolbar,R.string.app_name,R.string.app_name);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -94,7 +97,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.right_menu_home,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -107,7 +111,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
             startActivity(goToProductsActivityIntent);
                 break;
-            case R.id.MENU_2:
+            case R.id.settings:
             /*
                 Codice di gestione della voce MENU_2
              */
@@ -124,10 +128,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
                 startActivity(goToProductsActivityIntent);
                 break;
-            case R.id.MENU_2:
+            case R.id.settings:
             /*
                 Codice di gestione della voce MENU_2
              */
+            case R.id.myProfile:
+                Intent goToProfileActivityIntent = new Intent(HomeActivity.this,ProfileActivity.class);
+                startActivity(goToProfileActivityIntent);
         }
         return false;
     }
