@@ -42,4 +42,5 @@
     <string name="Bday">Birthday</string>
     <string name="title_offer_list">Offers</string>
     <string name="title_offer_detail">Offer Detail</string>
+    <string name="help">Help</string>
 </resources>

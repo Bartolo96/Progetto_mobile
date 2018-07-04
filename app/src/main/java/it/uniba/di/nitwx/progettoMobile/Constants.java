@@ -7,6 +7,11 @@ import java.security.Key;
  */
 
 public class Constants {
+
+    static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 23;
+    static final int PLAY_SERVICES_RESOLUTION_REQUEST = 25;
+
+
     /*USER KINDS*/
     static final String USER_TYPE = "user_type";
     static final int REGISTERD_USER = 1;
