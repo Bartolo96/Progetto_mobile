@@ -59,7 +59,7 @@ public class HttpController {
      * This method generalizes and customizes Volley's post hhtp request method.
      *
      **/
-    protected static HashMap<String,String> authorizationHeader = new HashMap<>();
+    static HashMap<String,String> authorizationHeader = new HashMap<>();
     private final static byte[] salt ={
                 (byte)0x16 , (byte)0x13 , (byte)0x60 , (byte)0xdb ,
                 (byte)0x17 , (byte)0xcf , (byte)0x98 , (byte)0xc0 ,
@@ -115,32 +115,32 @@ public class HttpController {
      * This method authenticates the user and recieves as response authentication tokens
      **/
 
-    public static void refreshAccessToken(Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+    static void refreshAccessToken(Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
 
         String url=Constants.URL_REFRESH_ACCESS_TOKEN;
         //HashMap<String,String> headers = new HashMap<>();
         http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
     }
-    public static void login (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+    static void login (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
         String url=Constants.URL_AUTH_USER;
         HashMap<String,String> headers = new HashMap<>();
         headers.put(Constants.CONTENT_TYPE,Constants.CONTENT_TYPE_APPLICATION_JSON);
         http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
     }
-    public static void thirdPartyLogin (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+    static void thirdPartyLogin (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
         String url=Constants.URL_AUTH_THIRD_PARTY_USER;
         HashMap<String,String> headers = new HashMap<>();
         headers.put(Constants.CONTENT_TYPE,Constants.CONTENT_TYPE_APPLICATION_JSON);
         http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
     }
 
-    public static void getProducts (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+    static void getProducts (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
 
         String url=Constants.URL_PRODUCTS;
         //HashMap<String,String> headers = new HashMap<>();
         http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
     }
-    public static void addUser (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+    static void addUser (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
         String url = Constants.URL_ADD_USER;
         HashMap<String,String> headers = new HashMap<>();
         headers.put(Constants.CONTENT_TYPE,Constants.CONTENT_TYPE_APPLICATION_JSON);
@@ -151,7 +151,7 @@ public class HttpController {
 
 
 
-    protected static void saveToken(String string,Context c){
+    static void saveToken(String string,Context c){
 
         try {
             String encryptedToken = AESCrypt.encrypt(aesPsawword, string);
@@ -165,7 +165,7 @@ public class HttpController {
 
     }
 
-    protected static String getToken(Context c) {
+    static String getToken(Context c) {
         String token="";
         try {
             c.getSharedPreferences(Constants.REFRESH_TOKEN,Context.MODE_PRIVATE);
@@ -179,7 +179,7 @@ public class HttpController {
 
     }
 
-    protected static PublicKey getKey(){
+    static PublicKey getKey(){
         try{
             byte[] byteKey = Base64.decode(Constants.PUBLIC_KEY.getBytes(), Base64.DEFAULT);
             X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(byteKey);
@@ -202,7 +202,7 @@ public class HttpController {
     };
 
 
-    public static String get_SHA_512_SecurePassword(String passwordToHash){
+    static String get_SHA_512_SecurePassword(String passwordToHash){
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");

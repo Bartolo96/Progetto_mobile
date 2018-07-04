@@ -45,7 +45,7 @@ public class ProductDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private ProductContent.ProductItem mItem;
+    private ProductContent.Product mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the

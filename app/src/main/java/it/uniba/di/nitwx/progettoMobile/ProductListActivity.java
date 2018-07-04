@@ -1,9 +1,11 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +27,7 @@ import org.json.JSONException;
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,15 +46,78 @@ public class ProductListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
     private View recyclerView;
+    private List<ProductContent.Product> productsList;
+    AppDatabase db ;
+
+    private class InsertProductAsync extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //Perform pre-adding operation here.
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            db.productDao().insertProductsList(productsList );
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            //To after addition operation here.
+        }
+    }
+    private class SelectProductAsync extends AsyncTask<Void, Void, List<ProductContent.Product>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //Perform pre-adding operation here.
+        }
+
+        protected List<ProductContent.Product> doInBackground(Void... voids) {
+            return db.productDao().loadAllProducts();
+
+        }
+
+        @Override
+        protected void onPostExecute(List<ProductContent.Product> lista) {
+            super.onPostExecute(lista);
+            try {
+                ProductContent.populate(lista);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d("Prova",":D");
+            recyclerView = findViewById(R.id.product_list);
+            assert recyclerView != null;
+            setupRecyclerView((RecyclerView) recyclerView);
+            //To after addition operation here.
+        }
+    }
+
 
     Response.Listener<String> productsResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
             try {
-                ProductContent.populate(new JSONArray(response));
+                productsList = ProductContent.populate(new JSONArray(response));
+                new InsertProductAsync().execute();
                 recyclerView = findViewById(R.id.product_list);
                 assert recyclerView != null;
                 setupRecyclerView((RecyclerView) recyclerView);
+                if(ProductContent.ITEMS.isEmpty()){
+                    try {
+                        HttpController.getProducts(productsResponseHandler, productsErrorHandler, ProductListActivity.this);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
             catch (JSONException e){
@@ -69,7 +135,7 @@ public class ProductListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
-
+        db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"database-nitwx").build();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
@@ -85,11 +151,8 @@ public class ProductListActivity extends AppCompatActivity {
 
 
         if (ProductContent.ITEMS.isEmpty()){
-            try {
-                HttpController.getProducts(productsResponseHandler, productsErrorHandler, ProductListActivity.this);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            new SelectProductAsync().execute();
+
         }
         else{
             recyclerView = findViewById(R.id.product_list);
@@ -106,12 +169,12 @@ public class ProductListActivity extends AppCompatActivity {
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final ProductListActivity mParentActivity;
-        private final List<ProductContent.ProductItem> mValues;
+        private final List<ProductContent.Product> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProductContent.ProductItem item = (ProductContent.ProductItem) view.getTag();
+                ProductContent.Product item = (ProductContent.Product) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putString(ProductDetailFragment.ARG_ITEM_ID, item.id);
@@ -131,7 +194,7 @@ public class ProductListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(ProductListActivity parent,
-                                      List<ProductContent.ProductItem> items,
+                                      List<ProductContent.Product> items,
                                       boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
