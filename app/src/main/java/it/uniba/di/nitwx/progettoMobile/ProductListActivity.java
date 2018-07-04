@@ -3,8 +3,6 @@ package it.uniba.di.nitwx.progettoMobile;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,11 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -90,14 +84,18 @@ public class ProductListActivity extends AppCompatActivity {
             super.onPostExecute(lista);
             try {
                 ProductContent.populate(lista);
+
+                if(ProductContent.ITEMS.isEmpty()){
+                    HttpController.getProducts(productsResponseHandler,productsErrorHandler,getApplicationContext());
+                }else {
+                    Log.d("Prova", ":D");
+                    recyclerView = findViewById(R.id.product_list);
+                    assert recyclerView != null;
+                    setupRecyclerView((RecyclerView) recyclerView);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d("Prova",":D");
-            recyclerView = findViewById(R.id.product_list);
-            assert recyclerView != null;
-            setupRecyclerView((RecyclerView) recyclerView);
-            //To after addition operation here.
         }
     }
 
