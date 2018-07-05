@@ -46,4 +46,5 @@
     <string name="allow_notification">Allow Notifications</string>
     <string name="needHelp">Need help?\nPlease fill in the form below\nYou will be contacted shortly</string>
     <string name="typeHere">Type Here...</string>
+    <string name="sendForm">Send</string>
 </resources>
