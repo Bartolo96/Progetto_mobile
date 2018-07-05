@@ -11,10 +11,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,9 +49,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingApi;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
@@ -91,8 +87,12 @@ public class LogIn extends AppCompatActivity {
                 JSONObject jsonResponse = new JSONObject(response);
 
                 if (jsonResponse.has(Constants.AUTH_TOKEN)) {
+
                     JSONObject jsonAccessToken = jsonResponse.getJSONObject(Constants.AUTH_TOKEN);
-                    Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonAccessToken.getString(Constants.AUTH_TOKEN));
+                    HttpController.userClaims = Jwts.parser().setSigningKey(HttpController.getKey()).
+                                                            parseClaimsJws(jsonAccessToken.getString(Constants.AUTH_TOKEN)).
+                                                            getBody();
+                    Log.d("Prova",jsonAccessToken.toString());
                     String token_type = jsonAccessToken.getString(Constants.TOKEN_TYPE);
                     if (token_type != null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
                         HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER, token_type + " " + jsonAccessToken.getString(Constants.AUTH_TOKEN));
@@ -100,7 +100,7 @@ public class LogIn extends AppCompatActivity {
                         JSONObject jsonRefreshToken = jsonResponse.getJSONObject(Constants.REFRESH_TOKEN);
                         Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
                         Log.d("Token Salvato", jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
-                        HttpController.saveToken(jsonRefreshToken.getString(Constants.REFRESH_TOKEN), LogIn.this);
+                        HttpController.saveRefreshToken(jsonRefreshToken.getString(Constants.REFRESH_TOKEN), LogIn.this);
                     }
                     Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
                     startActivity(goToHomeIntent);
@@ -242,26 +242,21 @@ public class LogIn extends AppCompatActivity {
 
         });
 
-        String token;
-        try {
-            if ((token = HttpController.getToken(LogIn.this)) != null) {
-                Log.d("Token Caricato", token);
-                Jwts.parser().require(Constants.USER_TYPE, Constants.REGISTERD_USER).require(Constants.TOKEN_TYPE, Constants.TOKEN_TYPE_BEARER);
+        String token = HttpController.getRefreshToken(LogIn.this);
+        if ( token != null) {
+            Log.d("Token Caricato", token);
+            try {
+                 Jwts.parser().require(Constants.USER_TYPE, Integer.toString(Constants.REGISTERD_USER)).
+                                setSigningKey(HttpController.getKey()).
+                                parseClaimsJws(token);
                 HttpController.authorizationHeader = new HashMap<>();
                 HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER, Constants.TOKEN_TYPE_BEARER + " " + token);
                 HttpController.refreshAccessToken(logInResponseHandler, logInErrorHandler, LogIn.this);
+            } catch (MissingClaimException | IncorrectClaimException | JSONException e) {
+                e.printStackTrace();
             }
-        } catch (MissingClaimException | IncorrectClaimException e) {
-
-            // we get here if the required claim is not present
-            // we get here if the required claim has the wrong value
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-
 
         }
-
     }
 
     @Override

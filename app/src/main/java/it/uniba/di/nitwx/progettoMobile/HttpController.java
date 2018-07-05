@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -49,6 +51,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.RsaSignatureValidator;
 
@@ -69,6 +72,7 @@ public class HttpController {
 
     private final static String aesPsawword = "t16imhkowz7s712k";
     private final static String transformation = "AES/ECB/PKCS5Padding";
+    static Claims userClaims;
 
     private static void http_request(int requestType, Context context,String url, Map<String,String> customHeaders,
                              JSONObject body, Response.Listener<String> responseHandler, Response.ErrorListener errorHandler ){
@@ -151,32 +155,32 @@ public class HttpController {
 
 
 
-    static void saveToken(String string,Context c){
+    static void saveRefreshToken(String string, Context c){
 
         try {
             String encryptedToken = AESCrypt.encrypt(aesPsawword, string);
             SharedPreferences sharedPref = c.getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN,Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString(Constants.REFRESH_TOKEN, encryptedToken);
-            editor.commit();
+            editor.apply();
         }catch (GeneralSecurityException e){
             e.printStackTrace();
         }
 
     }
 
-    static String getToken(Context c) {
-        String token="";
+    static String getRefreshToken(Context c) {
         try {
+            String token;
             c.getSharedPreferences(Constants.REFRESH_TOKEN,Context.MODE_PRIVATE);
             SharedPreferences sharedPref = c.getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN,Context.MODE_PRIVATE);
-            String encryptedToken = sharedPref.getString(Constants.REFRESH_TOKEN,"Failed");
+            String encryptedToken = sharedPref.getString(Constants.REFRESH_TOKEN,null);
             token = encryptedToken!= null? AESCrypt.decrypt(aesPsawword,encryptedToken) :null;
+            return token;
         }catch (GeneralSecurityException e){
             e.printStackTrace();
         }
-        return token;
-
+        return null;
     }
 
     static PublicKey getKey(){
