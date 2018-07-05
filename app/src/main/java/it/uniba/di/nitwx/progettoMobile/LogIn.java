@@ -2,6 +2,7 @@ package it.uniba.di.nitwx.progettoMobile;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -80,7 +81,12 @@ public class LogIn extends AppCompatActivity {
     private GeofencingClient mGeofencingClient;
     private List<Geofence> mGeofenceList = new ArrayList<Geofence>();
     private final int REQUEST_FINE_ACCESS = 1;
-
+    Intent mServiceIntent;
+    GeofenceService mGeofenceService;
+    Context ctx;
+    public Context getCtx() {
+        return ctx;
+    }
     Response.Listener<String> logInResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
@@ -214,7 +220,7 @@ public class LogIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         createNotificationChannel();
-        mGeofencingClient = LocationServices.getGeofencingClient(this);
+        ctx = this;
 
         progressBar = findViewById(R.id.progress_bar);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -234,7 +240,7 @@ public class LogIn extends AppCompatActivity {
         //FACEBOOK SIGN IN
         callbackManager = CallbackManager.Factory.create();
         LoginButton btn = (LoginButton) findViewById(R.id.btnLogInFacebook);
-        btn.setReadPermissions("email");
+        btn.setReadPermissions("email","user_birthday","user_gender");
         btn.setOnClickListener(facebookSignIn);
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -295,43 +301,24 @@ public class LogIn extends AppCompatActivity {
                 // result of the request.
             }
         } else {
-            mGeofenceList.add(new Geofence.Builder()
-                    .setRequestId(Constants.PACKAGE_NAME+"Prima Geofence")
-                    .setCircularRegion(
-                            41.3149307,
-                            16.2623632,
-                            4000000
-                    )
-                    .setExpirationDuration(NEVER_EXPIRE)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                            Geofence.GEOFENCE_TRANSITION_EXIT)
-                    .build());
-            mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
-                    .addOnSuccessListener(this, new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d("Geofence","Geofenses added");
-                        }
-                    })
-                    .addOnFailureListener(this, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Failed to add geofences
-                            // ...
-                        }
-                    });
 
-            Log.d("Geofence","Yay");
-            Intent intent = new Intent(LogIn.this, GeofenceService.class);
-            startService(intent);
+            mGeofenceService = new GeofenceService();
+            mServiceIntent = new Intent(getCtx(), mGeofenceService.getClass());
+            if(!isMyServiceRunning(GeofenceService.class)){
+                //Log.d("Geofence","Service running");
+                Intent ishintent = new Intent(this, GeofenceService.class);
+                PendingIntent pintent = PendingIntent.getService(this, 0, ishintent, 0);
+                AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                alarm.cancel(pintent);
+                alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),50000, pintent);
+                startService(mServiceIntent);
+            }
+            else{
+                Log.d("Geofence",":(");
+            }
         }
 
-        if(isMyServiceRunning(GeofenceService.class)){
-            Log.d("Geofence","Service running");
 
-        }
-        else
-            Log.d("...","Porco jesus");
     }
 
     private void createNotificationChannel() {
@@ -350,26 +337,15 @@ public class LogIn extends AppCompatActivity {
         }
     }
 
-    private PendingIntent getGeofencePendingIntent() {
-        // Reuse the PendingIntent if we already have it.
-        if (mGeofencePendingIntent != null) {
-            return mGeofencePendingIntent;
-        }
-        Intent intent = new Intent(this, GeofenceService.class);
-        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
-        // calling addGeofences() and removeGeofences().
-        mGeofencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.
-                FLAG_UPDATE_CURRENT);
-        return mGeofencePendingIntent;
-    }
 
-    private GeofencingRequest getGeofencingRequest() {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofences(mGeofenceList);
-        return builder.build();
-    }
 
+    @Override
+    protected void onDestroy() {
+        stopService(mServiceIntent);
+        Log.i("MAINACT", "onDestroy!");
+        super.onDestroy();
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

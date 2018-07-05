@@ -63,15 +63,9 @@ public class HttpController {
      *
      **/
     static HashMap<String,String> authorizationHeader = new HashMap<>();
-    private final static byte[] salt ={
-                (byte)0x16 , (byte)0x13 , (byte)0x60 , (byte)0xdb ,
-                (byte)0x17 , (byte)0xcf , (byte)0x98 , (byte)0xc0 ,
-                (byte)0x8e , (byte)0x85 , (byte)0xde , (byte)0x8c ,
-                (byte)0x12 , (byte)0xe7 , (byte)0xbb , (byte)0x6f
-    };
+
 
     private final static String aesPsawword = "t16imhkowz7s712k";
-    private final static String transformation = "AES/ECB/PKCS5Padding";
     static Claims userClaims;
 
     private static void http_request(int requestType, Context context,String url, Map<String,String> customHeaders,
@@ -120,9 +114,7 @@ public class HttpController {
      **/
 
     static void refreshAccessToken(Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
-
         String url=Constants.URL_REFRESH_ACCESS_TOKEN;
-        //HashMap<String,String> headers = new HashMap<>();
         http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
     }
     static void login (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
@@ -141,7 +133,6 @@ public class HttpController {
     static void getProducts (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
 
         String url=Constants.URL_PRODUCTS;
-        //HashMap<String,String> headers = new HashMap<>();
         http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
     }
     static void addUser (JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
@@ -149,6 +140,10 @@ public class HttpController {
         HashMap<String,String> headers = new HashMap<>();
         headers.put(Constants.CONTENT_TYPE,Constants.CONTENT_TYPE_APPLICATION_JSON);
         http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
+    }
+    static void getGeofences(Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
+        String url = Constants.URL_ADD_USER;
+        http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
     }
 
 

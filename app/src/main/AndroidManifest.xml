@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="it.uniba.di.nitwx.progettoMobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,18 +17,15 @@
         android:theme="@style/AppTheme">
 
 
-<!--        <receiver
-            android:name=".GeofenceReciever"
+        <receiver
+            android:name=".GeofenceServiceRestarter"
             android:enabled="true"
-            android:exported="false" >
-            <intent-filter android:priority="100">
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.location.MODE_CHANGED" />
-                <action android:name="android.location.PROVIDERS_CHANGED" />
-                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
-
+            android:exported="false"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="it.uniba.di.nitwx.progettoMobile.RestartService"/>
             </intent-filter>
-        </receiver>-->
+        </receiver>
         <service android:name="it.uniba.di.nitwx.progettoMobile.GeofenceService"
             android:exported="false"
             android:enabled="true"/>
@@ -82,7 +80,7 @@
         <activity
             android:name=".OfferListActivity"
             android:label="@string/title_offer_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".OfferDetailActivity"
             android:label="@string/title_offer_detail"
@@ -92,6 +90,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.uniba.di.nitwx.progettoMobile.OfferListActivity" />
         </activity>
+        <activity
+            android:name=".SettingsActivity" />
+        <activity
+            android:name=".HelpActivity" />
     </application>
 
 </manifest>
