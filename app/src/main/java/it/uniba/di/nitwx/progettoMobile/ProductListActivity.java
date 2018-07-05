@@ -43,6 +43,7 @@ public class ProductListActivity extends AppCompatActivity {
     private List<ProductContent.Product> productsList;
     AppDatabase db ;
 
+
     private class InsertProductAsync extends AsyncTask<Void, Void, Void> {
 
         @Override
