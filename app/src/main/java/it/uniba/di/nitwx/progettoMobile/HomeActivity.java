@@ -123,15 +123,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id=item.getItemId();
         switch(id)
         {
-            case R.id.productsItemMenu:
-            Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
-            startActivity(goToProductsActivityIntent);
-                break;
-
             case R.id.settings:
-            /*
-                Codice di gestione della voce MENU_2
-             */
+                Intent goToSettingsActivityIntent = new Intent(HomeActivity.this, SettingsActivity.class);
+                startActivity(goToSettingsActivityIntent);
+
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
