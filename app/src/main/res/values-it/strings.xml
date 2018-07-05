@@ -44,5 +44,16 @@
     <string name="ForYouAt">Per te A</string>
     <string name="Redeem">Riscatta!</string>
     <string name="OfferDescription">Descrizione dell\'offerta</string>
+    <string name="Discount">Sconto del</string>
+    <string name="title_offer_list">Offerte</string>
+    <string name="title_offer_detail">Dettaglio Offerta</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="DoUWntToUSe">Vuoi utilizzare </string>
+        <plurals name="pointToUse">
+            <item quantity="one">Vuoi utilizzare %d icePoint per \n riscattare l'offerta?</item>
+            <item quantity="other">Vuoi utilizzare %d icePoint per \n riscattare l'offerta?</item>
+        </plurals>
 
 </resources>
+
+
