@@ -49,5 +49,16 @@
     <string name="oldPw">Vecchia Password</string>
     <string name="newPw">Nuova Password</string>
     <string name="confirmNewPw">Conferma Nuova Password</string>
+    <string name="Discount">Sconto del</string>
+    <string name="title_offer_list">Offerte</string>
+    <string name="title_offer_detail">Dettaglio Offerta</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="DoUWntToUSe">Vuoi utilizzare </string>
+        <plurals name="pointToUse">
+            <item quantity="one">Vuoi utilizzare %d icePoint per \n riscattare l'offerta?</item>
+            <item quantity="other">Vuoi utilizzare %d icePoint per \n riscattare l'offerta?</item>
+        </plurals>
 
 </resources>
+
+

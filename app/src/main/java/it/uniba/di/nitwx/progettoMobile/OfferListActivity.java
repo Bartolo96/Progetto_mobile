@@ -82,15 +82,6 @@ public class OfferListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         if (findViewById(R.id.offer_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -160,9 +151,15 @@ public class OfferListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+            int discount = 0;
+            double price=0;
+            for (ProductContent.Product p: mValues.get(position).products){
+                price+=p.price;
+            }
+            discount=(int)(mValues.get(position).offerPrice/price*100);
             holder.mIdView.setText(mValues.get(position).name);
             holder.mPriceView.setText(String.valueOf(mValues.get(position).offerPrice));
-
+            holder.mDiscount.setText(discount+"%");
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -176,11 +173,14 @@ public class OfferListActivity extends AppCompatActivity {
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mIdView;
             final TextView mPriceView;
+            final TextView mDiscount;
 
             ViewHolder(View view) {
                 super(view);
+
                 mIdView = (TextView) view.findViewById(R.id.txtNameOffer);
                 mPriceView = (TextView) view.findViewById(R.id.txtDescriptionOffer);
+                mDiscount =(TextView) view.findViewById(R.id.txtDiscount);
             }
         }
     }

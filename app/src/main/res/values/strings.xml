@@ -52,4 +52,11 @@
     <string name="ForYouAt">For you At</string>
     <string name="Redeem">Redeem it!</string>
     <string name="OfferDescription">Offer description</string>
+    <string name="Discount">Discount</string>
+    <string name="Point" translatable="false">IcePoint</string>
+    <string name="DoUWntToUSe">Do you want to use</string>
+        <plurals name="pointToUse">
+            <item quantity="one">Do you want to use %d icePoint to redeem it?</item>
+            <item quantity="other">Do you want to use %d icePoint to redeem it?</item>
+        </plurals>
 </resources>
