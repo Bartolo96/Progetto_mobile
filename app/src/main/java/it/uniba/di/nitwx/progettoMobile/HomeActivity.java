@@ -93,24 +93,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     View.OnClickListener logOutListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String tmp=(String) HttpController.userClaims.get(Constants.USER_TYPE);
-            switch (new Integer(tmp)){
-                case Constants.REGISTERD_USER:
-
-                    break;
-                case Constants.FACEBOOK_USER:
-
-                    LoginManager.getInstance().logOut();
-                    break;
-                case Constants.GOOGLE_USER:
-                    signOut();
-                    break;
-            }
-
-            SharedPreferences sharedPref = HomeActivity.this.getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.remove(Constants.REFRESH_TOKEN);
-            editor.apply();
+            functionLogOut();
             Intent intent=new Intent(HomeActivity.this,LogIn.class);
             startActivity(intent);
             finish();
@@ -164,10 +147,34 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.logOut:
-                /*logOutListener.onClick();*/
+                functionLogOut();
+                Intent intent=new Intent(HomeActivity.this,LogIn.class);
+                startActivity(intent);
+                finish();
                 break;
 
         }
         return false;
+    }
+
+    public void functionLogOut(){
+        String tmp=(String) HttpController.userClaims.get(Constants.USER_TYPE);
+        switch (new Integer(tmp)){
+            case Constants.REGISTERD_USER:
+
+                break;
+            case Constants.FACEBOOK_USER:
+
+                LoginManager.getInstance().logOut();
+                break;
+            case Constants.GOOGLE_USER:
+                signOut();
+                break;
+        }
+
+        SharedPreferences sharedPref = HomeActivity.this.getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(Constants.REFRESH_TOKEN);
+        editor.apply();
     }
 }

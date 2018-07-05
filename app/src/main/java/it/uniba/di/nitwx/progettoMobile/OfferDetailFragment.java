@@ -61,7 +61,7 @@ public class OfferDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.offer_detail)).setText(mItem.name);
+            ((TextView) rootView.findViewById(R.id.textView3)).setText(mItem.name);
         }
 
         return rootView;

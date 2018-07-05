@@ -14,18 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name=".GeofenceService"/>
-        <receiver
-            android:name=".GeofenceReciever"
-            android:enabled="true"
-            android:exported="false" >
-            <intent-filter android:priority="100">
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.location.MODE_CHANGED" />
-                <action android:name="android.location.PROVIDERS_CHANGED" />
-                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
-
-            </intent-filter>
-        </receiver>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -87,7 +75,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.uniba.di.nitwx.progettoMobile.OfferListActivity" />
         </activity>
-        <activity android:name=".ProfileActivity"/>
     </application>
 
 </manifest>
