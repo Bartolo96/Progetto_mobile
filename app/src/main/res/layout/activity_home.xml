@@ -71,7 +71,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/primary"
+        android:background="@color/white"
+        app:itemBackground="?attr/selectableItemBackgroundBorderless"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/home_drawer_top"
         app:menu="@menu/drawer_menu_home" />
