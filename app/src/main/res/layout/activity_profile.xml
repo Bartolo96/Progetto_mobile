@@ -27,17 +27,36 @@
                 android:layout_centerHorizontal="true"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+
+            <TextView
+                android:id="@+id/nameProfileTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/profileImageView"/>
+
+            <TextView
+                android:id="@+id/emailProfileTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/nameProfileTextView"/>
+
+            <TextView
+                android:id="@+id/usernameProfileTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_alignBottom="@id/emailProfileTextView"/>
+
+            <TextView
+                android:id="@+id/bDayProfileTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_alignBottom="@id/bDayProfileTextView"/>
+
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/nameProfileTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/emailProfileTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

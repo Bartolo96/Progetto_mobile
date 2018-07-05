@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.support.v7.widget.Toolbar;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -99,13 +101,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     View.OnClickListener logOutListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            int userType = (int) Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(HttpController.authorizationHeader.get(Constants.AUTHORIZATON_HEADER)).getBody().get(Constants.USER_TYPE);
-            switch (userType){
+            String tmp=(String) HttpController.userClaims.get(Constants.USER_TYPE);
+            switch (new Integer(tmp)){
                 case Constants.REGISTERD_USER:
 
                     break;
                 case Constants.FACEBOOK_USER:
 
+                    LoginManager.getInstance().logOut();
                     break;
                 case Constants.GOOGLE_USER:
                     signOut();
@@ -115,7 +118,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             SharedPreferences sharedPref = HomeActivity.this.getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.remove(Constants.REFRESH_TOKEN);
-            editor.commit();
+            editor.apply();
+            Intent intent=new Intent(HomeActivity.this,LogIn.class);
+            startActivity(intent);
+            finish();
         }
     };
 
@@ -131,14 +137,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id=item.getItemId();
         switch(id)
         {
-            case R.id.productsItemMenu:
-            Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
-            startActivity(goToProductsActivityIntent);
-                break;
             case R.id.settings:
-            /*
-                Codice di gestione della voce MENU_2
-             */
+                Intent goToSettingsActivityIntent = new Intent(HomeActivity.this, SettingsActivity.class);
+                startActivity(goToSettingsActivityIntent);
+
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -152,13 +155,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
                 startActivity(goToProductsActivityIntent);
                 break;
-            case R.id.settings:
-            /*
-                Codice di gestione della voce MENU_2
-             */
             case R.id.myProfile:
                 Intent goToProfileActivityIntent = new Intent(HomeActivity.this,ProfileActivity.class);
                 startActivity(goToProfileActivityIntent);
+                break;
+            case R.id.settings:
+
+                Intent goToSettingsActivityIntent = new Intent(HomeActivity.this, SettingsActivity.class);
+                startActivity(goToSettingsActivityIntent);
+
+                break;
+            case R.id.help:
+
+                Intent goToHelpActivityIntent = new Intent(HomeActivity.this, HelpActivity.class);
+                startActivity(goToHelpActivityIntent);
+                break;
+
+            case R.id.logOut:
+                /*logOutListener.onClick();*/
+                break;
+
         }
         return false;
     }

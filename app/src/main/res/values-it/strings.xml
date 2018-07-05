@@ -35,4 +35,9 @@
     <string name="surname">Cognome</string>
     <string name="Bday">Data di Nascita</string>
     <string name="help">Aiuto</string>
+    <string name="allow_notification">Abilita Notifiche</string>
+    <string name="needHelp">Bisogno di aiuto?\nCompila il form qui sotto\nSarai contattato a breve</string>
+    <string name="typeHere">Scrivi qui...</string>
+    <string name="sendForm">Invia</string>
+
 </resources>
