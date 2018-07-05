@@ -86,7 +86,7 @@ public class OfferContent {
 
         @PrimaryKey
         @NonNull
-        ArrayList<ProductContent.Product> products = new ArrayList<ProductContent.Product>();
+        public ArrayList<ProductContent.Product> products = new ArrayList<ProductContent.Product>();
         public String id;
         public  String name;
         public  double offerPrice;

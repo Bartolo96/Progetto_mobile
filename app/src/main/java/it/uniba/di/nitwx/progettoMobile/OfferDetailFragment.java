@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import it.uniba.di.nitwx.progettoMobile.dummy.OfferContent;
@@ -57,11 +58,22 @@ public class OfferDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.offer_detail, container, false);
+        View rootView = inflater.inflate(R.layout.activity_offer_detail, container, false);
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.textView3)).setText(mItem.name);
+            ((TextView) rootView.findViewById(R.id.txtNameOfferDetail)).setText(mItem.name);
+            ((TextView)rootView.findViewById(R.id.txtPointDetail)).setText(String.valueOf(mItem.point));
+            ((TextView)rootView.findViewById(R.id.txtPriceDetail)).setText(String.valueOf(mItem.offerPrice));
+            ((TextView)rootView.findViewById(R.id.txtOfferDescriptionDetail)).setText(mItem.products.toString());
+            ((Button)rootView.findViewById(R.id.btnRedeem)).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //da implementare
+                        }
+                    }
+            );
         }
 
         return rootView;
