@@ -67,6 +67,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         goToProductsBtn.setText(name);
         Button logOut=(Button) findViewById(R.id.button_sign_out);
         logOut.setOnClickListener(logOutListener);
+        Button offerBtn = (Button) findViewById(R.id.btnOffer);
+        offerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this,OfferListActivity.class);
+                startActivity(intent);
+            }
+        });
 
         goToProductsBtn.setOnClickListener(new View.OnClickListener() {
             @Override

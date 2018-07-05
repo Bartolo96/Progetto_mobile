@@ -47,4 +47,9 @@
     <string name="needHelp">Need help?\nPlease fill in the form below\nYou will be contacted shortly</string>
     <string name="typeHere">Type Here...</string>
     <string name="sendForm">Send</string>
+    <string name="CostInEuro">Price in euro</string>
+    <string name="CostInPoint">Cost in point</string>
+    <string name="ForYouAt">For you At</string>
+    <string name="Redeem">Redeem it!</string>
+    <string name="OfferDescription">Offer description</string>
 </resources>

@@ -52,7 +52,7 @@ public class ProductContent {
         ITEM_MAP.put(item.id, item);
     }
 
-    private static Product createProductItem(JSONObject product) throws JSONException{
+    public static Product createProductItem(JSONObject product) throws JSONException{
         return new Product(product.getString("id"), product.getString("name"), product.getString("description"), product.getDouble("price"), product.getString("code"));
     }
 
@@ -76,6 +76,18 @@ public class ProductContent {
             this.description = description;
             this.price=price;
             this.code=code;
+        }
+        public  Product(JSONObject productInOffer){
+            try {
+                this.id = productInOffer.getString("id");
+                this.name = productInOffer.getString("name");
+                this.description = productInOffer.getString("description");
+                this.price = productInOffer.getDouble("price");
+                this.code = productInOffer.getString("code");
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
         }
 
         @Override
