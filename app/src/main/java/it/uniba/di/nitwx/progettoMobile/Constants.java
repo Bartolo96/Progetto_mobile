@@ -14,6 +14,7 @@ public class Constants {
 
     /*USER KINDS*/
     static final String USER_TYPE = "user_type";
+    static final String USER_IMAGE_PROFILE = "image_profile";
     static final int REGISTERD_USER = 1;
     static final int FACEBOOK_USER = 2;
     static final int GOOGLE_USER = 3;

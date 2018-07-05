@@ -44,6 +44,11 @@
     <string name="ForYouAt">Per te A</string>
     <string name="Redeem">Riscatta!</string>
     <string name="OfferDescription">Descrizione dell\'offerta</string>
+    <string name="loggedAs">Loggato come</string>
+    <string name="changePassword">Modifica Password</string>
+    <string name="oldPw">Vecchia Password</string>
+    <string name="newPw">Nuova Password</string>
+    <string name="confirmNewPw">Conferma Nuova Password</string>
     <string name="Discount">Sconto del</string>
     <string name="title_offer_list">Offerte</string>
     <string name="title_offer_detail">Dettaglio Offerta</string>

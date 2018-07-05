@@ -24,7 +24,8 @@
         android:layout_margin="@dimen/text_margin"
         android:layout_toEndOf="@+id/id_text"
         android:textAlignment="viewStart"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:background="?attr/selectableItemBackgroundBorderless"/>
 
     <ImageView
         android:id="@+id/arrow"
