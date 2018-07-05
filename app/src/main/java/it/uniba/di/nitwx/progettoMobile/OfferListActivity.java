@@ -15,7 +15,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import it.uniba.di.nitwx.progettoMobile.dummy.OfferContent;
+import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
 
 import java.util.List;
 
@@ -34,7 +41,38 @@ public class OfferListActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
+    private List<OfferContent.Offer> offerList;
+    private View recyclerView;
 
+    Response.Listener<String> offerResponseHandler = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            try {
+                offerList = OfferContent.populate(new JSONArray(response));
+                //new ProductListActivity.InsertProductAsync().execute();
+                recyclerView = findViewById(R.id.offer_list);
+                assert recyclerView != null;
+                setupRecyclerView((RecyclerView) recyclerView);
+                if(OfferContent.ITEMS.isEmpty()){
+                    try {
+                        HttpController.getOffers(offerResponseHandler, offerErrorHandler, OfferListActivity.this);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+    };
+    Response.ErrorListener offerErrorHandler = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            error.getStackTrace();
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +98,14 @@ public class OfferListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
-
+        if(OfferContent.ITEMS.isEmpty()){
+            try {
+                HttpController.getOffers(offerResponseHandler, offerErrorHandler, OfferListActivity.this);
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
         View recyclerView = findViewById(R.id.offer_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
@@ -115,8 +160,9 @@ public class OfferListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).code);
+            holder.mIdView.setText(mValues.get(position).name);
+            holder.mPriceView.setText(String.valueOf(mValues.get(position).offerPrice));
+
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -129,12 +175,12 @@ public class OfferListActivity extends AppCompatActivity {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mIdView;
-            final TextView mContentView;
+            final TextView mPriceView;
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mIdView = (TextView) view.findViewById(R.id.txtNameOffer);
+                mPriceView = (TextView) view.findViewById(R.id.txtDescriptionOffer);
             }
         }
     }

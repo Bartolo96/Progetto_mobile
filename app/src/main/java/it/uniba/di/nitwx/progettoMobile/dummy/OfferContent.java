@@ -23,6 +23,8 @@ import android.support.annotation.NonNull;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 
+import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import it.uniba.di.nitwx.progettoMobile.ProductInOffer;
 
 
 /**
@@ -70,9 +74,7 @@ public class OfferContent {
     }
 
     private static Offer createOfferItem(JSONObject offer) throws JSONException{
-        return new Offer(offer.getString("productId"),offer.getDouble("productPrice"),offer.getString("id"),
-                offer.getInt("quantity"), offer.getString("name"), offer.getString("description"),
-                offer.getDouble("offerPrice"), offer.getString("code"),offer.getInt("point"));
+        return new Offer(offer);
     }
 
 
@@ -84,26 +86,28 @@ public class OfferContent {
 
         @PrimaryKey
         @NonNull
-        public  String productId;
-        public double productPrice;
+        public ArrayList<ProductContent.Product> products = new ArrayList<ProductContent.Product>();
         public String id;
-        public int quantity;
         public  String name;
-        public  String description;
         public  double offerPrice;
         public  String code;
         public int point;
 
-        public Offer(@NonNull String productId,double productPrice,String id,int quantity, String name, String description, double offerPrice, String code,int point) {
-            this.productId=productId;
-            this.productPrice=productPrice;
-            this.id = id;
-            this.quantity=quantity;
-            this.name = name;
-            this.description = description;
-            this.offerPrice=offerPrice;
-            this.code=code;
-            this.point=point;
+        public Offer(@NonNull JSONObject offer) {
+            try {
+                JSONArray productList = offer.getJSONArray("product_list");
+                for (int i = 0; i < productList.length(); i++) {
+                    products.add(new ProductInOffer(productList.getJSONObject(i)));
+                }
+
+                this.id = offer.getString("id");
+                this.name = offer.getString("name");
+                this.offerPrice = offer.getDouble("price");
+                this.point = offer.getInt("point_cost");
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
         }
 
         @Override

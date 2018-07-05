@@ -39,5 +39,10 @@
     <string name="needHelp">Bisogno di aiuto?\nCompila il form qui sotto\nSarai contattato a breve</string>
     <string name="typeHere">Scrivi qui...</string>
     <string name="sendForm">Invia</string>
+    <string name="CostInEuro">Costo in euro</string>
+    <string name="CostInPoint">Costo in punti</string>
+    <string name="ForYouAt">Per te A</string>
+    <string name="Redeem">Riscatta!</string>
+    <string name="OfferDescription">Descrizione dell\'offerta</string>
 
 </resources>

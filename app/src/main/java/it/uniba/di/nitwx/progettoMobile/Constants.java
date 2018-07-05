@@ -32,11 +32,11 @@ public class Constants {
 
 
         /*URLs*/
-
-    static final String URL_PRODUCTS = "https://nitwx.000webhostapp.com/api/products";
-    static final String URL_AUTH_USER = "https://nitwx.000webhostapp.com/auth/authenticate_user";
-    static final String URL_AUTH_THIRD_PARTY_USER = "https://nitwx.000webhostapp.com/auth/authenticate_third_party_user";
-    static final String URL_ADD_USER = "https://nitwx.000webhostapp.com/api/users/add";
+    static final String URL_OFFERS = "https://nitwx.000webhostapp.com/api/offers";
+    static final String URL_PRODUCTS="https://nitwx.000webhostapp.com/api/products";
+    static final String URL_AUTH_USER="https://nitwx.000webhostapp.com/auth/authenticate_user";
+    static final String URL_AUTH_THIRD_PARTY_USER="https://nitwx.000webhostapp.com/auth/authenticate_third_party_user";
+    static final String URL_ADD_USER="https://nitwx.000webhostapp.com/api/users/add";
     static final String URL_REFRESH_ACCESS_TOKEN = "https://nitwx.000webhostapp.com/auth/refresh_access_token";
     static final String URL_GEOFENCES = "https://nitwx.000webhostapp.com/api/geofences";
 
