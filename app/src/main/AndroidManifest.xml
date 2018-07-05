@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,8 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".GeofenceService"/>
-        <receiver
+
+
+<!--        <receiver
             android:name=".GeofenceReciever"
             android:enabled="true"
             android:exported="false" >
@@ -25,7 +27,10 @@
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
 
             </intent-filter>
-        </receiver>
+        </receiver>-->
+        <service android:name="it.uniba.di.nitwx.progettoMobile.GeofenceService"
+            android:exported="false"
+            android:enabled="true"/>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -87,7 +92,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.uniba.di.nitwx.progettoMobile.OfferListActivity" />
         </activity>
-        <activity android:name=".ProfileActivity"/>
     </application>
 
 </manifest>
