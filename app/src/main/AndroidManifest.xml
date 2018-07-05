@@ -92,6 +92,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.uniba.di.nitwx.progettoMobile.OfferListActivity" />
         </activity>
+
+        <activity android:name=".HelpActivity"/>
+        <activity android:name=".SettingsActivity"/>
+
+
     </application>
 
 </manifest>

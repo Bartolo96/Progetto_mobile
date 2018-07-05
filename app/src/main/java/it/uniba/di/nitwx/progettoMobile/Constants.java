@@ -10,6 +10,7 @@ public class Constants {
 
     static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 23;
     static final int PLAY_SERVICES_RESOLUTION_REQUEST = 25;
+    static final int SELECT_PICTURE_REQUEST = 3;
 
 
     /*USER KINDS*/
