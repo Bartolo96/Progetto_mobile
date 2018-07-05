@@ -133,6 +133,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
             startActivity(goToProductsActivityIntent);
                 break;
+
             case R.id.settings:
             /*
                 Codice di gestione della voce MENU_2
@@ -150,13 +151,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
                 startActivity(goToProductsActivityIntent);
                 break;
-            case R.id.settings:
-            /*
-                Codice di gestione della voce MENU_2
-             */
             case R.id.myProfile:
                 Intent goToProfileActivityIntent = new Intent(HomeActivity.this,ProfileActivity.class);
                 startActivity(goToProfileActivityIntent);
+                break;
+            case R.id.settings:
+
+                Intent goToSettingsActivityIntent = new Intent(HomeActivity.this, SettingsActivity.class);
+                startActivity(goToSettingsActivityIntent);
+
+                break;
+            case R.id.help:
+
+                Intent goToHelpActivityIntent = new Intent(HomeActivity.this, HelpActivity.class);
+                startActivity(goToHelpActivityIntent);
+                break;
+
+            case R.id.logOut:
+                /*logOutListener.onClick();*/
+                break;
+
         }
         return false;
     }

@@ -66,10 +66,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.uniba.di.nitwx.progettoMobile.ProductListActivity" />
         </activity>
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".HomeActivity"
+        <activity android:name=".RegisterActivity" />
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".OfferListActivity"
+            android:label="@string/title_offer_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".OfferDetailActivity"
+            android:label="@string/title_offer_detail"
+            android:parentActivityName=".OfferListActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.uniba.di.nitwx.progettoMobile.OfferListActivity" />
         </activity>
         <activity android:name=".ProfileActivity"/>
     </application>
