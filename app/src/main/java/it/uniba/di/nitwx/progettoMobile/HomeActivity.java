@@ -169,7 +169,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 finish();
                 break;
-
+            case R.id.homenavigation:
+                Intent goToHomeActivityIntent = new Intent(HomeActivity.this, HomeActivity.class);
+                startActivity(goToHomeActivityIntent);
+                finish();
         }
         return false;
     }
