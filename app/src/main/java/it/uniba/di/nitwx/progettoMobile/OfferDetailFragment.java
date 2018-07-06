@@ -81,9 +81,9 @@ public class OfferDetailFragment extends Fragment {
 
             ((TextView)rootView.findViewById(R.id.txtPoint)).setText((HttpController.userClaims.get("points")).toString());
             ((TextView) rootView.findViewById(R.id.txtNameOfferDetail)).setText(mItem.name);
-            ((TextView)rootView.findViewById(R.id.txtPointDetail)).setText(String.valueOf(mItem.point));
+            ((TextView)rootView.findViewById(R.id.txtPointDetail)).setText(String.valueOf(mItem.points_cost));
             ((TextView)rootView.findViewById(R.id.txtPriceDetail)).setText(String.valueOf(mItem.offerPrice));
-            ((TextView)rootView.findViewById(R.id.txtOfferDescriptionDetail)).setText(mItem.products.toString());
+            ((TextView)rootView.findViewById(R.id.txtOfferDescriptionDetail)).setText(mItem.product_list.toString());
             ((Button)rootView.findViewById(R.id.btnRedeem)).setOnClickListener(
                     new View.OnClickListener() {
                         @Override
