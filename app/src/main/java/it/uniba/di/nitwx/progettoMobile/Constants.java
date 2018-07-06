@@ -1,10 +1,6 @@
 package it.uniba.di.nitwx.progettoMobile;
 
-import java.security.Key;
 
-/**
- * Created by Tonio on 27/06/2018.
- */
 
 public class Constants {
 

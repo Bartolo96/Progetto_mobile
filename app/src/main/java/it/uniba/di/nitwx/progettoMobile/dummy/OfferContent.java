@@ -88,11 +88,19 @@ public class OfferContent {
         @NonNull
         public ArrayList<ProductContent.Product> products = new ArrayList<ProductContent.Product>();
         public String id;
-        public  String name;
-        public  double offerPrice;
-        public  String code;
+        public String name;
+        public double offerPrice;
+        public String code;
         public int point;
 
+        public Offer(@NonNull ArrayList<ProductContent.Product> products, String id, String name, double offerPrice, String code, int point) {
+            this.products = products;
+            this.id = id;
+            this.name = name;
+            this.offerPrice = offerPrice;
+            this.code = code;
+            this.point = point;
+        }
         public Offer(@NonNull JSONObject offer) {
             try {
                 JSONArray productList = offer.getJSONArray("product_list");

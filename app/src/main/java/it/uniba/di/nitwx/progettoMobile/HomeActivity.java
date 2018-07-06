@@ -181,7 +181,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case Constants.FACEBOOK_USER:
-
                 LoginManager.getInstance().logOut();
                 break;
             case Constants.GOOGLE_USER:
