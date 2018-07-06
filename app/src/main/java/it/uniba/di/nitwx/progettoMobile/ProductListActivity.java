@@ -134,7 +134,7 @@ public class ProductListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
-        db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"database-nitwx").build();
+        db = AppDatabase.getDatabase(ProductListActivity.this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());

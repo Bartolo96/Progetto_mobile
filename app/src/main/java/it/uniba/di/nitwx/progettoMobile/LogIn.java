@@ -305,7 +305,7 @@ public class LogIn extends AppCompatActivity {
             mGeofenceService = new GeofenceService();
             mServiceIntent = new Intent(getCtx(), mGeofenceService.getClass());
             if(!isMyServiceRunning(GeofenceService.class)){
-                //Log.d("Geofence","Service running");
+                Log.d("Geofence","Service running");
                 Intent ishintent = new Intent(this, GeofenceService.class);
                 PendingIntent pintent = PendingIntent.getService(this, 0, ishintent, 0);
                 AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);

@@ -8,13 +8,16 @@ import java.security.Key;
 
 public class Constants {
 
+    static final String USER_IMAGE_PROFILE = "image_profile";
+    static final int SELECT_PICTURE_REQUEST = 3;
+
     static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 23;
     static final int PLAY_SERVICES_RESOLUTION_REQUEST = 25;
 
 
     /*USER KINDS*/
     static final String USER_TYPE = "user_type";
-    static final String USER_IMAGE_PROFILE = "image_profile";
+
     static final int REGISTERD_USER = 1;
     static final int FACEBOOK_USER = 2;
     static final int GOOGLE_USER = 3;
@@ -33,13 +36,14 @@ public class Constants {
 
 
         /*URLs*/
-    static final String URL_OFFERS = "https://nitwx.000webhostapp.com/api/offers";
-    static final String URL_PRODUCTS="https://nitwx.000webhostapp.com/api/products";
-    static final String URL_AUTH_USER="https://nitwx.000webhostapp.com/auth/authenticate_user";
-    static final String URL_AUTH_THIRD_PARTY_USER="https://nitwx.000webhostapp.com/auth/authenticate_third_party_user";
-    static final String URL_ADD_USER="https://nitwx.000webhostapp.com/api/users/add";
-    static final String URL_REFRESH_ACCESS_TOKEN = "https://nitwx.000webhostapp.com/auth/refresh_access_token";
-    static final String URL_GEOFENCES = "https://nitwx.000webhostapp.com/api/geofences";
+    static final String BASE_URL = "https://nitwx.000webhostapp.com/";
+    static final String URL_OFFERS = BASE_URL + "api/offers";
+    static final String URL_PRODUCTS = BASE_URL  + "api/products";
+    static final String URL_AUTH_USER =BASE_URL  + "auth/authenticate_user";
+    static final String URL_AUTH_THIRD_PARTY_USER = BASE_URL + "auth/authenticate_third_party_user";
+    static final String URL_ADD_USER = BASE_URL + "api/users/add";
+    static final String URL_REFRESH_ACCESS_TOKEN = BASE_URL + "auth/refresh_access_token";
+    static final String URL_GET_STORES = BASE_URL +"api/stores";
 
 
     static final String PACKAGE_NAME = "it.uniba.di.nitwx.progettoMobile";
