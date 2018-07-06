@@ -31,13 +31,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:id="@+id/emailProfileTextTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:text="@string/Email"
                     android:textSize="28sp" />
 
@@ -45,7 +45,6 @@
                     android:id="@+id/emailProfileTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/emailProfileTextTextView"
                     android:textSize="18sp" />
 
@@ -53,13 +52,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
 
                 <TextView
                     android:id="@+id/genderProfileTextTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
                     android:text="@string/Gender"
                     android:textSize="28sp" />
 
@@ -67,9 +66,8 @@
                     android:id="@+id/genderProfileTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textSize="18sp"
-                    android:layout_toRightOf="@+id/genderProfileTextTextView"/>
+                    android:layout_toRightOf="@+id/genderProfileTextTextView"
+                    android:textSize="18sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -88,7 +86,6 @@
                     android:id="@+id/bDayProfileTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/bDayProfileTextTextView"
                     android:textSize="18sp" />
 

@@ -17,13 +17,13 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         TextView emailProfile = (TextView) findViewById(R.id.emailProfileTextView);
-        emailProfile.setText(HttpController.userClaims.get("email").toString());
+        emailProfile.setText((String)HttpController.userClaims.get("email"));
 
         TextView genderProfile = (TextView) findViewById(R.id.genderProfileTextView);
-        genderProfile.setText(HttpController.userClaims.get("gender").toString());
+        genderProfile.setText((String)HttpController.userClaims.get("gender"));
 
         TextView bDayProfile = (TextView) findViewById(R.id.bDayProfileTextView);
-        bDayProfile.setText(HttpController.userClaims.get("birth_date").toString());
+        bDayProfile.setText((String) HttpController.userClaims.get("birth_date"));
 
         Button changePassword = (Button) findViewById(R.id.pwProfileChangePassword);
         changePassword.setOnClickListener(changePasswordListener);
