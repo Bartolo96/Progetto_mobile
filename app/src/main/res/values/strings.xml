@@ -66,4 +66,5 @@
     <string name="newPw">New Password</string>
     <string name="confirmNewPw">Confirm New Password</string>
     <string name="userProfile">User Profile</string>
+    <string name="newPwConfirmNoMatch">The new Passwords Do Not Match</string>
 </resources>

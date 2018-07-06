@@ -1,12 +1,14 @@
 package it.uniba.di.nitwx.progettoMobile;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -36,13 +38,24 @@ public class ProfileActivity extends AppCompatActivity {
             dialog.setContentView(R.layout.change_password_dialog_fragment);
             dialog.show();
 
-            Button sendForm = (Button) findViewById(R.id.sendFormChangePwBtn);
+
+            Button sendForm = (Button) dialog.findViewById(R.id.sendFormChangePwBtn);
             sendForm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EditText oldPw = (EditText) findViewById(R.id.oldPwEditText);
+                    EditText oldPw = (EditText) dialog.findViewById(R.id.oldPwEditText);
+                    EditText newPw = (EditText) dialog.findViewById(R.id.newPwEditText);
+                    EditText newPwConfirm = (EditText) dialog.findViewById(R.id.confirmNewPsEditText);
                     String oldPwString = oldPw.getText().toString();
-                    /**Implementare il controllo password**/
+                    String newPwString = newPw.getText().toString();
+                    String newPwConfirmString = newPwConfirm.getText().toString();
+
+                    if(newPwString.equals(newPwConfirmString)){
+
+                    }
+                    else{
+                        Toast.makeText(ProfileActivity.this, getResources().getString(R.string.newPwConfirmNoMatch), Toast.LENGTH_SHORT);
+                    }
                 }
             });
         }
