@@ -57,10 +57,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //navigationView.inflateMenu(R.menu.drawer_menu_home);
+        //navigationView.inflateHeaderView(R.layout.home_drawer_top);
 
-        TextView loggedAsName = (TextView) findViewById(R.id.loggedAsEmailTextView);
-        loggedAsName.setText(HttpController.userClaims.get("email").toString());
-        
+        Log.d("prova",(String) HttpController.userClaims.get("email"));
+        TextView loggedAsName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
+        loggedAsName.setText((String)HttpController.userClaims.get("email"));
+
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()

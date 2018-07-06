@@ -147,8 +147,8 @@ public class HttpController {
         headers.put(Constants.CONTENT_TYPE,Constants.CONTENT_TYPE_APPLICATION_JSON);
         http_request(Request.Method.POST,context,url,headers,body,responseHandler,errorHandler);
     }
-    static void getGeofences(Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
-        String url = Constants.URL_ADD_USER;
+    static void getStores(Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) {
+        String url = Constants.URL_GET_STORES;
         http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
     }
 
