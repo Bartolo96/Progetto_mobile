@@ -65,4 +65,5 @@
     <string name="oldPw">Old Password</string>
     <string name="newPw">New Password</string>
     <string name="confirmNewPw">Confirm New Password</string>
+    <string name="userProfile">User Profile</string>
 </resources>
