@@ -60,7 +60,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //navigationView.inflateMenu(R.menu.drawer_menu_home);
         //navigationView.inflateHeaderView(R.layout.home_drawer_top);
 
-        Log.d("prova",(String) HttpController.userClaims.get("email"));
         TextView loggedAsName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
         loggedAsName.setText((String)HttpController.userClaims.get("email"));
 

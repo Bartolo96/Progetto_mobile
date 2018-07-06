@@ -59,6 +59,7 @@
             <item quantity="other">Vuoi utilizzare %d icePoint per \n riscattare l'offerta?</item>
         </plurals>
     <string name="userProfile">Profilo Utente</string>
+    <string name="newPwConfirmNoMatch">Le password inserite non coincidono</string>
 
 </resources>
 
