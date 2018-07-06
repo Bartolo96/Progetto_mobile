@@ -13,28 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by nicol on 04/07/2018.
- */
-
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.res.ResourcesCompat;
-
-import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import it.uniba.di.nitwx.progettoMobile.ProductInOffer;
+import it.uniba.di.nitwx.progettoMobile.OfferDao;
 
 
 /**
@@ -48,7 +27,7 @@ public class OfferContent {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<OfferContent.Offer> ITEMS = new ArrayList<OfferContent.Offer>();
+    public static final List<OfferContent.Offer> ITEMS = new ArrayList<>();
 
     /**
      * A map of sample (dummy) items, by ID.
@@ -83,17 +62,34 @@ public class OfferContent {
      */
     @Entity
     public static class Offer {
+/*
+        public class Converter {
+            @TypeConverter
+            public static ProductContent.Product fromString(String rawString){
+                try{
+                    JSONArray json = new JSONArray(rawString);
+                    for(int i = 0;i<json.length();i++){
+                        Produc
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+        }
+*/
 
-        @PrimaryKey
+
+
+
         @NonNull
-        public ArrayList<ProductContent.Product> products = new ArrayList<ProductContent.Product>();
+        @PrimaryKey
         public String id;
         public String name;
         public double offerPrice;
         public String code;
         public int point;
+        public List<OfferDao.ProductInOffer> products;
 
-        public Offer(@NonNull ArrayList<ProductContent.Product> products, String id, String name, double offerPrice, String code, int point) {
+        public Offer(@NonNull ArrayList<OfferDao.ProductInOffer>products, String id, String name, double offerPrice, String code, int point) {
             this.products = products;
             this.id = id;
             this.name = name;
@@ -104,8 +100,9 @@ public class OfferContent {
         public Offer(@NonNull JSONObject offer) {
             try {
                 JSONArray productList = offer.getJSONArray("product_list");
+                products = new ArrayList<>();
                 for (int i = 0; i < productList.length(); i++) {
-                    products.add(new ProductInOffer(productList.getJSONObject(i)));
+                    products.add(new OfferDao.ProductInOffer(productList.getJSONObject(i)));
                 }
 
                 this.id = offer.getString("id");

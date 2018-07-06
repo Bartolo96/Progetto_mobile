@@ -136,7 +136,6 @@ public class HttpController {
         http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
     }
     static void getOffers (Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) throws JSONException{
-
         String url=Constants.URL_OFFERS;
         //HashMap<String,String> headers = new HashMap<>();
         http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);

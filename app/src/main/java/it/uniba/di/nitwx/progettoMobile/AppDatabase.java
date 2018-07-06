@@ -3,6 +3,7 @@ package it.uniba.di.nitwx.progettoMobile;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
 
@@ -11,9 +12,11 @@ import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent.Product;
 
 
 @Database(version = 6, entities = {Product.class,Store.class,Offer.class})
+@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
         abstract public ProductDao productDao();
+        abstract public OfferDao offerDao();
         abstract public StoreDao storeDao();
 
         private static AppDatabase INSTANCE;

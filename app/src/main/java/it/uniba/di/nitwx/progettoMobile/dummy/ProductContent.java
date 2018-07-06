@@ -70,6 +70,7 @@ public class ProductContent {
         public  double price;
         public  String code;
 
+        public Product(){}
         public Product(@NonNull String id, String name, String description, double price, String code) {
             this.id = id;
             this.name = name;

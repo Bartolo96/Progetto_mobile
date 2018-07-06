@@ -2,6 +2,7 @@ package it.uniba.di.nitwx.progettoMobile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +45,64 @@ public class OfferListActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private List<OfferContent.Offer> offerList;
     private View recyclerView;
+    private AppDatabase db;
+    /*
+    private class InsertOffersAsync extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //Perform pre-adding operation here.
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            db.offerDao().insertProductsList(OfferContent.ITEMS);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            //To after addition operation here.
+        }
+    }
+    private class SelectProductsAsync extends AsyncTask<Void, Void, List<ProductContent.Product>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //Perform pre-adding operation here.
+        }
+
+        protected List<ProductContent.Product> doInBackground(Void... voids) {
+            return db.productDao().loadAllProducts();
+
+        }
+
+        @Override
+        protected void onPostExecute(List<ProductContent.Product> lista) {
+            super.onPostExecute(lista);
+            try {
+                ProductContent.populate(lista);
+
+                if(ProductContent.ITEMS.isEmpty()){
+                    HttpController.getProducts(productsResponseHandler,productsErrorHandler,getApplicationContext());
+                }else {
+                    Log.d("Prova", ":D");
+                    recyclerView = findViewById(R.id.product_list);
+                    assert recyclerView != null;
+                    setupRecyclerView((RecyclerView) recyclerView);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+*/
 
     Response.Listener<String> offerResponseHandler = new Response.Listener<String>() {
         @Override
@@ -60,7 +120,6 @@ public class OfferListActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-
             }
             catch (JSONException e){
                 e.printStackTrace();
@@ -112,6 +171,7 @@ public class OfferListActivity extends AppCompatActivity {
         private final OfferListActivity mParentActivity;
         private final List<OfferContent.Offer> mValues;
         private final boolean mTwoPane;
+
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
