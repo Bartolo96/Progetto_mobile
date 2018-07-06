@@ -59,4 +59,10 @@
             <item quantity="one">Do you want to use %d icePoint to redeem it?</item>
             <item quantity="other">Do you want to use %d icePoint to redeem it?</item>
         </plurals>
+    <string name="home" translatable="false">Home</string>
+    <string name="loggedAs">Logged As</string>
+    <string name="changePassword">Change Password</string>
+    <string name="oldPw">Old Password</string>
+    <string name="newPw">New Password</string>
+    <string name="confirmNewPw">Confirm New Password</string>
 </resources>

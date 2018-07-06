@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.net.URI;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.jsonwebtoken.Jwts;
 
@@ -32,11 +35,11 @@ public class ProfileActivity extends AppCompatActivity {
         ImageView profileImage = (ImageView) findViewById(R.id.profileImageView);
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN, Context.MODE_PRIVATE);
 
-        String imageUri =sharedPreferences.getString(Constants.USER_IMAGE_PROFILE,null);
-        if(imageUri!=null){
-            ((ImageView) findViewById(R.id.profileImageView)).setImageURI(Uri.parse(imageUri));
+        String imagePath =sharedPreferences.getString(Constants.USER_IMAGE_PROFILE,null);
+        if(imagePath!=null){
+            ((ImageView) findViewById(R.id.profileImageView)).setImageURI(Uri.fromFile(new File(imagePath)));
             CircleImageView toolbarImage = (CircleImageView) findViewById(R.id.profile_image);
-            toolbarImage.setImageURI(Uri.parse(imageUri));
+            toolbarImage.setImageURI(Uri.fromFile(new File(imagePath)));
         }
         profileImage.setOnClickListener(loadImageListener);
 
@@ -60,7 +63,6 @@ public class ProfileActivity extends AppCompatActivity {
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.SELECT_PICTURE_REQUEST);
-
 
         }
     };
@@ -93,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity {
                     // Set the image in ImageView
                     ((ImageView) findViewById(R.id.profileImageView)).setImageURI(selectedImageUri);
                     SharedPreferences sharedPreferences = getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN, Context.MODE_PRIVATE);
-                    sharedPreferences.edit().putString(Constants.USER_IMAGE_PROFILE, selectedImageUri.toString()).apply();
+                    sharedPreferences.edit().putString(Constants.USER_IMAGE_PROFILE, selectedImageUri.getPath().toString()).apply();
                 }
             }
         }

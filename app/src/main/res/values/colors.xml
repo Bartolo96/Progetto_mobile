@@ -14,4 +14,5 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
     <color name="accent_light">#FFE595</color>
+    <color name="black">#000000</color>
 </resources>
