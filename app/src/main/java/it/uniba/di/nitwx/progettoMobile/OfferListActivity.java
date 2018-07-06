@@ -46,19 +46,20 @@ public class OfferListActivity extends AppCompatActivity {
     private List<OfferContent.Offer> offerList;
     private View recyclerView;
     private AppDatabase db;
-    /*
-    private class InsertOffersAsync extends AsyncTask<Void, Void, Void> {
 
+    private class InsertOffersAsync extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-            //Perform pre-adding operation here.
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             db.offerDao().insertProductsList(OfferContent.ITEMS);
+            for(OfferContent.Offer a : OfferContent.ITEMS){
+                db.offerDao().updateProductslist(a.product_list, Integer.valueOf(a.id));
+            }
             return null;
         }
 
@@ -69,7 +70,7 @@ public class OfferListActivity extends AppCompatActivity {
             //To after addition operation here.
         }
     }
-    private class SelectProductsAsync extends AsyncTask<Void, Void, List<ProductContent.Product>> {
+    private class SelectOfferssAsync extends AsyncTask<Void, Void, List<OfferContent.Offer>>{
 
         @Override
         protected void onPreExecute() {
@@ -78,22 +79,22 @@ public class OfferListActivity extends AppCompatActivity {
             //Perform pre-adding operation here.
         }
 
-        protected List<ProductContent.Product> doInBackground(Void... voids) {
-            return db.productDao().loadAllProducts();
+        protected List<OfferContent.Offer> doInBackground(Void... voids) {
+            return db.offerDao().loadAllOffers();
 
         }
 
         @Override
-        protected void onPostExecute(List<ProductContent.Product> lista) {
+        protected void onPostExecute(List<OfferContent.Offer> lista) {
             super.onPostExecute(lista);
             try {
-                ProductContent.populate(lista);
+                OfferContent.populate(lista);
 
-                if(ProductContent.ITEMS.isEmpty()){
-                    HttpController.getProducts(productsResponseHandler,productsErrorHandler,getApplicationContext());
+                if(OfferContent.ITEMS.isEmpty()){
+                    HttpController.getOffers(offerResponseHandler, offerErrorHandler, OfferListActivity.this);
                 }else {
                     Log.d("Prova", ":D");
-                    recyclerView = findViewById(R.id.product_list);
+                    recyclerView = findViewById(R.id.offer_list);
                     assert recyclerView != null;
                     setupRecyclerView((RecyclerView) recyclerView);
                 }
@@ -102,24 +103,18 @@ public class OfferListActivity extends AppCompatActivity {
             }
         }
     }
-*/
+
 
     Response.Listener<String> offerResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
             try {
                 offerList = OfferContent.populate(new JSONArray(response));
-                //new ProductListActivity.InsertProductAsync().execute();
+                new InsertOffersAsync().execute();
                 recyclerView = findViewById(R.id.offer_list);
                 assert recyclerView != null;
                 setupRecyclerView((RecyclerView) recyclerView);
-                if(OfferContent.ITEMS.isEmpty()){
-                    try {
-                        HttpController.getOffers(offerResponseHandler, offerErrorHandler, OfferListActivity.this);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+
             }
             catch (JSONException e){
                 e.printStackTrace();
@@ -136,7 +131,7 @@ public class OfferListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_list);
-
+        db = AppDatabase.getDatabase(OfferListActivity.this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
@@ -149,12 +144,7 @@ public class OfferListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
         if(OfferContent.ITEMS.isEmpty()){
-            try {
-                HttpController.getOffers(offerResponseHandler, offerErrorHandler, OfferListActivity.this);
-            }
-            catch (JSONException e){
-                e.printStackTrace();
-            }
+            new SelectOfferssAsync().execute();
         }
         View recyclerView = findViewById(R.id.offer_list);
         assert recyclerView != null;
@@ -213,8 +203,10 @@ public class OfferListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             int discount = 0;
             double price=0;
-            for (ProductContent.Product p: mValues.get(position).products){
-                price+=p.price;
+            Log.d("Prova", mValues.get(position).product_list.toString());
+            for (OfferDao.ProductInOffer p: mValues.get(position).product_list){
+                Log.d("Prova", ""+p.price);
+                price  += p.price;
             }
             discount=(int)(mValues.get(position).offerPrice/price*100);
             holder.mIdView.setText(mValues.get(position).name);

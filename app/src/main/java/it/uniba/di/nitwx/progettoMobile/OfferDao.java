@@ -21,14 +21,15 @@ public interface OfferDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertProductsList (List<OfferContent.Offer> products);
 
-    @Update
-    public void updateProductslist (OfferContent.Offer... product);
+    @Query("UPDATE offer SET product_list = :product_list WHERE id = :id")
+    public void updateProductslist (List<OfferDao.ProductInOffer> product_list, int id);
+
+
 
     @Query("SELECT* FROM offer")
     List<OfferContent.Offer> loadAllOffers();
 
-    @Query("SELECT* FROM product INNER JOIN product_offer ON product_id = product.id  WHERE offer_id = :id")
-    List<ProductInOffer> loadProductsInOffer(int id);
+
 
     public class ProductInOffer extends ProductContent.Product{
         int quantity;
