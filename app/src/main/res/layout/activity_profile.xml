@@ -20,14 +20,14 @@
             android:paddingTop="10dp"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/profileImageView"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/userProfileTextView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:cropToPadding="true"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+                android:fontFamily="sans-serif"
+                android:text="@string/userProfile"
+                android:textAlignment="center"
+                android:textSize="30sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                     android:id="@+id/emailProfileTextTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:text="@string/Email"
                     android:textSize="28sp" />
 
@@ -46,8 +46,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textSize="18sp"
-                    android:layout_toRightOf="@+id/emailProfileTextTextView"/>
+                    android:layout_toRightOf="@+id/emailProfileTextTextView"
+                    android:textSize="18sp" />
 
             </RelativeLayout>
 
@@ -59,6 +59,7 @@
                     android:id="@+id/genderProfileTextTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
                     android:text="@string/Gender"
                     android:textSize="28sp" />
 
@@ -73,7 +74,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
 
                 <TextView
                     android:id="@+id/bDayProfileTextTextView"
@@ -87,8 +89,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textSize="18sp"
-                    android:layout_toRightOf="@+id/bDayProfileTextTextView"/>
+                    android:layout_toRightOf="@+id/bDayProfileTextTextView"
+                    android:textSize="18sp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -105,7 +107,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
 
                 <TextView
                     android:id="@+id/pwProfileTextView"
@@ -119,7 +122,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"/>
+                    android:layout_marginRight="20dp"
+                    android:text="@string/changePassword" />
             </RelativeLayout>
 
         </LinearLayout>
