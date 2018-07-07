@@ -71,11 +71,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Intent srcIntent = getIntent();
         final String name = srcIntent.getStringExtra("name");
+
         Button goToProductsBtn = (Button) findViewById(R.id.btnProducts);
         goToProductsBtn.setText(name);
         Button logOut=(Button) findViewById(R.id.button_sign_out);
-        logOut.setOnClickListener(logOutListener);
+
+        Button stores = (Button) findViewById(R.id.storesBtn);
         Button offerBtn = (Button) findViewById(R.id.btnOffer);
+
+        stores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this,StoresActivity.class);
+                startActivity(intent);
+            }
+        });
         offerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,7 +102,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-
+        logOut.setOnClickListener(logOutListener);
     }
 
     private void signOut() {

@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,8 +89,10 @@ public class OfferContent {
                 JSONArray productList = offer.getJSONArray("product_list");
                 product_list = new ArrayList<>();
                 for (int i = 0; i < productList.length(); i++) {
-                    product_list.add(new OfferDao.ProductInOffer(productList.getJSONObject(i)));
+                    Log.d("Prova5",(productList.getJSONObject(i).toString()));
+                    product_list.add(new OfferDao.ProductInOffer((productList.getJSONObject(i))));
                 }
+
 
                 this.id = offer.getString("id");
                 this.name = offer.getString("name");
