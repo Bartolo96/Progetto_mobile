@@ -60,6 +60,7 @@
         </plurals>
     <string name="userProfile">Profilo Utente</string>
     <string name="newPwConfirmNoMatch">Le password inserite non coincidono</string>
+    <string name="stores">Negozi</string>
 
 </resources>
 

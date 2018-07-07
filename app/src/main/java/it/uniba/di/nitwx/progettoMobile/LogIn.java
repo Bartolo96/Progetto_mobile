@@ -142,6 +142,7 @@ public class LogIn extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+
         }
 
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -310,12 +311,10 @@ public class LogIn extends AppCompatActivity {
                 PendingIntent pintent = PendingIntent.getService(this, 0, ishintent, 0);
                 AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                 alarm.cancel(pintent);
-                alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),50000, pintent);
+                alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),50000, pintent);
                 startService(mServiceIntent);
             }
-            else{
-                Log.d("Geofence",":(");
-            }
+
         }
 
 
@@ -355,8 +354,17 @@ public class LogIn extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    mGeofenceService = new GeofenceService();
+                    mServiceIntent = new Intent(getCtx(), mGeofenceService.getClass());
+                    if(!isMyServiceRunning(GeofenceService.class)){
+                        Log.d("Geofence","Service running");
+                        Intent ishintent = new Intent(this, GeofenceService.class);
+                        PendingIntent pintent = PendingIntent.getService(this, 0, ishintent, 0);
+                        AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarm.cancel(pintent);
+                        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),50000, pintent);
+                        startService(mServiceIntent);
+                    }
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.

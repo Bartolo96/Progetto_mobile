@@ -3,9 +3,9 @@
     package="it.uniba.di.nitwx.progettoMobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -15,19 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
-        <receiver
-            android:name=".GeofenceServiceRestarter"
+        <service
+            android:name=".GeofenceService"
             android:enabled="true"
-            android:exported="false"
-            android:label="RestartServiceWhenStopped">
-            <intent-filter>
-                <action android:name="it.uniba.di.nitwx.progettoMobile.RestartService"/>
-            </intent-filter>
-        </receiver>
-        <service android:name="it.uniba.di.nitwx.progettoMobile.GeofenceService"
-            android:exported="false"
-            android:enabled="true"/>
+            android:exported="false" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -79,7 +71,7 @@
         <activity
             android:name=".OfferListActivity"
             android:label="@string/title_offer_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OfferDetailActivity"
             android:label="@string/title_offer_detail"
@@ -89,11 +81,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.uniba.di.nitwx.progettoMobile.OfferListActivity" />
         </activity>
+        <activity android:name=".HelpActivity" />
+        <activity android:name=".SettingsActivity" />
 
-        <activity android:name=".HelpActivity"/>
-        <activity android:name=".SettingsActivity"/>
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
 
-
+        <activity
+            android:name=".StoresActivity"
+            android:label="@string/title_activity_stores"></activity>
     </application>
 
 </manifest>

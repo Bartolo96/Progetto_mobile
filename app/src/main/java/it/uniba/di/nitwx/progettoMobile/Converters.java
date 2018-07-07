@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +35,24 @@ public class Converters {
     @TypeConverter
     public static String fromList(List<OfferDao.ProductInOffer> list) {
         String returnString;
-        for(OfferDao.ProductInOffer a: list)
-            Log.d("Prova1",a.toString());
-        JSONArray json = new JSONArray(list);
-        returnString = json.toString();
-        Log.d("Prova2",json.toString());
+        JSONArray returnArray = new JSONArray();
+        try {
+            for (OfferDao.ProductInOffer a : list){
+                JSONObject temp = new JSONObject();
+                temp.put("id",a.id);
+                temp.put("description",a.description);
+                temp.put("price",a.price);
+                temp.put("name",a.name);
+                temp.put("quantity",a.quantity);
+                temp.put("quantity",a.code);
+                returnArray.put(temp);
+            }
+
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        returnString = returnArray.toString();
+        Log.d("Prova2",returnArray.toString());
         return returnString;
     }
 
