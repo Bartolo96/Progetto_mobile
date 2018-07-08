@@ -69,4 +69,5 @@
     <string name="newPwConfirmNoMatch">The new Passwords Do Not Match</string>
     <string name="title_activity_stores">Map</string>
     <string name="stores">Stores</string>
+    <string name = "notificationGeofence">You are currently near our store in %s, touch here to get directions to reach us to get an icecream</string>
 </resources>

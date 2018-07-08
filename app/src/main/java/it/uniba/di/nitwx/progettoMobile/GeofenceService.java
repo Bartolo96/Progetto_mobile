@@ -9,6 +9,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -33,6 +35,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.google.android.gms.location.Geofence.NEVER_EXPIRE;
@@ -44,6 +47,7 @@ public class GeofenceService extends IntentService {
 
     private List<Geofence> mGeofenceList = new ArrayList<>();
     PendingIntent mGeofencePendingIntent;
+    String geofenceTransitionDetails;
     Context mContext;
     AppDatabase db;
 
@@ -106,6 +110,33 @@ public class GeofenceService extends IntentService {
             return null;
         }
     }
+    private class getGeofenceDetails extends AsyncTask< List<Geofence>,Void,List<Store>>{
+        @Override
+        protected  List<Store> doInBackground(List<Geofence>... triggeredGeofences){
+            List<Store> returnList = new ArrayList<>();
+            List<String> toRemoveList = new ArrayList<>();
+            for(Geofence g: triggeredGeofences[0]){
+                Store temp = db.storeDao().loadStore(g.getRequestId());
+                returnList.add(temp);
+                toRemoveList.add(temp.id);
+            }
+            mGeofencingClient.removeGeofences(toRemoveList).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d("Geofence", "REMOVED");
+                }
+            });
+            return returnList;
+        }
+
+        @Override
+        protected void onPostExecute( List<Store> list) {
+            super.onPostExecute(list);
+            for(Store store: list){
+                sendNotification(store);
+            }
+        }
+    }
 
     Response.Listener<String> responseHandler = new Response.Listener<String>() {
         @Override
@@ -113,7 +144,6 @@ public class GeofenceService extends IntentService {
             try {
                 JSONArray listaStore = new JSONArray(response);
                 for (int i = 0; i < listaStore.length(); i++) {
-                    Log.d("Geofence", "SOno dentro OnRepsonse");
                     new InsertTask().execute(new Store(listaStore.getJSONObject(i)));
 
                 }
@@ -129,12 +159,10 @@ public class GeofenceService extends IntentService {
         long curTime = (Calendar.getInstance().getTimeInMillis()) / 1000;
         List<Store> storeList = db.storeDao().loadAllStores(curTime - (10 * 60 ));
         if (!storeList.isEmpty()) {
-            int i = 0;
             for (Store store : storeList) {
                 new UpdateTask().execute(store);
-                Log.d("Geofence", "" + store.id + "   " + i);
                 mGeofenceList.add(new Geofence.Builder()
-                        .setRequestId(Constants.PACKAGE_NAME + store.address)
+                        .setRequestId( store.id)
                         .setCircularRegion(
                                 store.latitude,
                                 store.longitude,
@@ -155,6 +183,7 @@ public class GeofenceService extends IntentService {
             HttpController.getStores(responseHandler, errorHandler, mContext);
         }
     }
+
 
 
     @Override
@@ -193,16 +222,14 @@ public class GeofenceService extends IntentService {
                 // multiple geofences.
                 List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
+                db = AppDatabase.getDatabase(this);
+
                 // Get the transition details as a String.
-                String geofenceTransitionDetails = getGeofenceTransitionDetails(
-                        this,
-                        geofenceTransition,
-                        triggeringGeofences
-                );
+
 
                 createNotificationChannel();
                 // Send notification and log the transition details.
-                sendNotification(geofenceTransitionDetails);
+                new getGeofenceDetails().execute(triggeringGeofences);
 
             } else {
                 // Log the error.
@@ -211,30 +238,19 @@ public class GeofenceService extends IntentService {
         }
     }
 
-    String getGeofenceTransitionDetails(Context c, int geofenceTransition, List<Geofence> triggeringGeofences) {
-        List<String> toRemoveList = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        for (Geofence g : triggeringGeofences) {
-            Log.d("Geofence", g.getRequestId());
-            sb.append(g.getRequestId());
-            toRemoveList.add(g.getRequestId());
-        }
-
-        mGeofencingClient.removeGeofences(toRemoveList).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("Geofence", "REMOVED");
-            }
-        });
-        return sb.toString();
-    }
-
-    public void sendNotification(String detail) {
+    public void sendNotification(Store store) {
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="+store.latitude+","+store.longitude);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent notifyPendingIntent = PendingIntent.getActivity(this,0,mapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, Constants.PACKAGE_NAME)
-                .setSmallIcon(R.drawable.questionmark)
-                .setContentTitle("Geofence Test")
-                .setContentText(detail)
+                .setContentIntent(notifyPendingIntent)
+                .setSmallIcon(R.drawable.ice_marker)
+                .setContentTitle("Myce Cream")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notificationGeofence,store.address)))
+                .setContentText(getString(R.string.notificationGeofence,store.address))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);

@@ -17,6 +17,8 @@ public class Constants {
     static final int REGISTERD_USER = 1;
     static final int FACEBOOK_USER = 2;
     static final int GOOGLE_USER = 3;
+
+    static final int UNAUTHORIZED_STATUS_CODE = 401;
     /*HTTP_REQUEST HEADERS USSED*/
     static final String CONTENT_TYPE="Content-Type";
     static final String TOKEN_TYPE="token_type";
