@@ -2,6 +2,7 @@ package it.uniba.di.nitwx.progettoMobile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,11 +23,18 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import io.jsonwebtoken.IncorrectClaimException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MissingClaimException;
 import it.uniba.di.nitwx.progettoMobile.dummy.OfferContent;
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
 
+import java.util.HashMap;
 import java.util.List;
+
+import static it.uniba.di.nitwx.progettoMobile.Constants.UNAUTHORIZED_STATUS_CODE;
 
 /**
  * An activity representing a list of Offers. This activity
@@ -104,7 +112,46 @@ public class OfferListActivity extends AppCompatActivity {
         }
     }
 
+    Response.ErrorListener refreshErrorHandler = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            SharedPreferences sharedPref = getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.remove(Constants.REFRESH_TOKEN);
+            editor.apply();
 
+
+            Intent backToLogin =  new Intent(OfferListActivity.this, LogIn.class);
+            startActivity(backToLogin);
+
+
+        }
+    };
+    Response.Listener<String> refreshAuthHandler = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            try {
+                Log.d("Response",response);
+                JSONObject jsonResponse = new JSONObject(response);
+                JSONObject jsonAccessToken = jsonResponse.getJSONObject(Constants.AUTH_TOKEN);
+                HttpController.userClaims = Jwts.parser().setSigningKey(HttpController.getKey()).
+                        parseClaimsJws(jsonAccessToken.getString(Constants.AUTH_TOKEN)).
+                        getBody();
+                String token_type = jsonAccessToken.getString(Constants.TOKEN_TYPE);
+                if (token_type != null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
+                    HttpController.authorizationHeader = new HashMap<>();
+                HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER, token_type + " " + jsonAccessToken.getString(Constants.AUTH_TOKEN));
+                if (jsonResponse.has(Constants.REFRESH_TOKEN)) {
+                    JSONObject jsonRefreshToken = jsonResponse.getJSONObject(Constants.REFRESH_TOKEN);
+                    Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+                    HttpController.saveRefreshToken(jsonRefreshToken.getString(Constants.REFRESH_TOKEN), OfferListActivity.this);
+                }
+                HttpController.getOffers(offerResponseHandler, offerErrorHandler, OfferListActivity.this);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
     Response.Listener<String> offerResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
@@ -124,7 +171,24 @@ public class OfferListActivity extends AppCompatActivity {
     Response.ErrorListener offerErrorHandler = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            error.getStackTrace();
+            if(error.networkResponse.statusCode == UNAUTHORIZED_STATUS_CODE){
+                String token = HttpController.getRefreshToken(OfferListActivity.this);
+                if (token != null) {
+                    Log.d("Token IN PRODUCT LIST", token);
+                    try {
+                        HttpController.authorizationHeader = new HashMap<>();
+                        HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER, Constants.TOKEN_TYPE_BEARER + " " + token);
+                        HttpController.refreshAccessToken(refreshAuthHandler, refreshErrorHandler, OfferListActivity.this);
+                    } catch (MissingClaimException | IncorrectClaimException | JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                else{
+                    Intent backToLogin =  new Intent(OfferListActivity.this, LogIn.class);
+                    startActivity(backToLogin);
+                }
+            }
         }
     };
     @Override

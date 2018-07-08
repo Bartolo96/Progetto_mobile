@@ -84,14 +84,15 @@ public class LogIn extends AppCompatActivity {
     Intent mServiceIntent;
     GeofenceService mGeofenceService;
     Context ctx;
+
     public Context getCtx() {
         return ctx;
     }
+
     Response.Listener<String> logInResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
             try {
-
                 if (progressBar != null) progressBar.setVisibility(View.INVISIBLE);
                 Log.d("Provaaaaa", response);
                 JSONObject jsonResponse = new JSONObject(response);
@@ -123,7 +124,6 @@ public class LogIn extends AppCompatActivity {
             }
         }
     };
-
 
 
     Response.ErrorListener logInErrorHandler = new Response.ErrorListener() {
@@ -241,7 +241,7 @@ public class LogIn extends AppCompatActivity {
         //FACEBOOK SIGN IN
         callbackManager = CallbackManager.Factory.create();
         LoginButton btn = (LoginButton) findViewById(R.id.btnLogInFacebook);
-        btn.setReadPermissions("email","user_birthday","user_gender");
+        btn.setReadPermissions("email", "user_birthday", "user_gender");
         btn.setOnClickListener(facebookSignIn);
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -305,13 +305,13 @@ public class LogIn extends AppCompatActivity {
 
             mGeofenceService = new GeofenceService();
             mServiceIntent = new Intent(getCtx(), mGeofenceService.getClass());
-            if(!isMyServiceRunning(GeofenceService.class)){
-                Log.d("Geofence","Service running");
+            if (!isMyServiceRunning(GeofenceService.class)) {
+                Log.d("Geofence", "Service running");
                 Intent ishintent = new Intent(this, GeofenceService.class);
                 PendingIntent pintent = PendingIntent.getService(this, 0, ishintent, 0);
-                AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarm.cancel(pintent);
-                alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),50000, pintent);
+                alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 50000, pintent);
                 startService(mServiceIntent);
             }
 
@@ -337,7 +337,6 @@ public class LogIn extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         stopService(mServiceIntent);
@@ -356,13 +355,13 @@ public class LogIn extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mGeofenceService = new GeofenceService();
                     mServiceIntent = new Intent(getCtx(), mGeofenceService.getClass());
-                    if(!isMyServiceRunning(GeofenceService.class)){
-                        Log.d("Geofence","Service running");
+                    if (!isMyServiceRunning(GeofenceService.class)) {
+                        Log.d("Geofence", "Service running");
                         Intent ishintent = new Intent(this, GeofenceService.class);
                         PendingIntent pintent = PendingIntent.getService(this, 0, ishintent, 0);
-                        AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                         alarm.cancel(pintent);
-                        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),50000, pintent);
+                        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 50000, pintent);
                         startService(mServiceIntent);
                     }
                 } else {
@@ -409,6 +408,7 @@ public class LogIn extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {

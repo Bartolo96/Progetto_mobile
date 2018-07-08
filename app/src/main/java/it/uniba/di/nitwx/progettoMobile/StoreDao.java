@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface StoreDao {
 
-    @Insert(onConflict = OnConflictStrategy.FAIL)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void instertStore(Store... stores);
 
     @Query("SELECT * FROM store")
@@ -20,6 +20,9 @@ public interface StoreDao {
     @Query("SELECT * FROM store WHERE timestamp < :time ")
     List<Store> loadAllStores(long time);
 
+    @Query("SELECT* FROM store WHERE id = :requestID")
+    Store loadStore(String requestID);
+
     @Query("UPDATE store SET timestamp = :time WHERE id = :id")
-    void updateTimestamps(long time,int id);
+    void updateTimestamps(long time,String id);
 }
