@@ -18,16 +18,16 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        TextView emailProfile = (TextView) findViewById(R.id.emailProfileTextView);
+        TextView emailProfile = (TextView) findViewById(R.id.emailTextView);
         emailProfile.setText((String)HttpController.userClaims.get("email"));
 
-        TextView genderProfile = (TextView) findViewById(R.id.genderProfileTextView);
+        TextView genderProfile = (TextView) findViewById(R.id.genderTextView);
         genderProfile.setText((String)HttpController.userClaims.get("gender"));
 
-        TextView bDayProfile = (TextView) findViewById(R.id.bDayProfileTextView);
+        TextView bDayProfile = (TextView) findViewById(R.id.bDayTextView);
         bDayProfile.setText((String) HttpController.userClaims.get("birth_date"));
 
-        Button changePassword = (Button) findViewById(R.id.pwProfileChangePassword);
+        Button changePassword = (Button) findViewById(R.id.changePwButton);
         changePassword.setOnClickListener(changePasswordListener);
     }
 

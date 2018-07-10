@@ -48,6 +48,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         /**Inserimento toolbar**/
         Toolbar homeToolbar = (Toolbar) findViewById(R.id.toolbar);
+        homeToolbar.inflateMenu(R.menu.right_menu_home);
         setSupportActionBar(homeToolbar);
         /**Inserimento drawerLayout + set Listener per la Navigation View**/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -57,8 +58,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //navigationView.inflateMenu(R.menu.drawer_menu_home);
-        //navigationView.inflateHeaderView(R.layout.home_drawer_top);
 
         TextView loggedAsName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
         loggedAsName.setText((String)HttpController.userClaims.get("email"));
@@ -125,27 +124,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             finish();
         }
     };
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.right_menu_home,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id=item.getItemId();
-        switch(id)
-        {
-            case R.id.settings:
-                Intent goToSettingsActivityIntent = new Intent(HomeActivity.this, SettingsActivity.class);
-                startActivity(goToSettingsActivityIntent);
-
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
