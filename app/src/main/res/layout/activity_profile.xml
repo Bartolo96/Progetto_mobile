@@ -239,6 +239,49 @@
                     android:clickable="true"
                     android:text="marothiatechs@gmail.com"
                     android:textSize="32px" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel4"
+                android:layout_width="match_parent"
+                android:layout_height="64px"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rel3">
+
+                <ImageView
+                    android:id="@+id/pwImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="64px"
+                    android:maxWidth="64px"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/lock" />
+
+                <TextView
+                    android:id="@+id/pwTextTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@id/pwImageView"
+                    android:clickable="true"
+                    android:text="@string/Password"
+                    android:textSize="32px"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/changePwButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/changePassword"
+                    android:textSize="20px"/>
+
             </RelativeLayout>
 
         </android.support.constraint.ConstraintLayout>

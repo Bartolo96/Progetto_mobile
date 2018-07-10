@@ -27,8 +27,8 @@ public class ProfileActivity extends AppCompatActivity {
         TextView bDayProfile = (TextView) findViewById(R.id.bDayTextView);
         bDayProfile.setText((String) HttpController.userClaims.get("birth_date"));
 
-        /*Button changePassword = (Button) findViewById(R.id.pwProfileChangePassword);
-        changePassword.setOnClickListener(changePasswordListener);*/
+        Button changePassword = (Button) findViewById(R.id.changePwButton);
+        changePassword.setOnClickListener(changePasswordListener);
     }
 
     View.OnClickListener changePasswordListener = new View.OnClickListener() {
