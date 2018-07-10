@@ -1,126 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="it.uniba.di.nitwx.progettoMobile.ProfileActivity">
 
-    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/layout">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+
+        <ImageView
+            android:id="@+id/header_cover_image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerCrop"
+
+            android:src="@drawable/nav_menu_header_bg"
+            app:srcCompat="@drawable/nav_menu_header_bg" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+            android:clickable="true"
+            app:civ_border_width="3dp"
+            app:civ_border_color="#FFFFFFFF"
+
+            android:id="@+id/profile"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@+id/header_cover_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-130dp"
+            android:elevation="5dp"
+            android:padding="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/com_facebook_profile_picture_blank_portrait" />
+
+        <RelativeLayout
+            android:id="@+id/profile_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/header_cover_image"
+            android:background="#ebca0707"
+            android:elevation="4dp"
+            android:paddingBottom="24dp">
+
+
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+
+                android:src="@android:drawable/ic_menu_edit" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="70dp"
+                android:text="Laxman Marothiya"
+                android:textColor="#fff"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/designation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="(Adhyaksh)"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/profile_layout"
+            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#fff"
+            android:elevation="4dp"
             android:orientation="vertical"
-            android:paddingTop="10dp">
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
 
-            <LinearLayout
+            >
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/rel1"
+                android:layout_width="match_parent"
+                android:layout_height="64px"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/userProfileTextView"
+                <ImageView
+                    android:id="@+id/bDayimageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/userProfile"
-                    android:textAlignment="center"
-                    android:textSize="30sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/emailProfileTextTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Email"
-                    android:textSize="28sp" />
+                    android:layout_alignParentLeft="true"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:maxHeight="64px"
+                    android:maxWidth="64px"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/birthday_cake"
+                    tools:layout_editor_absoluteX="9dp"
+                    tools:layout_editor_absoluteY="48dp" />
 
                 <TextView
-                    android:id="@+id/emailProfileTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/genderProfileTextTextView"
+                    android:id="@+id/bDayTextTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Gender"
-                    android:textSize="28sp" />
-
-                <TextView
-                    android:id="@+id/genderProfileTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/bDayProfileTextTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/bDayimageView"
+                    android:clickable="true"
                     android:text="@string/Bday"
-                    android:textSize="28sp" />
+                    android:textSize="32px"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="25dp" />
 
                 <TextView
-                    android:id="@+id/bDayProfileTextView"
+                    android:id="@+id/bDayTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/bDayProfileTextTextView"
-                    android:textSize="18sp" />
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/bDayTextTextView"
+                    android:clickable="true"
+                    android:text="O+"
+                    android:textSize="32px"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="25dp" />
+            </RelativeLayout>
 
-            </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/rel2"
+                android:layout_width="match_parent"
+                android:layout_height="64px"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rel1">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/genderImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="64px"
+                    android:maxWidth="64px"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/gender" />
 
                 <TextView
-                    android:id="@+id/pwProfileTextView"
+                    android:id="@+id/genderTextTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Password"
-                    android:textSize="28sp" />
+                    android:layout_margin="5dp"
 
-                <Button
-                    android:id="@+id/pwProfileChangePassword"
+                    android:layout_toRightOf="@id/genderImageView"
+                    android:clickable="true"
+                    android:text="@string/Gender"
+                    android:textSize="32px"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="5dp"
+                    tools:layout_editor_absoluteY="40dp" />
+
+                <TextView
+                    android:id="@+id/genderTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="@string/changePassword" />
-            </LinearLayout>
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@id/genderTextTextView"
+                    android:clickable="true"
+                    android:text="Male"
+                    android:textSize="32px"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="20dp" />
 
-        </LinearLayout>
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/rel3"
+                android:layout_width="match_parent"
+                android:layout_height="64px"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rel2">
 
-    </ScrollView>
-</android.support.constraint.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/emailImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="64px"
+                    android:maxWidth="64px"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/baseline_email_black" />
+
+                <TextView
+                    android:id="@+id/emailTextTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@id/emailImageView"
+                    android:clickable="true"
+                    android:text="@string/Email"
+                    android:textSize="32px"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emailTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@id/emailTextTextView"
+                    android:clickable="true"
+                    android:text="marothiatechs@gmail.com"
+                    android:textSize="32px" />
+            </RelativeLayout>
+
+        </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
+</ScrollView>
