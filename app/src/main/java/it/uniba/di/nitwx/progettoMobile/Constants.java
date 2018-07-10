@@ -42,6 +42,7 @@ public class Constants {
     static final String URL_ADD_USER = BASE_URL + "api/users/add";
     static final String URL_REFRESH_ACCESS_TOKEN = BASE_URL + "auth/refresh_access_token";
     static final String URL_GET_STORES = BASE_URL +"api/stores";
+    static final String URL_REDEEM_OFFER= BASE_URL + "api/transactions/add_transaction";
 
 
     static final String PACKAGE_NAME = "it.uniba.di.nitwx.progettoMobile";
