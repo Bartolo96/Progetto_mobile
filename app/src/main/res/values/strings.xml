@@ -70,4 +70,7 @@
     <string name="title_activity_stores">Map</string>
     <string name="stores">Stores</string>
     <string name = "notificationGeofence">You are currently near our store in %s, touch here to get directions to reach us to get an icecream</string>
+    <string name="notifications">Notifications</string>
+    <string name="permissions">Permissions</string>
+    <string name="allowGeolocations">Allow Geolocation</string>
 </resources>

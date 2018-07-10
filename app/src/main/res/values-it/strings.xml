@@ -62,6 +62,9 @@
     <string name="newPwConfirmNoMatch">Le password inserite non coincidono</string>
     <string name="stores">Negozi</string>
     <string name = "notificationGeofence">Sei vicino ad un nostro rivenditore a %s, tocca qui per ricevere indicazioni per venire a trovarci per un gelato</string>
+    <string name="notifications">Notifiche</string>
+    <string name="permissions">Permessi</string>
+    <string name="allowGeolocations">Abilita la Geolocalizzazione</string>
 
 </resources>
 
