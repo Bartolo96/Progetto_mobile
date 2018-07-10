@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import it.uniba.di.nitwx.progettoMobile.dummy.OfferContent;
 
@@ -57,6 +58,7 @@ public class OfferDetailFragment extends Fragment {
     public AppDatabase db;
     private boolean isTransactionValid = false;
     private String token;
+    private Button btnRedeem;
 
     Response.Listener<String> redeemResponseHandler = new Response.Listener<String>() {
         @Override
@@ -89,31 +91,26 @@ public class OfferDetailFragment extends Fragment {
     Response.Listener<String> redeemResponseHandlerQr = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
-            Log.d("test","battolo");
-            Log.d("logResponse",response);
             try {
                 JSONObject jsonResponse = new JSONObject(response);
                 token = (String) jsonResponse.get("transaction_token");
-                Claims transactionClaims = Jwts.parser().parseClaimsJws(token).getBody();
-                if (jsonResponse.has(Constants.AUTH_TOKEN)) {
-                    final Dialog dialog = new Dialog(getContext());
-                    dialog.setContentView(R.layout.qrcode_dialog_fragment);
-                    int dialogHeight = dialog.getWindow().getWindowManager().getDefaultDisplay().getHeight();
-                    int dialogWidth = dialog.getWindow().getWindowManager().getDefaultDisplay().getWidth();
-                    Bitmap mImage = QRCode.from(jsonResponse.toString()).withSize(dialogWidth * 2, dialogHeight * 2).bitmap();
-                    BitmapDrawable qrCode = new BitmapDrawable(getResources(), mImage);
-                    TextView qrCodeText = dialog.findViewById(R.id.qrCodeTextView);
-                    qrCodeText.setText(R.string.qrCodeDialogTitle);
 
-                    ImageView qrCodeImage = dialog.findViewById(R.id.qrCodeImageView);
-                    qrCodeImage.setImageDrawable(qrCode);
-                    dialog.show();
-                    new insertTransactionAsync().execute(new UserTransaction((String) transactionClaims.get("id"),token,HttpController.userClaims.getId(), mItem.id
-                    ));
-                } else {
-                    Toast.makeText(getContext(), "sei un bastardo", Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException e) {
+                Claims transactionClaims = Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(token).getBody();
+                final Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.qrcode_dialog_fragment);
+                int dialogHeight = dialog.getWindow().getWindowManager().getDefaultDisplay().getHeight();
+                int dialogWidth = dialog.getWindow().getWindowManager().getDefaultDisplay().getWidth();
+                Bitmap mImage = QRCode.from(jsonResponse.toString()).withSize(dialogWidth * 2, dialogHeight * 2).bitmap();
+                BitmapDrawable qrCode = new BitmapDrawable(getResources(), mImage);
+                TextView qrCodeText = dialog.findViewById(R.id.qrCodeTextView);
+                qrCodeText.setText(R.string.qrCodeDialogTitle);
+
+                ImageView qrCodeImage = dialog.findViewById(R.id.qrCodeImageView);
+                qrCodeImage.setImageDrawable(qrCode);
+                dialog.show();
+                new insertTransactionAsync().execute(new UserTransaction((String) transactionClaims.get("id"),token,HttpController.userClaims.getId(), mItem.id));
+                
+            } catch (JSONException|ExpiredJwtException e) {
                 e.printStackTrace();
             }
         }
@@ -149,7 +146,12 @@ public class OfferDetailFragment extends Fragment {
         protected void onPostExecute(List<UserTransaction> list) {
             super.onPostExecute(list);
             if (list.isEmpty()) {
-                isTransactionValid = true;
+
+                btnRedeem.setOnClickListener(btnRedeemListener);//fai ciò che facevi prima,
+            }else{
+                btnRedeem.setText("Mostra Codice Qr");
+                btnRedeem.setOnClickListener(btnRedeemShowQrListener);
+
             }
         }
 
@@ -208,16 +210,12 @@ public class OfferDetailFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.txtPointDetail)).setText(String.valueOf(mItem.points_cost));
             ((TextView) rootView.findViewById(R.id.txtPriceDetail)).setText(String.valueOf(mItem.offerPrice));
             ((TextView) rootView.findViewById(R.id.txtOfferDescriptionDetail)).setText(mItem.product_list.toString());
-            Button btnRedeem = (Button) rootView.findViewById(R.id.btnRedeem);
-            if (isTransactionValid) {
-                btnRedeem.setOnClickListener(btnRedeemListener);//fai ciò che facevi prima,
-            } else {
-                btnRedeem.setText("Mostra Codice Qr");
-                btnRedeem.setOnClickListener(btnRedeemShowQrListener);
+            btnRedeem= (Button) rootView.findViewById(R.id.btnRedeem);
 
-            }
         }
+
         Button buyNow = (Button) rootView.findViewById(R.id.btnBuyNowOfferDetail);
+
         buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

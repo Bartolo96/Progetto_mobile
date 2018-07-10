@@ -87,7 +87,7 @@ public class HttpController {
                 public Map<String,String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
                     if (tmpHeaders!=null){
-                        //headers.put("Content-Type", "application/json");
+                        headers.put("Content-Type", "application/json");
                         for (String headerName : tmpHeaders.keySet()) {
                             headers.put(headerName, tmpHeaders.get(headerName));
                         }
