@@ -150,6 +150,10 @@ public class HttpController {
         String url = Constants.URL_GET_STORES;
         http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
     }
+    static void redeemOffer(JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler,Context context){
+    String url = Constants.URL_REDEEM_OFFER;
+    http_request(Request.Method.POST,context,url,authorizationHeader,body,responseHandler,errorHandler);
+    }
 
 
 

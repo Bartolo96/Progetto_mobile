@@ -1,5 +1,6 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.arch.persistence.room.Transaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
