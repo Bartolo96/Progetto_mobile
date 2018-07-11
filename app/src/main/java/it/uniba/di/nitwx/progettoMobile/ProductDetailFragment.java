@@ -19,6 +19,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import net.glxn.qrgen.android.QRCode;
 import net.glxn.qrgen.core.image.ImageType;
@@ -72,6 +73,8 @@ public class ProductDetailFragment extends Fragment {
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.name);
             }
+
+
         }
     }
 
@@ -101,12 +104,10 @@ public class ProductDetailFragment extends Fragment {
 
             ((TextView) rootView.findViewById(R.id.productDescription)).setText(mItem.description);
             String stringArrayProduct[] = getResources().getStringArray(R.array.productAttributes);
-
-            String toSetText= stringArrayProduct[1]+": "+mItem.name+"\n"+
-                                stringArrayProduct[3]+": €"+mItem.price+"\n"+
-                                stringArrayProduct[4]+": "+mItem.code;
-
-            ((TextView) rootView.findViewById(R.id.productName)).setText(toSetText);
+            String toName = stringArrayProduct[1]+": "+mItem.name;
+            String toPrice = stringArrayProduct[3]+": €"+mItem.price;
+            ((TextView) rootView.findViewById(R.id.productName)).setText(toName);
+            ((TextView) rootView.findViewById(R.id.productPrice)).setText(toPrice);
 
             Button buyNow = (Button) rootView.findViewById(R.id.ButtonBuyNow);
             buyNow.setOnClickListener(new View.OnClickListener() {
