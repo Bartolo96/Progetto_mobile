@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/buyNowBtn"
+        android:icon="@drawable/right_arrow"
+        android:title="@string/BuyNow"></item>
+</menu>
