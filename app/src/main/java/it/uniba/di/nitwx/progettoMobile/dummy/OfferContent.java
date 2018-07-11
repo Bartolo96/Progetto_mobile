@@ -29,15 +29,15 @@ public class OfferContent {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<OfferContent.Offer> ITEMS = new ArrayList<>();
+    public static  List<OfferContent.Offer> ITEMS = new ArrayList<>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, Offer> ITEM_MAP = new HashMap<String, Offer>();
+    public static  Map<String, Offer> ITEM_MAP = new HashMap<String, Offer>();
 
     public static List<Offer> populate(JSONArray response) throws JSONException {
-
+        ITEMS = new ArrayList<>();
         for(int i=0; i<response.length();i++){
 
             addItem(createOfferItem(response.getJSONObject(i)));
@@ -45,6 +45,8 @@ public class OfferContent {
         return ITEMS;
     }
     public static void populate(List<Offer> list) throws JSONException {
+       ITEMS = new ArrayList<>();
+       ITEM_MAP= new HashMap<String, Offer>();
         for(Offer p: list){
             addItem(p);
         }
@@ -73,16 +75,20 @@ public class OfferContent {
         public double offerPrice;
         public String code;
         public int points_cost;
+        public long validity_start;
+        public long validity_end;
 
         public List<OfferDao.ProductInOffer> product_list;
 
-        public Offer(@NonNull List<OfferDao.ProductInOffer>product_list, String id, String name, double offerPrice, String code, int points_cost) {
+        public Offer(@NonNull List<OfferDao.ProductInOffer>product_list, String id, String name, double offerPrice, String code, int points_cost,long validity_start,long validity_end ) {
             this.product_list = product_list;
             this.id = id;
             this.name = name;
             this.offerPrice = offerPrice;
             this.code = code;
             this.points_cost = points_cost;
+            this.validity_start=validity_start;
+            this.validity_end=validity_end;
         }
         public Offer(@NonNull JSONObject offer) {
             try {
@@ -98,6 +104,8 @@ public class OfferContent {
                 this.name = offer.getString("name");
                 this.offerPrice = offer.getDouble("price");
                 this.points_cost = offer.getInt("points_cost");
+                this.validity_start = offer.getLong("validity_start");
+                this.validity_end = offer.getLong("validity_end");
             }
             catch (JSONException e){
                 e.printStackTrace();

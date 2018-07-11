@@ -19,6 +19,7 @@ public class Constants {
     static final int GOOGLE_USER = 3;
 
     static final int UNAUTHORIZED_STATUS_CODE = 401;
+    static final int NO_TRANSACTION_FOUND = 420;
     /*HTTP_REQUEST HEADERS USSED*/
     static final String CONTENT_TYPE="Content-Type";
     static final String TOKEN_TYPE="token_type";
@@ -31,6 +32,8 @@ public class Constants {
     static final String AUTH_TOKEN = "access_token";
     static final String REFRESH_TOKEN = "refresh_token";
     static final String REGISTER_RESPONSE = "register";
+    static final String TRANSACTION_TOKEN = "transaction_token";
+
 
 
         /*URLs*/
@@ -43,6 +46,7 @@ public class Constants {
     static final String URL_REFRESH_ACCESS_TOKEN = BASE_URL + "auth/refresh_access_token";
     static final String URL_GET_STORES = BASE_URL +"api/stores";
     static final String URL_REDEEM_OFFER= BASE_URL + "api/transactions/add_transaction";
+    static final String URL_CHECK_TRANSACTION_AVAILABILITY= BASE_URL + "/api/transactions/check_transaction_availability";
 
 
     static final String PACKAGE_NAME = "it.uniba.di.nitwx.progettoMobile";

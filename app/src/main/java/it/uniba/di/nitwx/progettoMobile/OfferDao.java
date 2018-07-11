@@ -26,8 +26,8 @@ public interface OfferDao {
 
 
 
-    @Query("SELECT* FROM offer")
-    List<OfferContent.Offer> loadAllOffers();
+    @Query("SELECT* FROM offer WHERE validity_start< :currentTime AND validity_end> :currentTime")
+    List<OfferContent.Offer> loadAllOffers(long currentTime);
 
 
 

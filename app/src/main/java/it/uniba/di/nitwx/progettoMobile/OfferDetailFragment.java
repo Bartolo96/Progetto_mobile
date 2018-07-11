@@ -58,10 +58,43 @@ public class OfferDetailFragment extends Fragment {
     public AppDatabase db;
     private boolean isTransactionValid = false;
     private String token;
+    private String accesToken;
     private Button btnRedeem;
     private Dialog dialog;
     private String transactionToken;
+    private TextView txtPoints;
 
+    Response.Listener<String> checkAvailibilityHandler = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            try {
+                Log.d("onRespone","entrato");
+                Log.d("response",response);
+                JSONObject jsonResponse = new JSONObject(response);
+                token = (String) jsonResponse.get(Constants.TRANSACTION_TOKEN);
+                transactionToken=token;
+                Claims transactionClaims = Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(token).getBody();
+                UserTransaction userTransaction = new UserTransaction((String) transactionClaims.get("id"),token,HttpController.userClaims.getId(),mItem.id);
+                new insertTransactionAsync().execute(userTransaction);
+                btnRedeem.setText("Mostra codice Qr");
+                Toast.makeText(getContext(),"Hai già riscattato questa offerta. Mostra il QrCode in cassa!",Toast.LENGTH_LONG);
+                btnRedeem.setOnClickListener(btnShowPointsQrListener);
+            } catch (JSONException|ExpiredJwtException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    Response.ErrorListener checkAvailibilityErrorHandler = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            if(error.networkResponse.statusCode==Constants.NO_TRANSACTION_FOUND) {
+                Log.d("onError","entrato");
+                btnRedeem.setOnClickListener(btnRedeemListener);
+                error.printStackTrace();
+            }
+        }
+    };
     Response.Listener<String> redeemResponseHandler = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
@@ -69,6 +102,15 @@ public class OfferDetailFragment extends Fragment {
                 JSONObject jsonResponse = new JSONObject(response);
                 token = (String) jsonResponse.get("transaction_token");
 
+                JSONObject jsonAccessToken = jsonResponse.getJSONObject(Constants.AUTH_TOKEN);
+                HttpController.userClaims = Jwts.parser().setSigningKey(HttpController.getKey()).
+                        parseClaimsJws(jsonAccessToken.getString(Constants.AUTH_TOKEN)).
+                        getBody();
+                String token_type = jsonAccessToken.getString(Constants.TOKEN_TYPE);
+                if (token_type != null && token_type.equals(Constants.TOKEN_TYPE_BEARER)) {
+                    HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER, token_type + " " + jsonAccessToken.getString(Constants.AUTH_TOKEN));
+                }
+                txtPoints.setText((HttpController.userClaims.get("points")).toString());
                 Claims transactionClaims = Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(token).getBody();
                 final Dialog dialog = new Dialog(getContext());
                 dialog.setContentView(R.layout.qrcode_dialog_fragment);
@@ -122,8 +164,14 @@ public class OfferDetailFragment extends Fragment {
         protected void onPostExecute(List<UserTransaction> list) {
             super.onPostExecute(list);
             if (list.isEmpty()) {
-
-                btnRedeem.setOnClickListener(btnRedeemListener);//fai ciò che facevi prima,
+                JSONObject body = new JSONObject();
+                try {
+                    body.put("offer_id",mItem.id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                HttpController.checkTransactionAvailability(body,checkAvailibilityHandler,checkAvailibilityErrorHandler,getContext());
+               //fai ciò che facevi prima,
             }else{
                 transactionToken = list.get(0).token;
                 btnRedeem.setText("Mostra Codice Qr");
@@ -182,7 +230,8 @@ public class OfferDetailFragment extends Fragment {
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
 
-            ((TextView) rootView.findViewById(R.id.txtPoint)).setText((HttpController.userClaims.get("points")).toString());
+            txtPoints =((TextView) rootView.findViewById(R.id.txtPoint));
+            txtPoints.setText((HttpController.userClaims.get("points")).toString());
             ((TextView) rootView.findViewById(R.id.txtNameOfferDetail)).setText(mItem.name);
             ((TextView) rootView.findViewById(R.id.txtPointDetail)).setText(String.valueOf(mItem.points_cost));
             ((TextView) rootView.findViewById(R.id.txtPriceDetail)).setText(String.valueOf(mItem.offerPrice));
@@ -202,25 +251,30 @@ public class OfferDetailFragment extends Fragment {
         @Override
         public void onClick(View view) {
             int point = Integer.valueOf((String) HttpController.userClaims.get("points"));
-            dialog = new Dialog(getContext());
-            dialog.setContentView(R.layout.redeem_layout_fragment);
-            TextView confirmMessage = (TextView) dialog.findViewById(R.id.txtRedeemConfirm);
-            Resources res = getResources();
-            String message = res.getQuantityString(R.plurals.pointToUse, point, point);
-            confirmMessage.setText(message);
+            int pointCost = mItem.points_cost;
+            if(point<pointCost){
+                Toast.makeText(getContext(),"Non hai punti a sufficienza! Corri a giocare!",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.redeem_layout_fragment);
+                TextView confirmMessage = (TextView) dialog.findViewById(R.id.txtRedeemConfirm);
+                Resources res = getResources();
+                String message = res.getQuantityString(R.plurals.pointToUse, pointCost, pointCost);
+                confirmMessage.setText(message);
+                dialog.show();
 
-            dialog.show();
+                Button btnYes = dialog.findViewById(R.id.btnYesRedeem);
+                btnYes.setOnClickListener(btnYesRedeemListener);
 
-            Button btnYes = dialog.findViewById(R.id.btnYesRedeem);
-            btnYes.setOnClickListener(btnYesRedeemListener);
-
-            Button btnNo = dialog.findViewById(R.id.btnNoRedeem);
-            btnNo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.cancel();
-                }
-            });
+                Button btnNo = dialog.findViewById(R.id.btnNoRedeem);
+                btnNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+            }
 
         }
     };
@@ -272,11 +326,17 @@ public class OfferDetailFragment extends Fragment {
         @Override
         public void onClick(View v) {
             final Dialog dialog = new Dialog(getContext());
+            JSONObject jsonTransactionToken= new JSONObject();
+            try {
+                jsonTransactionToken.put(Constants.TRANSACTION_TOKEN,transactionToken);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             dialog.setContentView(R.layout.qrcode_dialog_fragment);
             int dialogHeight = dialog.getWindow().getWindowManager().getDefaultDisplay().getHeight();
             int dialogWidth = dialog.getWindow().getWindowManager().getDefaultDisplay().getWidth();
-            Log.d("Prova",transactionToken);
-            Bitmap mImage = QRCode.from(transactionToken).withSize(dialogWidth * 2, dialogHeight * 2).bitmap();
+            //Log.d("Prova",transactionToken);
+            Bitmap mImage = QRCode.from(jsonTransactionToken.toString()).withSize(dialogWidth * 2, dialogHeight * 2).bitmap();
             BitmapDrawable qrCode = new BitmapDrawable(getResources(), mImage);
             TextView qrCodeText = dialog.findViewById(R.id.qrCodeTextView);
             qrCodeText.setText(R.string.qrCodeDialogTitle);
