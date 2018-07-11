@@ -9,15 +9,16 @@ import android.content.Context;
 
 import it.uniba.di.nitwx.progettoMobile.dummy.OfferContent.Offer;
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent.Product;
+import it.uniba.di.nitwx.progettoMobile.UserTransaction;
 
-
-@Database(version = 8, entities = {Product.class,Store.class,Offer.class})
+@Database(version = 9, entities = {Product.class,Store.class,Offer.class,UserTransaction.class})
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
         abstract public ProductDao productDao();
         abstract public OfferDao offerDao();
         abstract public StoreDao storeDao();
+        abstract public TransactionDao transactionDao();
 
         private static AppDatabase INSTANCE;
 

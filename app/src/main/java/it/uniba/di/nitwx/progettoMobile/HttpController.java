@@ -87,7 +87,7 @@ public class HttpController {
                 public Map<String,String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
                     if (tmpHeaders!=null){
-                        //headers.put("Content-Type", "application/json");
+                        headers.put("Content-Type", "application/json");
                         for (String headerName : tmpHeaders.keySet()) {
                             headers.put(headerName, tmpHeaders.get(headerName));
                         }
@@ -149,6 +149,10 @@ public class HttpController {
     static void getStores(Response.Listener<String> responseHandler,Response.ErrorListener errorHandler, Context context) {
         String url = Constants.URL_GET_STORES;
         http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
+    }
+    static void redeemOffer(JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler,Context context){
+    String url = Constants.URL_REDEEM_OFFER;
+    http_request(Request.Method.POST,context,url,authorizationHeader,body,responseHandler,errorHandler);
     }
 
 

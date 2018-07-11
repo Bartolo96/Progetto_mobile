@@ -31,13 +31,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-
 import static com.google.android.gms.location.Geofence.NEVER_EXPIRE;
 
 
@@ -47,7 +43,6 @@ public class GeofenceService extends IntentService {
 
     private List<Geofence> mGeofenceList = new ArrayList<>();
     PendingIntent mGeofencePendingIntent;
-    String geofenceTransitionDetails;
     Context mContext;
     AppDatabase db;
 
@@ -209,7 +204,6 @@ public class GeofenceService extends IntentService {
                 Log.d("Geofence", errorMessage);
                 return;
             }
-            Log.d("Geofence","I'm inside");
             // Get the transition type.
             int geofenceTransition = geofencingEvent.getGeofenceTransition();
 
