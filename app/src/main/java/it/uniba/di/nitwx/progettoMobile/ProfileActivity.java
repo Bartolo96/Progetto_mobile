@@ -18,7 +18,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        TextView emailProfile = (TextView) findViewById(R.id.emailTextView);
+        TextView emailProfile = (TextView) findViewById(R.id.emailProfileTextView);
         emailProfile.setText((String)HttpController.userClaims.get("email"));
 
         TextView genderProfile = (TextView) findViewById(R.id.genderTextView);

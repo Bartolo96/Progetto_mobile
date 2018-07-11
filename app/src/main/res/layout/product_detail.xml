@@ -5,10 +5,10 @@
     style="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:textIsSelectable="true"
     tools:context="it.uniba.di.nitwx.progettoMobile.ProductDetailFragment"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,11 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginTop="1dp"
+            android:elevation="1dp"
+            android:background="@android:drawable/dialog_holo_light_frame">
+
             <ImageView
                 android:id="@+id/productImage"
                 android:layout_width="wrap_content"
@@ -32,10 +36,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginTop="1dp"
+            android:elevation="1dp"
+            android:background="@android:drawable/dialog_holo_light_frame">
 
             <TextView
                 android:id="@+id/productName"
+                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />
@@ -43,6 +51,8 @@
 
             <Button
                 android:id="@+id/ButtonBuyNow"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="50dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/BuyNow"
@@ -57,5 +67,9 @@
         android:id="@+id/productDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
+        android:elevation="1dp"
+        android:background="@android:drawable/dialog_holo_light_frame"/>
 </LinearLayout>
