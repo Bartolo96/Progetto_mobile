@@ -66,6 +66,7 @@ android:fillViewport="true">
     </LinearLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/descriptionLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/namePriceLayout"
@@ -84,7 +85,7 @@ android:fillViewport="true">
                 android:id="@+id/productDescriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/OfferDescription"
+                android:text="@string/productDescription"
                 android:textColor="@color/primary"
                 android:textStyle="bold"/>
 
@@ -96,15 +97,28 @@ android:fillViewport="true">
                 android:textColor="@android:color/black"
                 app:layout_constraintTop_toBottomOf="@id/productDescriptionText"/>
 
-            <Button
-                android:id="@+id/ButtonBuyNow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/productDescription"
-                android:text="@string/BuyNow"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:background="@color/primary"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/descriptionLayout"
+        android:layout_margin="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#fff"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        >
+
+        <Button
+            android:id="@+id/ButtonBuyNow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/BuyNow"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:textSize="18sp" />
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>
 

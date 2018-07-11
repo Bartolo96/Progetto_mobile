@@ -65,6 +65,7 @@
     <string name="notifications">Notifiche</string>
     <string name="permissions">Permessi</string>
     <string name="allowGeolocations">Abilita la Geolocalizzazione</string>
+    <string name="productDescription">Descrizione del Prodotto</string>
 
 </resources>
 

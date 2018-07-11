@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
@@ -164,7 +167,7 @@ public class OfferDetailFragment extends Fragment {
             mItem = OfferContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
 
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+            Toolbar appBarLayout = (Toolbar) activity.findViewById(R.id.detail_toolbar);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.name);
             }
