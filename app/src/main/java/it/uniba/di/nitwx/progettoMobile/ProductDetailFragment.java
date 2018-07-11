@@ -80,6 +80,7 @@ public class ProductDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.product_detail, container, false);
 
+
         // Show the dummy name as text in a TextView.
         if (mItem != null) {
 
