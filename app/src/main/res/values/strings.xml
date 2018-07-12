@@ -73,5 +73,7 @@
     <string name="notifications">Notifications</string>
     <string name="permissions">Permissions</string>
     <string name="allowGeolocations">Allow Geolocation</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
     <string name="productDescription">Product Description</string>
 </resources>

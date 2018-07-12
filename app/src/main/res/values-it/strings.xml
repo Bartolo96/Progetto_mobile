@@ -66,6 +66,8 @@
     <string name="permissions">Permessi</string>
     <string name="allowGeolocations">Abilita la Geolocalizzazione</string>
     <string name="productDescription">Descrizione del Prodotto</string>
+    <string name="Yes">Si</string>
+    <string name="No">No</string>
 
 </resources>
 
