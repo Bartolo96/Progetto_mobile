@@ -18,14 +18,24 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        int points = Integer.valueOf((String) HttpController.userClaims.get("points"));
+
         TextView emailProfile = (TextView) findViewById(R.id.emailProfileTextView);
         emailProfile.setText((String)HttpController.userClaims.get("email"));
 
+        TextView pointsProfile = (TextView) findViewById(R.id.pointsProfileTextView);
+        pointsProfile.setText(getResources().getString(R.string.youHavePoints,points));
+
         TextView genderProfile = (TextView) findViewById(R.id.genderTextView);
-        genderProfile.setText((String)HttpController.userClaims.get("gender"));
+        if(!((String)HttpController.userClaims.get("gender")).equals("M"))
+            genderProfile.setText(getString(R.string.Female));
+        else
+            genderProfile.setText(getString(R.string.Male));
+
 
         TextView bDayProfile = (TextView) findViewById(R.id.bDayTextView);
-        bDayProfile.setText((String) HttpController.userClaims.get("birth_date"));
+        java.util.Date date = new java.util.Date(Long.parseLong((String) HttpController.userClaims.get("birth_date")));
+        bDayProfile.setText(date.toString());
 
         Button changePassword = (Button) findViewById(R.id.changePwButton);
         changePassword.setOnClickListener(changePasswordListener);

@@ -78,4 +78,5 @@
     <string name="productDescription">Product Description</string>
     <string name="buyFor">Buy For €</string>
     <string name="redeemFor">Redeem for %d IcePoints</string>
+    <string name="youHavePoints">You have %d IcePoints</string>
 </resources>

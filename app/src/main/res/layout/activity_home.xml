@@ -32,18 +32,14 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/app_bar"
             app:columnCount="2"
-            app:orientation="vertical"
-            app:rowCount="2">
+            app:orientation="vertical">
 
 
             <Button
                 android:id="@+id/button_sign_out"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_columnSpan="1"
-                app:layout_columnWeight="1"
-                app:layout_rowSpan="1"
-                app:layout_rowWeight="1"
+
                 android:gravity="center"
                 android:text="@string/LogOut" />
 
@@ -51,10 +47,7 @@
                 android:id="@+id/btnOffer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_columnSpan="1"
-                app:layout_columnWeight="1"
-                app:layout_rowSpan="1"
-                app:layout_rowWeight="1"
+
                 android:gravity="center"
                 android:text="Offerte" />
 
@@ -62,23 +55,33 @@
                 android:id="@+id/btnProducts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_columnSpan="1"
-                app:layout_columnWeight="1"
-                app:layout_rowSpan="1"
-                app:layout_rowWeight="1"
+
                 android:gravity="center"
-                android:text="Button" />
+                android:text="@string/title_product_list" />
 
             <Button
                 android:id="@+id/storesBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_columnSpan="1"
-                app:layout_columnWeight="1"
-                app:layout_rowSpan="1"
-                app:layout_rowWeight="1"
+
                 android:gravity="center"
                 android:text="@string/stores" />
+
+            <Button
+                android:id="@+id/myProfileBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+                android:text="@string/myProfile" />
+
+            <Button
+                android:id="@+id/settingsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+                android:text="@string/settings" />
         </android.support.v7.widget.GridLayout>
         </RelativeLayout>
 

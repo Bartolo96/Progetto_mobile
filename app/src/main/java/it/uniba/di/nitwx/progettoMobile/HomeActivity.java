@@ -68,15 +68,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        Intent srcIntent = getIntent();
-        final String name = srcIntent.getStringExtra("name");
 
         Button goToProductsBtn = (Button) findViewById(R.id.btnProducts);
-        goToProductsBtn.setText(name);
         Button logOut=(Button) findViewById(R.id.button_sign_out);
-
         Button stores = (Button) findViewById(R.id.storesBtn);
         Button offerBtn = (Button) findViewById(R.id.btnOffer);
+        Button myProfileBtn = (Button) findViewById(R.id.myProfileBtn);
+        Button settingsBtn = (Button) findViewById(R.id.settingsBtn);
 
         stores.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +96,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Intent goToProductsIntent = new Intent(HomeActivity.this,ProductListActivity.class);
                 startActivity(goToProductsIntent);
+            }
+        });
+
+        myProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToProfileIntent = new Intent(HomeActivity.this,ProfileActivity.class);
+                startActivity(goToProfileIntent);
+            }
+        });
+
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToSettingsIntent = new Intent(HomeActivity.this,SettingsActivity.class);
+                startActivity(goToSettingsIntent);
             }
         });
 

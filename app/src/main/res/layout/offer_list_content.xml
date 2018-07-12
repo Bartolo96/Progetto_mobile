@@ -28,7 +28,7 @@
                 android:layout_marginTop="15dp"
                 android:elevation="4dp"
                 android:scaleType="centerCrop"
-                app:civ_border_color="@color/primary"
+                app:civ_border_color="@color/black"
                 app:civ_border_width="2dp"
                 android:src="@drawable/productimage001"/>
 
