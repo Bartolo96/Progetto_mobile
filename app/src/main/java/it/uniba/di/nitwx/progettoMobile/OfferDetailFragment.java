@@ -221,7 +221,7 @@ public class OfferDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.activity_offer_detail, container, false);
+        final View rootView = inflater.inflate(R.layout.offer_detail, container, false);
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
@@ -229,8 +229,8 @@ public class OfferDetailFragment extends Fragment {
             /*txtPoints =((TextView) rootView.findViewById(R.id.txtPoint));*/
             /*txtPoints.setText((HttpController.userClaims.get("points")).toString());*/
             ((TextView) rootView.findViewById(R.id.txtNameOfferDetail)).setText(mItem.name);
-            ((TextView) rootView.findViewById(R.id.pointPriceTextView)).setText(String.valueOf(mItem.points_cost));
-            ((TextView) rootView.findViewById(R.id.offerPriceTextView)).setText(String.valueOf(mItem.offerPrice));
+            /*((TextView) rootView.findViewById(R.id.pointPriceTextView)).setText(String.valueOf(mItem.points_cost));
+            ((TextView) rootView.findViewById(R.id.offerPriceTextView)).setText(String.valueOf(mItem.offerPrice));*/
             ((TextView) rootView.findViewById(R.id.OfferDescriptionText)).setText(mItem.product_list.toString());
             btnRedeem= (Button) rootView.findViewById(R.id.btnRedeem);
 

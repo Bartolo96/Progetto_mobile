@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/colorBackground"
@@ -16,7 +16,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center" />
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:id="@+id/relOfferImage"
@@ -36,68 +40,82 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/relAcquista"
+        <View
+            android:id="@+id/separator1Offer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="1dp"
+            android:background="@android:color/black"/>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/descriptionOfferLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/separator1Offer"
+            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#fff"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp">
 
             <TextView
-                android:id="@+id/costoInEuroTextTextView"
-                android:layout_width="wrap_content"
+                android:id="@+id/offerDescriptionTextTextView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="Costo in Euro: " />
+                android:text="@string/OfferDescription"
+                android:textColor="@color/primary"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/offerPriceTextView"
-                android:layout_width="wrap_content"
+                android:id="@+id/OfferDescriptionText"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/costoInEuroTextTextView" />
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/offerDescriptionTextTextView" />
+
+
+        </android.support.constraint.ConstraintLayout>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/descriptionOfferLayout"
+            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#fff"
+            android:elevation="4dp"
+            >
+
 
             <Button
                 android:id="@+id/btnBuyNowOfferDetail"
-                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/offerPriceTextView"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/relRiscatta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/costoInPuntiTextTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="Costo in Punti: " />
-
-            <TextView
-                android:id="@+id/pointPriceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/costoInPuntiTextTextView" />
+                android:text="@string/BuyNow"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/btnRedeem"
-                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/pointPriceTextView"/>
-
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/offerDescriptionTextTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/OfferDescription"/>
-
-        <TextView
-            android:id="@+id/OfferDescriptionText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
+                android:text="@string/Redeem"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnBuyNowOfferDetail" />
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
+
 </ScrollView>
