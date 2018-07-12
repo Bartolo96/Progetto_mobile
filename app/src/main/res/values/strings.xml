@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Proggeto mobile</string>
+    <string name="app_name">MYce Cream</string>
     <string name="facebook_app_id" translatable="false">185450658798188</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb185450658798188</string>
     <string name="Username">Username</string>
@@ -57,7 +57,7 @@
     <string name="DoUWntToUSe">Do you want to use</string>
     <plurals name="pointToUse">
         <item quantity="one">Do you want to use %d icePoint to redeem it?</item>
-        <item quantity="other">Do you want to use %d icePoint to redeem it?</item>
+        <item quantity="other">Do you want to use %d icePoints to redeem it?</item>
     </plurals>
     <string name="home" translatable="false">Home</string>
     <string name="loggedAs">Logged As</string>
@@ -76,4 +76,6 @@
     <string name="Yes">Yes</string>
     <string name="No">No</string>
     <string name="productDescription">Product Description</string>
+    <string name="buyFor">Buy For €</string>
+    <string name="redeemFor">Redeem for %d icePoints</string>
 </resources>
