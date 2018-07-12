@@ -1,28 +1,80 @@
 package it.uniba.di.nitwx.progettoMobile;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
+import android.view.WindowManager;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
     private MainThread thread;
+    private CardSprite cardSprite;
+    private Point displaySize;
+    private int cardWidth;
+    private int cardHeight;
+    private final int NUM_OF_CARDS = 16;
+
+    private List<CardSprite> playingCards = new ArrayList<>();
+
     public GameView(Context context){
         super(context);
         getHolder().addCallback(this);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        displaySize = new Point();
+        wm.getDefaultDisplay().getRealSize(displaySize);
+        cardWidth = (displaySize.x - 800) / 8;
+        cardHeight = (displaySize.y - 300) / 2;
+        Log.d("Prova","Test :" + cardWidth + " " + cardHeight);
         thread = new MainThread(getHolder(),this);
+
         setFocusable(true);
 
     }
-
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        for(int i = 0; i < NUM_OF_CARDS; i++){
+            int imgId = getResources().getIdentifier("carta_gelato"+(i%8),"drawable",Constants.PACKAGE_NAME);
+            playingCards.add(new CardSprite(BitmapFactory.decodeResource(getResources(),R.drawable.card_sprite),
+                                    BitmapFactory.decodeResource(getResources(),imgId),i,cardWidth,cardHeight));
+        }
+        Collections.shuffle(playingCards);
         thread.setRunning(true);
         thread.start();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+        for(CardSprite card : playingCards){
+            if ((x > card.card_start_X && x < card.card_start_X + cardWidth) &&
+                    (y > card.card_start_Y && y < card.card_start_Y + cardHeight)){
+                card.update();
+                break;
+            }
+        }
+
+        return super.onTouchEvent(event);
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
         boolean retry = true;
         while (retry){
             try{
@@ -34,16 +86,29 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
             retry = false;
         }
     }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-
-    }
     public void update(){
 
     }
     @Override
     public void draw(Canvas canvas){
         super.draw(canvas);
+
+        if(canvas != null){
+            canvas.drawColor(Color.WHITE);
+            int positionLeft = 100;
+            int positionTop = 100;
+            int counter = 0;
+
+            for(CardSprite card : playingCards){
+                card.draw(canvas,positionLeft,positionTop);
+                positionLeft += 200;
+                counter++;
+                if(counter == playingCards.size()/2){
+                    positionTop += cardHeight + 100;
+                    positionLeft = 100;
+                }
+            }
+
+        }
     }
 }
