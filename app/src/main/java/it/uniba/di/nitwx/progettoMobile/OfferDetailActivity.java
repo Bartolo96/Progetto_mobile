@@ -23,6 +23,7 @@ public class OfferDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.offer_detail_toolbar);
+
         setSupportActionBar(toolbar);
 
 
