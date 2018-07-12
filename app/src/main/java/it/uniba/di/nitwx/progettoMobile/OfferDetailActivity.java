@@ -22,7 +22,7 @@ public class OfferDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detailOfferToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.offer_detail_toolbar);
         setSupportActionBar(toolbar);
 
 

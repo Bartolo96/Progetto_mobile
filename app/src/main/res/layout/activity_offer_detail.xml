@@ -1,165 +1,33 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootOfferDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:fitsSystemWindows="true"
+    tools:context="it.uniba.di.nitwx.progettoMobile.OfferDetailActivity"
+    tools:ignore="MergeRootFrame">
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/offer_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/detailOfferToolbar"
+            android:id="@+id/offer_detail_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:title="@string/title_offer_detail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="169dp"
-            android:layout_height="181dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/txtNameOfferDetail"
-            app:layout_constraintHorizontal_bias="0.502"
-            app:layout_constraintStart_toStartOf="@+id/txtNameOfferDetail"
-            app:layout_constraintTop_toBottomOf="@+id/txtNameOfferDetail"
-            app:srcCompat="@drawable/productimage001" />
+    </android.support.design.widget.AppBarLayout>
 
-        <TextView
-            android:id="@+id/txtNameOfferDetail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailOfferToolbar" />
-
-        <TextView
-            android:id="@+id/txtPriceDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_corner"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/cardview_light_background"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/genderTextTextView"
-            app:layout_constraintStart_toStartOf="@+id/genderTextTextView"
-            app:layout_constraintTop_toBottomOf="@+id/genderTextTextView" />
-
-        <TextView
-            android:id="@+id/genderTextTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/CostInEuro"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/CostInPoint"
-            app:layout_constraintEnd_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-        <TextView
-            android:id="@+id/txtPointDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_corner"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/cardview_light_background"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/textView12"
-            app:layout_constraintStart_toStartOf="@+id/textView12"
-            app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-        <Button
-            android:id="@+id/btnRedeem"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="68dp"
-            android:text="@string/Redeem"
-            app:layout_constraintEnd_toEndOf="@+id/imageView3"
-            app:layout_constraintHorizontal_bias="0.49"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-        <Button
-            android:id="@+id/btnBuyNowOfferDetail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@string/BuyNow"
-            app:layout_constraintEnd_toEndOf="@+id/btnRedeem"
-            app:layout_constraintStart_toStartOf="@+id/btnRedeem"
-            app:layout_constraintTop_toBottomOf="@+id/btnRedeem" />
-
-        <TextView
-            android:id="@+id/txtOfferDescriptionDetail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:text="@string/OfferDescription"
-            app:layout_constraintStart_toStartOf="@+id/txtOfferDescriptionDetail"
-            app:layout_constraintTop_toBottomOf="@+id/btnBuyNowOfferDetail" />
-
-        <TextView
-            android:id="@+id/txtPoint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="16dp"
-            android:text="text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/cardview_light_background"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/detailOfferToolbar"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/Point"
-            android:textColor="@color/cardview_light_background"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/detailOfferToolbar"
-            app:layout_constraintEnd_toStartOf="@+id/txtPoint" />
-
-    </android.support.constraint.ConstraintLayout>
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/offer_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-</RelativeLayout>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout>

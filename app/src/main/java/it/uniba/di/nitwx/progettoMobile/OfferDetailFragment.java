@@ -167,7 +167,7 @@ public class OfferDetailFragment extends Fragment {
             mItem = OfferContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
 
             Activity activity = this.getActivity();
-            Toolbar appBarLayout = (Toolbar) activity.findViewById(R.id.detail_toolbar);
+            Toolbar appBarLayout = (Toolbar) activity.findViewById(R.id.offer_detail_toolbar);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.name);
             }
@@ -185,11 +185,11 @@ public class OfferDetailFragment extends Fragment {
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
 
-            ((TextView) rootView.findViewById(R.id.txtPoint)).setText((HttpController.userClaims.get("points")).toString());
+            /*((TextView) rootView.findViewById(R.id.txtPoint)).setText((HttpController.userClaims.get("points")).toString());*/
             ((TextView) rootView.findViewById(R.id.txtNameOfferDetail)).setText(mItem.name);
-            ((TextView) rootView.findViewById(R.id.txtPointDetail)).setText(String.valueOf(mItem.points_cost));
-            ((TextView) rootView.findViewById(R.id.txtPriceDetail)).setText(String.valueOf(mItem.offerPrice));
-            ((TextView) rootView.findViewById(R.id.txtOfferDescriptionDetail)).setText(mItem.product_list.toString());
+            ((TextView) rootView.findViewById(R.id.pointPriceTextView)).setText(String.valueOf(mItem.points_cost));
+            ((TextView) rootView.findViewById(R.id.offerPriceTextView)).setText(String.valueOf(mItem.offerPrice));
+            ((TextView) rootView.findViewById(R.id.OfferDescriptionText)).setText(mItem.product_list.toString());
             btnRedeem= (Button) rootView.findViewById(R.id.btnRedeem);
 
         }
