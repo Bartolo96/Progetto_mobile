@@ -9,6 +9,7 @@ import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 /**
  * An activity representing a single Offer detail screen. This
@@ -23,8 +24,11 @@ public class OfferDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.offer_detail_toolbar);
-
         setSupportActionBar(toolbar);
+
+        TextView txtPoints= (TextView) toolbar.findViewById(R.id.points);
+        txtPoints.setText("IcePoints: "+(HttpController.userClaims.get("points")).toString());
+
 
 
         // Show the Up button in the action bar.

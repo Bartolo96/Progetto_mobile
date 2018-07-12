@@ -227,10 +227,7 @@ public class OfferDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            Toolbar toolbar = rootView.findViewById(R.id.offer_detail_toolbar);
-            txtPoints= toolbar.findViewById(R.id.points);
-            /*txtPoints =((TextView) rootView.findViewById(R.id.textViewToolbarOffer));
-            txtPoints.setText((HttpController.userClaims.get("points")).toString());*/
+
             ((TextView) rootView.findViewById(R.id.txtNameOfferDetail)).setText(mItem.name);
             ((TextView) rootView.findViewById(R.id.pointPriceTextView)).setText(getResources().getString(R.string.redeemFor,mItem.points_cost));
             ((TextView) rootView.findViewById(R.id.offerPriceTextView)).setText(getResources().getString(R.string.buyFor)+mItem.offerPrice);
