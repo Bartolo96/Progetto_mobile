@@ -101,7 +101,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        logOut.setOnClickListener(logOutListener);
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToProductsIntent = new Intent(HomeActivity.this,GameActivity.class);
+                startActivity(goToProductsIntent);
+            }
+        });
     }
 
     private void signOut() {
