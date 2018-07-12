@@ -68,7 +68,8 @@
     <string name="productDescription">Descrizione del Prodotto</string>
     <string name="Yes">Si</string>
     <string name="No">No</string>
-
+    <string name="buyFor">Acquista per €</string>
+    <string name="redeemFor">Riscatta con %d icePoints</string>
 </resources>
 
 
