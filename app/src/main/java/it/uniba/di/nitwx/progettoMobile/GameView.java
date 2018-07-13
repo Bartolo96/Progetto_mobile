@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
     private MainThread thread;
@@ -22,7 +24,10 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
     private Point displaySize;
     private int cardWidth;
     private int cardHeight;
+    private TimerSprite timerSprite;
     private final int NUM_OF_CARDS = 16;
+    private  CardSprite lastCard = null;
+    private  CardSprite currentCard = null;
 
     private List<CardSprite> playingCards = new ArrayList<>();
 
@@ -33,8 +38,7 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
         displaySize = new Point();
         wm.getDefaultDisplay().getRealSize(displaySize);
         cardWidth = (displaySize.x - 800) / 8;
-        cardHeight = (displaySize.y - 300) / 2;
-        Log.d("Prova","Test :" + cardWidth + " " + cardHeight);
+        cardHeight = cardWidth *2;
         thread = new MainThread(getHolder(),this);
 
         setFocusable(true);
@@ -45,9 +49,10 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
         for(int i = 0; i < NUM_OF_CARDS; i++){
             int imgId = getResources().getIdentifier("carta_gelato"+(i%8),"drawable",Constants.PACKAGE_NAME);
             playingCards.add(new CardSprite(BitmapFactory.decodeResource(getResources(),R.drawable.card_sprite),
-                                    BitmapFactory.decodeResource(getResources(),imgId),i,cardWidth,cardHeight));
+                                    BitmapFactory.decodeResource(getResources(),imgId),i%8,cardWidth,cardHeight));
         }
         Collections.shuffle(playingCards);
+        timerSprite = new TimerSprite();
         thread.setRunning(true);
         thread.start();
     }
@@ -61,10 +66,32 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
+
         for(CardSprite card : playingCards){
             if ((x > card.card_start_X && x < card.card_start_X + cardWidth) &&
                     (y > card.card_start_Y && y < card.card_start_Y + cardHeight)){
-                card.update();
+                if(this.lastCard== null){
+                    this.lastCard = card;
+                    card.update();
+                }
+                else if(!card.isAlreadyTurned() && card == lastCard) {
+                    card.update();
+                    this.lastCard = card;
+                    this.lastCard = null;
+                }
+                else if(!card.isAlreadyTurned() && card != lastCard) {
+                    card.update();
+                    currentCard = card;
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            currentCard.update();
+                            lastCard.update();
+                            currentCard = null;
+                            lastCard = null;
+                        }
+                    },2 * 1000);
+                }
                 break;
             }
         }
@@ -108,6 +135,7 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
                     positionLeft = 100;
                 }
             }
+            timerSprite.draw(canvas,100, positionTop+cardHeight+200);
 
         }
     }
