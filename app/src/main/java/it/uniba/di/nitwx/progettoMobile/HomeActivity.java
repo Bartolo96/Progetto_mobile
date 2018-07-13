@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,13 +70,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
-        Button goToProductsBtn = (Button) findViewById(R.id.btnProducts);
-        Button logOut=(Button) findViewById(R.id.button_sign_out);
-        Button stores = (Button) findViewById(R.id.storesBtn);
-        Button offerBtn = (Button) findViewById(R.id.btnOffer);
-        Button myProfileBtn = (Button) findViewById(R.id.myProfileBtn);
-        Button settingsBtn = (Button) findViewById(R.id.settingsBtn);
-        Button gameBtn = (Button) findViewById(R.id.playGameBtn);
+        CardView goToProductsBtn = (CardView) findViewById(R.id.btnProducts);
+        CardView stores = (CardView) findViewById(R.id.storesBtn);
+        CardView offerBtn = (CardView) findViewById(R.id.btnOffer);
+        CardView gameBtn = (CardView) findViewById(R.id.playGameBtn);
 
         stores.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,22 +98,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        myProfileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent goToProfileIntent = new Intent(HomeActivity.this,ProfileActivity.class);
-                startActivity(goToProfileIntent);
-            }
-        });
-
-        settingsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent goToSettingsIntent = new Intent(HomeActivity.this,SettingsActivity.class);
-                startActivity(goToSettingsIntent);
-            }
-        });
-
         gameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +105,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(goToGameIntent);
             }
         });
-        logOut.setOnClickListener(logOutListener);
     }
 
     private void signOut() {

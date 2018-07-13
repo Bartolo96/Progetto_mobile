@@ -2,11 +2,13 @@ package it.uniba.di.nitwx.progettoMobile;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,14 @@ public class ProfileActivity extends AppCompatActivity {
 
         Button changePassword = (Button) findViewById(R.id.changePwButton);
         changePassword.setOnClickListener(changePasswordListener);
+
+        ImageView profileImage = (ImageView) findViewById(R.id.profile);
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     View.OnClickListener changePasswordListener = new View.OnClickListener() {
