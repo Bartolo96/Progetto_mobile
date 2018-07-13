@@ -10,9 +10,10 @@ import java.util.TimerTask;
 
 public class TimerSprite {
     private Timer mTimer;
-    private int currentTime = 0;
-    private String displayedTime;
+    private int currentTime;
+    public String displayedTime;
     private Paint paint ;
+    public float textWidth;
 
     public TimerSprite(){
         mTimer = new Timer();
@@ -20,13 +21,17 @@ public class TimerSprite {
         paint = new Paint();
         paint.setColor(Color.RED);
         paint.setTextSize(100);
+        displayedTime = String.valueOf(currentTime / 60 )+ ":" + String.valueOf(currentTime%60);
+        textWidth = paint.measureText(displayedTime);
+
     }
 
-    TimerTask renderTime = new TimerTask() {
+    private TimerTask renderTime = new TimerTask() {
         @Override
         public void run() {
             currentTime ++;
             displayedTime = String.valueOf(currentTime / 60 )+ ":" + String.valueOf(currentTime%60);
+            textWidth = paint.measureText(displayedTime);
         }
     };
     public void draw(Canvas canvas, int left, int top){

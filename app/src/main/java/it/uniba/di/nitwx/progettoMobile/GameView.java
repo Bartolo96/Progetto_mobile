@@ -25,9 +25,11 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
     private int cardWidth;
     private int cardHeight;
     private TimerSprite timerSprite;
+    private TriesCounterSprite triesCounterSprite;
     private final int NUM_OF_CARDS = 16;
-    private  CardSprite lastCard = null;
-    private  CardSprite currentCard = null;
+    private CardSprite lastCard = null;
+    private CardSprite currentCard = null;
+    private boolean isCardTouchEnabled = true;
 
     private List<CardSprite> playingCards = new ArrayList<>();
 
@@ -53,6 +55,7 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
         }
         Collections.shuffle(playingCards);
         timerSprite = new TimerSprite();
+        triesCounterSprite = new TriesCounterSprite();
         thread.setRunning(true);
         thread.start();
     }
@@ -67,32 +70,36 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
         float x = event.getX();
         float y = event.getY();
 
-        for(CardSprite card : playingCards){
-            if ((x > card.card_start_X && x < card.card_start_X + cardWidth) &&
-                    (y > card.card_start_Y && y < card.card_start_Y + cardHeight)){
-                if(this.lastCard== null){
-                    this.lastCard = card;
-                    card.update();
+        if (isCardTouchEnabled) {
+            for (CardSprite card : playingCards) {
+                if ((x > card.card_start_X && x < card.card_start_X + cardWidth) &&
+                        (y > card.card_start_Y && y < card.card_start_Y + cardHeight)) {
+                    if (!card.isAlreadyTurned() && this.lastCard == null) {
+                        this.lastCard = card;
+                        card.update();
+                    } else if (!card.isAlreadyTurned() && card.id == lastCard.id) {
+                        card.update();
+                        this.lastCard = card;
+                        this.lastCard = null;
+                        triesCounterSprite.update();
+                    } else if (!card.isAlreadyTurned() && card.id != lastCard.id) {
+                        card.update();
+                        currentCard = card;
+                        isCardTouchEnabled = false;
+                        triesCounterSprite.update();
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                currentCard.update();
+                                lastCard.update();
+                                currentCard = null;
+                                lastCard = null;
+                                isCardTouchEnabled = true;
+                            }
+                        }, 1000);
+                    }
+                    break;
                 }
-                else if(!card.isAlreadyTurned() && card == lastCard) {
-                    card.update();
-                    this.lastCard = card;
-                    this.lastCard = null;
-                }
-                else if(!card.isAlreadyTurned() && card != lastCard) {
-                    card.update();
-                    currentCard = card;
-                    new Timer().schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            currentCard.update();
-                            lastCard.update();
-                            currentCard = null;
-                            lastCard = null;
-                        }
-                    },2 * 1000);
-                }
-                break;
             }
         }
 
@@ -136,6 +143,7 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
                 }
             }
             timerSprite.draw(canvas,100, positionTop+cardHeight+200);
+            triesCounterSprite.draw(canvas,100 + (int)timerSprite.textWidth + 100, positionTop+cardHeight+200);
 
         }
     }
