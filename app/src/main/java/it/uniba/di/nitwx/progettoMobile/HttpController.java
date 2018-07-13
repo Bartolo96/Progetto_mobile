@@ -159,6 +159,11 @@ public class HttpController {
         http_request(Request.Method.POST,context,url,authorizationHeader,body,responseHandler,errorHandler);
     }
 
+    static void changePw(JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler,Context context){
+        String url = Constants.URL_CHANGE_PASSWORD;
+        http_request(Request.Method.POST,context,url,authorizationHeader,body,responseHandler,errorHandler);
+    }
+
 
 
 
