@@ -82,6 +82,13 @@
 
                 android:gravity="center"
                 android:text="@string/settings" />
+
+            <Button
+                android:id="@+id/playGameBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/game"
+                android:gravity="center"/>
         </android.support.v7.widget.GridLayout>
         </RelativeLayout>
 

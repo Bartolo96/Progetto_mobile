@@ -75,6 +75,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Button offerBtn = (Button) findViewById(R.id.btnOffer);
         Button myProfileBtn = (Button) findViewById(R.id.myProfileBtn);
         Button settingsBtn = (Button) findViewById(R.id.settingsBtn);
+        Button gameBtn = (Button) findViewById(R.id.playGameBtn);
 
         stores.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +116,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        gameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToGameIntent = new Intent(HomeActivity.this,GameActivity.class);
+                startActivity(goToGameIntent);
+            }
+        });
         logOut.setOnClickListener(logOutListener);
     }
 
