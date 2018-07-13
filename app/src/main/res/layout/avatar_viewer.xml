@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayoutLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView android:id="@+id/avatar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerCrop"
+
+        android:src="@drawable/nav_menu_header_bg"
+        app:srcCompat="@drawable/nav_menu_header_bg">
+        </ImageView>
+
+    <ImageView android:id="@+id/avatar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerCrop"
+
+        android:src="@drawable/nav_menu_header_bg"
+        app:srcCompat="@drawable/nav_menu_header_bg">
+
+    </ImageView>
+    <ImageView android:id="@+id/avatar3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerCrop"
+
+        android:src="@drawable/nav_menu_header_bg"
+        app:srcCompat="@drawable/nav_menu_header_bg">
+
+    </ImageView>
+    <ImageView android:id="@+id/avatar4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerCrop"
+
+        android:src="@drawable/nav_menu_header_bg"
+        app:srcCompat="@drawable/nav_menu_header_bg">
+
+    </ImageView>
+</GridLayoutLayout>
