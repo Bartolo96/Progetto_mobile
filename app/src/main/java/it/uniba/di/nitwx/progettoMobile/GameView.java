@@ -1,6 +1,9 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -30,7 +33,8 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
     private CardSprite lastCard = null;
     private CardSprite currentCard = null;
     private boolean isCardTouchEnabled = true;
-
+    private Bitmap sfondo;
+    private Paint deafultPaint;
     private List<CardSprite> playingCards = new ArrayList<>();
 
     public GameView(Context context){
@@ -53,9 +57,15 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
             playingCards.add(new CardSprite(BitmapFactory.decodeResource(getResources(),R.drawable.card_sprite),
                                     BitmapFactory.decodeResource(getResources(),imgId),i%8,cardWidth,cardHeight));
         }
+
         Collections.shuffle(playingCards);
+        sfondo = BitmapFactory.decodeResource(getResources(),R.drawable.sfondo_gioco);
+        sfondo = Bitmap.createScaledBitmap(sfondo,displaySize.x,displaySize.y,false);
         timerSprite = new TimerSprite();
         triesCounterSprite = new TriesCounterSprite();
+        deafultPaint = new Paint();
+        this.deafultPaint.setColor(Color.RED);
+        this.deafultPaint.setTextSize(100);
         thread.setRunning(true);
         thread.start();
     }
@@ -81,12 +91,13 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
                         card.update();
                         this.lastCard = card;
                         this.lastCard = null;
-                        triesCounterSprite.update();
+                        triesCounterSprite.update(true);
+
                     } else if (!card.isAlreadyTurned() && card.id != lastCard.id) {
                         card.update();
                         currentCard = card;
                         isCardTouchEnabled = false;
-                        triesCounterSprite.update();
+                        triesCounterSprite.update(false);
                         new Timer().schedule(new TimerTask() {
                             @Override
                             public void run() {
@@ -128,7 +139,7 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
         super.draw(canvas);
 
         if(canvas != null){
-            canvas.drawColor(Color.WHITE);
+            canvas.drawBitmap(sfondo,0,0,null);
             int positionLeft = 100;
             int positionTop = 100;
             int counter = 0;
@@ -137,14 +148,21 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
                 card.draw(canvas,positionLeft,positionTop);
                 positionLeft += 200;
                 counter++;
+
                 if(counter == playingCards.size()/2){
                     positionTop += cardHeight + 100;
                     positionLeft = 100;
                 }
             }
-            timerSprite.draw(canvas,100, positionTop+cardHeight+200);
-            triesCounterSprite.draw(canvas,100 + (int)timerSprite.textWidth + 100, positionTop+cardHeight+200);
-
+            if(triesCounterSprite.gameProgress != 8) {
+                timerSprite.draw(canvas, 100, positionTop + cardHeight + 200);
+                triesCounterSprite.draw(canvas, 100 + (int) timerSprite.textWidth + 100, positionTop + cardHeight + 200);
+            }
+            else {
+                canvas.drawText("Game Completed!!", 100, positionTop + cardHeight + 200, deafultPaint);
+                //Intent intent = new Intent().setClass(getContext(),HomeActivity.class);
+                //((Activity)getContext()).startActivity(intent);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.Paint;
 
 public class TriesCounterSprite {
     private int currentTries;
+    public int gameProgress;
     private String displayTries;
     private Paint paint ;
 
@@ -17,9 +18,12 @@ public class TriesCounterSprite {
         this.paint.setTextSize(100);
     }
 
-    public void update(){
+    public void update(boolean isProgressAdvancing){
         this.currentTries++;
         this.displayTries = "Tries: " + String.valueOf(currentTries);
+        if(isProgressAdvancing){
+            gameProgress++;
+        }
     }
     public void draw(Canvas canvas, int left, int top){
         canvas.drawText(displayTries,left, top,paint);
