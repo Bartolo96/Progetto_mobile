@@ -68,7 +68,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, ProductListActivity.class));
+
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+            upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            NavUtils.navigateUpTo(this, upIntent);
+
             return true;
         }
         return super.onOptionsItemSelected(item);

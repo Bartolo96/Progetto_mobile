@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
@@ -70,7 +71,9 @@ public class OfferDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, OfferListActivity.class));
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+            upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            NavUtils.navigateUpTo(this, upIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);

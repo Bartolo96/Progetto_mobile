@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -216,6 +217,9 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView loggedAsName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
+        loggedAsName.setText((String)HttpController.userClaims.get("email"));
 
         if (findViewById(R.id.offer_detail_container) != null) {
             // The detail container view will be present only in the

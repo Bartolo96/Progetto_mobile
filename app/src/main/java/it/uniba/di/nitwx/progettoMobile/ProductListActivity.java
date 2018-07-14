@@ -212,6 +212,8 @@ public class ProductListActivity extends AppCompatActivity implements Navigation
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        TextView loggedAsName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
+        loggedAsName.setText((String)HttpController.userClaims.get("email"));
 
         if (findViewById(R.id.product_detail_container) != null) {
             // The detail container view will be present only in the
