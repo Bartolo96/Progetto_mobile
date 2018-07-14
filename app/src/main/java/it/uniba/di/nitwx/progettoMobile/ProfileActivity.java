@@ -24,6 +24,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,9 +70,10 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
 
         TextView bDayProfile = (TextView) findViewById(R.id.bDayTextView);
-
-        java.util.Date date = new java.util.Date(Long.parseLong((String) HttpController.userClaims.get("birth_date"))*1000);
-        bDayProfile.setText(date.getDay()+"/"+date.getMonth()+"/"+date.getYear());
+        Long longDate =  Long.valueOf(HttpController.userClaims.get("birth_date",String.class))*1000;
+        Date date = new Date(longDate);
+        String displayDate = String.format("%02d/%02d/%d",date.getDay(),date.getMonth(),date.getYear()+1900);
+        bDayProfile.setText(displayDate);
 
 
         Button changePassword = (Button) findViewById(R.id.changePwButton);
