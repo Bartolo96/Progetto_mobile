@@ -1,5 +1,6 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.app.Activity;
 import android.arch.persistence.room.Transaction;
 import android.content.Context;
 import android.content.Intent;
@@ -72,6 +73,7 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
     private AppDatabase db;
     GoogleSignInClient mGoogleSignInClient;
     GoogleSignInOptions gso;
+    TextView txtPoints;
 
     private class InsertOffersAsync extends AsyncTask<Void, Void, Void> {
         @Override
@@ -223,9 +225,11 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        TextView txtPoints =  toolbar.findViewById(R.id.points);
-        txtPoints.setText("IcePoints: "+(HttpController.userClaims.get("points")).toString());
-
+        txtPoints =  toolbar.findViewById(R.id.points);
+        if(txtPoints != null) {
+            String pointsString = "IcePoints: " + (HttpController.userClaims.get("points")).toString();
+            txtPoints.setText(pointsString);
+        }
         /**Inserimento drawerLayout + set Listener per la Navigation View**/
         DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.app_name,R.string.app_name);
@@ -233,10 +237,12 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
         toggle.syncState();
 
         NavigationView navigationView =  findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        if(navigationView!=null)
+            navigationView.setNavigationItemSelectedListener(this);
 
         TextView loggedAsName = navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
-        loggedAsName.setText((String)HttpController.userClaims.get("email"));
+        if(loggedAsName != null)
+            loggedAsName.setText((String)HttpController.userClaims.get("email"));
 
         if (findViewById(R.id.offer_detail_container) != null) {
             // The detail container view will be present only in the
@@ -410,11 +416,16 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
                 finish();
                 break;
             case R.id.gameItemMenu:
-                if(Integer.valueOf(HttpController.userClaims.get("last_time_played",String.class)) < (Calendar.getInstance().getTimeInMillis()/1000)-(24*60*60) ) {
+                long lastTimePlayed = Long.valueOf(HttpController.userClaims.get("last_time_played",String.class));
+                long curTime = Calendar.getInstance().getTimeInMillis()/1000;
+
+                if( lastTimePlayed < (curTime -(24*60*60))) {
                     Intent goToGameIntent = new Intent(OfferListActivity.this, GameActivity.class);
-                    startActivityForResult(goToGameIntent, 1);
+                    startActivityForResult(goToGameIntent, Constants.GAME_COMPLETED_CODE);
                 }else {
-                    Toast.makeText(OfferListActivity.this,"You have to wait",Toast.LENGTH_LONG).show();
+                    long reaminingTime = lastTimePlayed - ( curTime -(24*60*60));
+                    String waitToPlay = getString(R.string.waitToPlay)+ " " + String.format("%02dh:%02dm",reaminingTime/3600,(reaminingTime%3600)/60);
+                    Toast.makeText(OfferListActivity.this,waitToPlay,Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.storesItemMenu:
@@ -454,6 +465,43 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.remove(Constants.REFRESH_TOKEN);
         editor.apply();
+    }
+
+    Response.Listener<String> updatePointsResponseHandler = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                HttpController.userClaims = Jwts.parser().setSigningKey(HttpController.getKey()).
+                        parseClaimsJws(jsonResponse.getString(Constants.AUTH_TOKEN)).
+                        getBody();
+                String token_type = jsonResponse.getString(Constants.TOKEN_TYPE);
+                if (token_type != null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
+                    HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER, token_type + " " + jsonResponse.getString(Constants.AUTH_TOKEN));
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    Response.ErrorListener updatePointsErrorHandler = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            error.printStackTrace();
+            Toast.makeText(OfferListActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
+        }
+    };
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == Constants.GAME_COMPLETED_CODE){
+            if(resultCode == Activity.RESULT_OK){
+                if(data.getBooleanExtra("completed",false)){
+                    Toast.makeText(this,getString(R.string.updatingPoints),Toast.LENGTH_SHORT).show();
+                    HttpController.updatePoints(updatePointsResponseHandler,updatePointsErrorHandler,OfferListActivity.this);
+                }
+            }
+        }
     }
 }
 

@@ -84,4 +84,6 @@
     <string name="goodOperation">Password changed successfully</string>
     <string name="dateShowText">Date picked: </string>
     <string name="tyForSend">Thank you for your feedback!</string>
+    <string name="updatingPoints">Your point will be updated shortly</string>
+    <string name="waitToPlay">You will be able to play again in:</string>
 </resources>

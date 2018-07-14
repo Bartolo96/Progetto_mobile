@@ -179,7 +179,7 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
             else {
                 canvas.drawText("Game Completed!!", cardSpacingX, positionTop + cardHeight + cardSpacingY, deafultPaint);
                 this.thread.setRunning(false);
-                Intent returnIntent = new Intent();//.setClass(this.mContext,HomeActivity.class);
+                Intent returnIntent = new Intent();
                 returnIntent.putExtra("completed",true);
                 ((Activity)mContext).setResult(Activity.RESULT_OK,returnIntent);
                 ((Activity)mContext).finish();

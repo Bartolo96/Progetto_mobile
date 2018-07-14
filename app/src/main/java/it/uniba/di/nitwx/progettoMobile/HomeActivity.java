@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 String token_type = jsonResponse.getString(Constants.TOKEN_TYPE);
                 if (token_type != null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
                     HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER, token_type + " " + jsonResponse.getString(Constants.AUTH_TOKEN));
-                Toast.makeText(HomeActivity.this,"Your points have been updated",Toast.LENGTH_LONG).show();
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
        if(requestCode == Constants.GAME_COMPLETED_CODE){
            if(resultCode == Activity.RESULT_OK){
                if(data.getBooleanExtra("completed",false)){
-                   Toast.makeText(this,"Your points are going to be updated in a few seconds",Toast.LENGTH_SHORT).show();
+                   Toast.makeText(this,getString(R.string.updatingPoints),Toast.LENGTH_SHORT).show();
                    HttpController.updatePoints(updatePointsResponseHandler,updatePointsErrorHandler,HomeActivity.this);
                }
            }
@@ -147,11 +147,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         gameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Integer.valueOf(HttpController.userClaims.get("last_time_played",String.class)) < (Calendar.getInstance().getTimeInMillis()/1000)-(24*60*60) ) {
+                long lastTimePlayed = Long.valueOf(HttpController.userClaims.get("last_time_played",String.class));
+                long curTime = Calendar.getInstance().getTimeInMillis()/1000;
+
+                if( lastTimePlayed < (curTime -(24*60*60))) {
                     Intent goToGameIntent = new Intent(HomeActivity.this, GameActivity.class);
-                    startActivityForResult(goToGameIntent, 1);
+                    startActivityForResult(goToGameIntent, Constants.GAME_COMPLETED_CODE);
                 }else {
-                    Toast.makeText(HomeActivity.this,"You have to wait",Toast.LENGTH_LONG).show();
+                    long reaminingTime = lastTimePlayed - ( curTime -(24*60*60));
+                    String waitToPlay = getString(R.string.waitToPlay)+ " " + String.format("%02dh:%02dm",reaminingTime/3600,(reaminingTime%3600)/60);
+                    Toast.makeText(HomeActivity.this,waitToPlay,Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -212,11 +217,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 mDrawerLayout.closeDrawers();
                 break;
             case R.id.gameItemMenu:
-                if(Integer.valueOf(HttpController.userClaims.get("last_time_played",String.class)) < (Calendar.getInstance().getTimeInMillis()/1000)-(24*60*60) ) {
+                long lastTimePlayed = Long.valueOf(HttpController.userClaims.get("last_time_played",String.class));
+                long curTime = Calendar.getInstance().getTimeInMillis()/1000;
+
+                if( lastTimePlayed < (curTime -(24*60*60))) {
                     Intent goToGameIntent = new Intent(HomeActivity.this, GameActivity.class);
-                    startActivityForResult(goToGameIntent, 1);
+                    startActivityForResult(goToGameIntent, Constants.GAME_COMPLETED_CODE);
                 }else {
-                    Toast.makeText(HomeActivity.this,"You have to wait",Toast.LENGTH_LONG).show();
+                    long reaminingTime = lastTimePlayed - ( curTime -(24*60*60));
+                    String waitToPlay = getString(R.string.waitToPlay)+ " " + String.format("%02dh:%02dm",reaminingTime/3600,(reaminingTime%3600)/60);
+                    Toast.makeText(HomeActivity.this,waitToPlay,Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.storesItemMenu:

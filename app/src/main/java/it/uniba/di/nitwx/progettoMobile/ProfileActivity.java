@@ -1,5 +1,6 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -27,10 +28,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import io.jsonwebtoken.Jwts;
 
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -181,6 +185,19 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 Intent goToProfileActivityIntent = new Intent(ProfileActivity.this,ProfileActivity.class);
                 startActivity(goToProfileActivityIntent);
                 break;
+            case R.id.gameItemMenu:
+                long lastTimePlayed = Long.valueOf(HttpController.userClaims.get("last_time_played",String.class));
+                long curTime = Calendar.getInstance().getTimeInMillis()/1000;
+
+                if( lastTimePlayed < (curTime -(24*60*60))) {
+                    Intent goToGameIntent = new Intent(ProfileActivity.this, GameActivity.class);
+                    startActivityForResult(goToGameIntent, Constants.GAME_COMPLETED_CODE);
+                }else {
+                    long reaminingTime = lastTimePlayed - ( curTime -(24*60*60));
+                    String waitToPlay = getString(R.string.waitToPlay)+ " " + String.format("%02dh:%02dm",reaminingTime/3600,(reaminingTime%3600)/60);
+                    Toast.makeText(ProfileActivity.this,waitToPlay,Toast.LENGTH_LONG).show();
+                }
+                break;
             case R.id.settings:
 
                 Intent goToSettingsActivityIntent = new Intent(ProfileActivity.this, SettingsActivity.class);
@@ -235,6 +252,42 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.remove(Constants.REFRESH_TOKEN);
         editor.apply();
+    }
+    Response.Listener<String> updatePointsResponseHandler = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                HttpController.userClaims = Jwts.parser().setSigningKey(HttpController.getKey()).
+                        parseClaimsJws(jsonResponse.getString(Constants.AUTH_TOKEN)).
+                        getBody();
+                String token_type = jsonResponse.getString(Constants.TOKEN_TYPE);
+                if (token_type != null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
+                    HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER, token_type + " " + jsonResponse.getString(Constants.AUTH_TOKEN));
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    Response.ErrorListener updatePointsErrorHandler = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            error.printStackTrace();
+            Toast.makeText(ProfileActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
+        }
+    };
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == Constants.GAME_COMPLETED_CODE){
+            if(resultCode == Activity.RESULT_OK){
+                if(data.getBooleanExtra("completed",false)){
+                    Toast.makeText(this,getString(R.string.updatingPoints),Toast.LENGTH_SHORT).show();
+                    HttpController.updatePoints(updatePointsResponseHandler,updatePointsErrorHandler,ProfileActivity.this);
+                }
+            }
+        }
     }
 
 }
