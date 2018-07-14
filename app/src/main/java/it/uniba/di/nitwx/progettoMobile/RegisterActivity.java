@@ -43,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     Account userAccount;
     Dialog dialog;
     DatePicker datePicker;
+    TextView datePickedText;
     int bdayDay;
     int bdayMonth;
     int bdayYear;
@@ -94,6 +95,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         male=(RadioButton)findViewById(R.id.radioBtnMale);
         female=(RadioButton)findViewById(R.id.radioBtnFemale);
         register.setOnClickListener(registerListener);
+        datePickedText = findViewById(R.id.datePickedText);
         final Calendar c = Calendar.getInstance();
         bdayYear = c.get(Calendar.YEAR);
         bdayMonth = c.get(Calendar.MONTH);
@@ -127,8 +129,8 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         @Override
         public void onClick(View view) {
             if(password.getText().toString().equals(confPassword.getText().toString())) {
-                boolean emailIsVAlid= isValidEmail(email.getText().toString());
-                if(!emailIsVAlid){
+                boolean emailIsValid = isValidEmail(email.getText().toString());
+                if(!emailIsValid){
                     Toast.makeText(RegisterActivity.this,getString(R.string.WrongMail),Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -153,8 +155,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         }
     };
 
-    public static boolean isValidEmail(String email)
-    {
+    public static boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
@@ -171,6 +172,8 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         bdayDay=i2;
         bdayMonth=i1;
         bdayYear=i;
+        String displayDate = getString(R.string.dateShowText) + String.format("%02d/%02d/%d",bdayDay,bdayMonth,bdayYear);
+        datePickedText.setText(displayDate);
     }
 }
 
