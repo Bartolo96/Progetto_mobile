@@ -77,9 +77,6 @@ public class LogIn extends AppCompatActivity {
     SignInButton googleBtn;
     GoogleSignInOptions gso;
     RelativeLayout progressBar;
-    PendingIntent mGeofencePendingIntent;
-    private GeofencingClient mGeofencingClient;
-    private List<Geofence> mGeofenceList = new ArrayList<Geofence>();
     private final int REQUEST_FINE_ACCESS = 1;
     Intent mServiceIntent;
     GeofenceService mGeofenceService;
@@ -159,9 +156,7 @@ public class LogIn extends AppCompatActivity {
             body.put("user_type", Constants.GOOGLE_USER);
 
             HttpController.thirdPartyLogin(body, logInResponseHandler, logInErrorHandler, this);
-        } catch (ApiException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (ApiException|JSONException e) {
             e.printStackTrace();
         }
     }
@@ -228,19 +223,20 @@ public class LogIn extends AppCompatActivity {
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
+
         //GOOGLE SIGN IN
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        googleBtn = (SignInButton) findViewById(R.id.sign_in_button_Google);
+        googleBtn = findViewById(R.id.sign_in_button_Google);
         googleBtn.setOnClickListener(googleSignIn);
-
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null && !accessToken.isExpired()) {
             LoginManager.getInstance().logInWithReadPermissions(LogIn.this, Arrays.asList("public_profile", "email"));
         }
+
         //FACEBOOK SIGN IN
         callbackManager = CallbackManager.Factory.create();
-        LoginButton btn = (LoginButton) findViewById(R.id.btnLogInFacebook);
+        LoginButton btn = findViewById(R.id.btnLogInFacebook);
         btn.setReadPermissions("email", "user_birthday", "user_gender");
         btn.setOnClickListener(facebookSignIn);
         LoginManager.getInstance().registerCallback(callbackManager,
@@ -271,13 +267,13 @@ public class LogIn extends AppCompatActivity {
                 });
 
 
-        Button logInBtn = (Button) findViewById(R.id.btnLogIn);
+        Button logInBtn = findViewById(R.id.btnLogIn);
         logInBtn.setOnClickListener(logInListener);
 
         username = findViewById(R.id.txtUsername);
         password = findViewById(R.id.txtPwd);
         remember = findViewById(R.id.swtRemember);
-        register = (TextView) findViewById(R.id.txtTapHere);
+        register = findViewById(R.id.txtTapHere);
         register.setOnClickListener(goToRegisterPage);
 
         if (ContextCompat.checkSelfPermission(this,
@@ -306,7 +302,6 @@ public class LogIn extends AppCompatActivity {
             mGeofenceService = new GeofenceService();
             mServiceIntent = new Intent(getCtx(), mGeofenceService.getClass());
             if (!isMyServiceRunning(GeofenceService.class)) {
-                Log.d("Geofence", "Service running");
                 Intent ishintent = new Intent(this, GeofenceService.class);
                 PendingIntent pintent = PendingIntent.getService(this, 0, ishintent, 0);
                 AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -364,11 +359,7 @@ public class LogIn extends AppCompatActivity {
                         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 50000, pintent);
                         startService(mServiceIntent);
                     }
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                 }
-                return;
             }
 
             // other 'case' lines to check for other

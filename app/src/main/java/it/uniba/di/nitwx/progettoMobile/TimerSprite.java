@@ -1,6 +1,5 @@
 package it.uniba.di.nitwx.progettoMobile;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;

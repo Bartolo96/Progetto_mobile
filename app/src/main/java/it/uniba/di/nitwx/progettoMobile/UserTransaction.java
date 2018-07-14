@@ -2,7 +2,7 @@ package it.uniba.di.nitwx.progettoMobile;
 
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Entity;
-import io.reactivex.annotations.NonNull;
+import android.support.annotation.NonNull;
 
 /**
  * Created by nicol on 10/07/2018.
@@ -10,14 +10,15 @@ import io.reactivex.annotations.NonNull;
 @Entity
 public class UserTransaction {
     @PrimaryKey
-    @android.support.annotation.NonNull
+    @NonNull
     public String id="default";
-    @android.support.annotation.NonNull
+    @NonNull
     public String token;
-    @android.support.annotation.NonNull
+    @NonNull
     public String userId;
+    @NonNull
     public String offerId;
-    public UserTransaction(String id, String token, String userId, String offerId) {
+    UserTransaction(@NonNull String id, @NonNull String token, @NonNull String userId, @NonNull String offerId) {
         this.id = id;
         this.token = token;
         this.userId = userId;

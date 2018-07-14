@@ -2,7 +2,7 @@ package it.uniba.di.nitwx.progettoMobile;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-
+import android.support.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,7 +17,7 @@ import java.sql.Time;
 public class Store {
 
     @PrimaryKey
-    @android.support.annotation.NonNull
+    @NonNull
     public String id ;
     public String address;
     public double longitude;
@@ -25,7 +25,7 @@ public class Store {
     public int radius;
     public long timestamp;
 
-    public Store(String id, String address, double longitude, double latitude, int radius, long timestamp) {
+    public Store(@NonNull String id, String address, double longitude, double latitude, int radius, long timestamp) {
         this.id = id;
         this.address = address;
         this.longitude = longitude;

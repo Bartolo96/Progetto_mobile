@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
 
 /**
  * Created by Bartolo on 06/07/2018.
