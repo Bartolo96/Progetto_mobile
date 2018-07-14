@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import org.json.JSONArray;
@@ -30,6 +32,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MissingClaimException;
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -367,6 +370,19 @@ public class ProductListActivity extends AppCompatActivity implements Navigation
                 Intent goToHomeActivityIntent = new Intent(ProductListActivity.this, HomeActivity.class);
                 startActivity(goToHomeActivityIntent);
                 finish();
+                break;
+            case R.id.gameItemMenu:
+                if(Integer.valueOf(HttpController.userClaims.get("last_time_played",String.class)) < (Calendar.getInstance().getTimeInMillis()/1000)-(24*60*60) ) {
+                    Intent goToGameIntent = new Intent(ProductListActivity.this, GameActivity.class);
+                    startActivityForResult(goToGameIntent, 1);
+                }else {
+                    Toast.makeText(ProductListActivity.this,"You have to wait",Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.storesItemMenu:
+                Intent goToStoresActivityIntent = new Intent(ProductListActivity.this,StoresActivity.class);
+                startActivity(goToStoresActivityIntent);
+                break;
         }
         return false;
     }

@@ -210,6 +210,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 DrawerLayout mDrawerLayout;
                 mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
                 mDrawerLayout.closeDrawers();
+                break;
+            case R.id.gameItemMenu:
+                if(Integer.valueOf(HttpController.userClaims.get("last_time_played",String.class)) < (Calendar.getInstance().getTimeInMillis()/1000)-(24*60*60) ) {
+                    Intent goToGameIntent = new Intent(HomeActivity.this, GameActivity.class);
+                    startActivityForResult(goToGameIntent, 1);
+                }else {
+                    Toast.makeText(HomeActivity.this,"You have to wait",Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.storesItemMenu:
+                Intent goToStoresActivityIntent = new Intent(HomeActivity.this,StoresActivity.class);
+                startActivity(goToStoresActivityIntent);
+                break;
         }
         return false;
     }

@@ -18,6 +18,16 @@
          android:id="@+id/offersItemMenu"
          android:title="@string/title_offer_list"
          android:icon="@drawable/percentage"/>
+
+        <item
+            android:id="@+id/gameItemMenu"
+            android:title="@string/game"
+            android:icon="@drawable/gamepad_console"/>
+
+        <item
+            android:id="@+id/storesItemMenu"
+            android:title="@string/stores"
+            android:icon="@drawable/shop_black"/>
     </group>
     <group
         android:id="@+id/group2" android:checkableBehavior="single">
