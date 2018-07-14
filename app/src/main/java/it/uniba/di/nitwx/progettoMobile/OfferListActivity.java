@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.android.volley.Response;
@@ -209,6 +210,9 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
+        TextView txtPoints= (TextView) toolbar.findViewById(R.id.points);
+        txtPoints.setText("IcePoints: "+(HttpController.userClaims.get("points")).toString());
+
         /**Inserimento drawerLayout + set Listener per la Navigation View**/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.app_name,R.string.app_name);
@@ -391,6 +395,19 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
                 Intent goToHomeActivityIntent = new Intent(OfferListActivity.this, HomeActivity.class);
                 startActivity(goToHomeActivityIntent);
                 finish();
+                break;
+            case R.id.gameItemMenu:
+                if(Integer.valueOf(HttpController.userClaims.get("last_time_played",String.class)) < (Calendar.getInstance().getTimeInMillis()/1000)-(24*60*60) ) {
+                    Intent goToGameIntent = new Intent(OfferListActivity.this, GameActivity.class);
+                    startActivityForResult(goToGameIntent, 1);
+                }else {
+                    Toast.makeText(OfferListActivity.this,"You have to wait",Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.storesItemMenu:
+                Intent goToStoresActivityIntent = new Intent(OfferListActivity.this,StoresActivity.class);
+                startActivity(goToStoresActivityIntent);
+                break;
         }
         return false;
     }
