@@ -46,7 +46,7 @@ public class Constants {
     static final String URL_REFRESH_ACCESS_TOKEN = BASE_URL + "auth/refresh_access_token";
     static final String URL_GET_STORES = BASE_URL +"api/stores";
     static final String URL_REDEEM_OFFER= BASE_URL + "api/transactions/add_transaction";
-    static final String URL_CHECK_TRANSACTION_AVAILABILITY= BASE_URL + "/api/transactions/check_transaction_availability";
+    static final String URL_CHECK_TRANSACTION_AVAILABILITY= BASE_URL + "api/transactions/check_transaction_availability";
     static final String URL_CHANGE_PASSWORD = BASE_URL + "api/users/change_password";
     static final String URL_UPDATE_POINTS = BASE_URL + "api/users/update_user_points";
 

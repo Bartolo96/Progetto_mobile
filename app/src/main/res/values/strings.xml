@@ -80,5 +80,6 @@
     <string name="redeemFor">Redeem for %d IcePoints</string>
     <string name="youHavePoints">You have %d IcePoints</string>
     <string name="game">Play Game!</string>
+    <string name="PickDate">Pick date</string>
     <string name="goodOperation">Password changed successfully</string>
 </resources>

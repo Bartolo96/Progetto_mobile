@@ -46,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         TextView bDayProfile = (TextView) findViewById(R.id.bDayTextView);
-        java.util.Date date = new java.util.Date(Long.parseLong((String) HttpController.userClaims.get("birth_date")));
+        java.util.Date date = new java.util.Date(Long.parseLong((String) HttpController.userClaims.get("birth_date"))*1000);
         bDayProfile.setText(date.toString());
 
         Button changePassword = (Button) findViewById(R.id.changePwButton);
