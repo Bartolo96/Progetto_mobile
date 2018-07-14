@@ -1,7 +1,9 @@
 package it.uniba.di.nitwx.progettoMobile;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +20,12 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.Date;
 
@@ -28,6 +36,8 @@ import org.json.JSONObject;
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
 
+    GoogleSignInClient mGoogleSignInClient;
+    GoogleSignInOptions gso;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +45,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         Toolbar homeToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(homeToolbar);
-
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         /**Inserimento drawerLayout + set Listener per la Navigation View**/
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, homeToolbar,R.string.app_name,R.string.app_name);
@@ -174,7 +188,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 break;
 
             case R.id.logOut:
-                //HomeActivity.functionLogOut();
+                functionLogOut();
                 Intent intent=new Intent(ProfileActivity.this,LogIn.class);
                 startActivity(intent);
                 finish();
@@ -185,6 +199,36 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 finish();
         }
         return false;
+    }
+
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent=new Intent(ProfileActivity.this,LogIn.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+    }
+    public void functionLogOut(){
+        String tmp=(String) HttpController.userClaims.get(Constants.USER_TYPE);
+        switch (new Integer(tmp)){
+            case Constants.REGISTERD_USER:
+                break;
+            case Constants.FACEBOOK_USER:
+                LoginManager.getInstance().logOut();
+                break;
+            case Constants.GOOGLE_USER:
+                signOut();
+                break;
+        }
+
+        SharedPreferences sharedPref = ProfileActivity.this.getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(Constants.REFRESH_TOKEN);
+        editor.apply();
     }
 
 }
