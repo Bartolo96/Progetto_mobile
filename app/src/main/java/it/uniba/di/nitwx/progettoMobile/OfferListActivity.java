@@ -7,7 +7,10 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -49,7 +52,7 @@ import static it.uniba.di.nitwx.progettoMobile.Constants.UNAUTHORIZED_STATUS_COD
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class OfferListActivity extends AppCompatActivity {
+public class OfferListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -205,6 +208,15 @@ public class OfferListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
+        /**Inserimento drawerLayout + set Listener per la Navigation View**/
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.app_name,R.string.app_name);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         if (findViewById(R.id.offer_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -279,7 +291,7 @@ public class OfferListActivity extends AppCompatActivity {
             }
             discount=(int)(mValues.get(position).offerPrice/price*100);
             holder.mIdView.setText(mValues.get(position).name);
-            holder.mPriceView.setText(String.valueOf(mValues.get(position).offerPrice));
+            holder.mPriceView.setText("€ "+String.valueOf(mValues.get(position).offerPrice));
             holder.mDiscount.setText(discount+"%");
 
             holder.itemView.setTag(mValues.get(position));
@@ -332,6 +344,50 @@ public class OfferListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id=item.getItemId();
+        switch(id)
+        {
+            case R.id.productsItemMenu:
+                Intent goToProductsActivityIntent = new Intent(OfferListActivity.this, ProductListActivity.class);
+                startActivity(goToProductsActivityIntent);
+                break;
+
+            case R.id.offersItemMenu:
+                Intent goToOffersActivityIntent = new Intent(OfferListActivity.this, OfferListActivity.class);
+                startActivity(goToOffersActivityIntent);
+                break;
+            case R.id.myProfile:
+                Intent goToProfileActivityIntent = new Intent(OfferListActivity.this,ProfileActivity.class);
+                startActivity(goToProfileActivityIntent);
+                break;
+            case R.id.settings:
+
+                Intent goToSettingsActivityIntent = new Intent(OfferListActivity.this, SettingsActivity.class);
+                startActivity(goToSettingsActivityIntent);
+
+                break;
+            case R.id.help:
+
+                Intent goToHelpActivityIntent = new Intent(OfferListActivity.this, HelpActivity.class);
+                startActivity(goToHelpActivityIntent);
+                break;
+
+            case R.id.logOut:
+                //HomeActivity.functionLogOut();
+                Intent intent=new Intent(OfferListActivity.this,LogIn.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.homenavigation:
+                Intent goToHomeActivityIntent = new Intent(OfferListActivity.this, HomeActivity.class);
+                startActivity(goToHomeActivityIntent);
+                finish();
+        }
+        return false;
     }
 }
 
