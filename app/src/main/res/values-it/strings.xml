@@ -72,6 +72,7 @@
     <string name="redeemFor">Riscatta con %d icePoints</string>
     <string name="youHavePoints">Hai %d IcePoints</string>
     <string name="game">Gioca!</string>
+    <string name="PickDate">Segli data</string>
 </resources>
 
 
