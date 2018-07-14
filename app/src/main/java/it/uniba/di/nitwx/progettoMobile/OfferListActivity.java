@@ -373,12 +373,6 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
                 Intent goToProfileActivityIntent = new Intent(OfferListActivity.this,ProfileActivity.class);
                 startActivity(goToProfileActivityIntent);
                 break;
-            case R.id.settings:
-
-                Intent goToSettingsActivityIntent = new Intent(OfferListActivity.this, SettingsActivity.class);
-                startActivity(goToSettingsActivityIntent);
-
-                break;
             case R.id.help:
 
                 Intent goToHelpActivityIntent = new Intent(OfferListActivity.this, HelpActivity.class);

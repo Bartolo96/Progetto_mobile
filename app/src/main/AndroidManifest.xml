@@ -83,7 +83,6 @@
                 android:value="it.uniba.di.nitwx.progettoMobile.OfferListActivity" />
         </activity>
         <activity android:name=".HelpActivity" />
-        <activity android:name=".SettingsActivity" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
