@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,13 +64,13 @@ public class ProfileActivity extends AppCompatActivity {
 
             try {
                 JSONObject temp = new JSONObject(response);
-                boolean ok= temp.getBoolean("password_updated");
+                boolean ok= temp.getBoolean("password_update");
 
                 if(ok){
-                    Toast.makeText(ProfileActivity.this, getResources().getString(R.string.goodOperation), Toast.LENGTH_SHORT);
+                    Toast.makeText(ProfileActivity.this, getResources().getString(R.string.goodOperation), Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(ProfileActivity.this, "Error From Server", Toast.LENGTH_SHORT);
+                    Toast.makeText(ProfileActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -80,6 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
     Response.ErrorListener responseErrorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
+            error.printStackTrace();
             Toast.makeText(ProfileActivity.this, getResources().getString(R.string.newPwConfirmNoMatch), Toast.LENGTH_SHORT);
         }
     };
@@ -98,7 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-
+                        Log.d("Prova","Porco Dio");
                         EditText oldPw = (EditText) dialog.findViewById(R.id.oldPwEditText);
                         EditText newPw = (EditText) dialog.findViewById(R.id.newPwEditText);
                         EditText newPwConfirm = (EditText) dialog.findViewById(R.id.confirmNewPsEditText);
@@ -109,9 +111,11 @@ public class ProfileActivity extends AppCompatActivity {
                         if (newPwString.equals(newPwConfirmString)) {
 
                             JSONObject body = new JSONObject();
+                            String hashedOldPassword = HttpController.get_SHA_512_SecurePassword(oldPwString);
+                            String hashedNewPassword = HttpController.get_SHA_512_SecurePassword(newPwConfirmString);
                             try {
-                                body.put("old_password", HttpController.get_SHA_512_SecurePassword(oldPwString));
-                                body.put("new_password", HttpController.get_SHA_512_SecurePassword(newPwConfirmString));
+                                body.put("old_password", hashedOldPassword );
+                                body.put("new_password", hashedNewPassword);
                                 HttpController.changePw(body, responseListener, responseErrorListener, ProfileActivity.this);
                             } catch (JSONException e) {
                                 e.printStackTrace();

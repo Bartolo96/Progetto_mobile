@@ -1,5 +1,6 @@
 package it.uniba.di.nitwx.progettoMobile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,7 +20,10 @@ import android.view.View;
 import android.widget.Button;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,7 +32,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.util.Calendar;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -37,9 +45,47 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     GoogleSignInClient  mGoogleSignInClient;
     GoogleSignInOptions gso;
     GoogleSignInAccount mGoogleSignInAccount;
+
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
+    }
+
+    Response.Listener<String> updatePointsResponseHandler = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                HttpController.userClaims = Jwts.parser().setSigningKey(HttpController.getKey()).
+                                            parseClaimsJws(jsonResponse.getString(Constants.AUTH_TOKEN)).
+                                            getBody();
+                String token_type = jsonResponse.getString(Constants.TOKEN_TYPE);
+                if (token_type != null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
+                    HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER, token_type + " " + jsonResponse.getString(Constants.AUTH_TOKEN));
+                Toast.makeText(HomeActivity.this,"Your points have been updated",Toast.LENGTH_LONG).show();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    Response.ErrorListener updatePointsErrorHandler = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            error.printStackTrace();
+            Toast.makeText(HomeActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
+        }
+    };
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+       if(requestCode == Constants.GAME_COMPLETED_CODE){
+           if(resultCode == Activity.RESULT_OK){
+               if(data.getBooleanExtra("completed",false)){
+                   Toast.makeText(this,"Your points are going to be updated in a few seconds",Toast.LENGTH_SHORT).show();
+                   HttpController.updatePoints(updatePointsResponseHandler,updatePointsErrorHandler,HomeActivity.this);
+               }
+           }
+       }
     }
 
     @Override
@@ -101,8 +147,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         gameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goToGameIntent = new Intent(HomeActivity.this,GameActivity.class);
-                startActivity(goToGameIntent);
+                if(Integer.valueOf(HttpController.userClaims.get("last_time_played",String.class)) < (Calendar.getInstance().getTimeInMillis()/1000)-(24*60*60) ) {
+                    Intent goToGameIntent = new Intent(HomeActivity.this, GameActivity.class);
+                    startActivityForResult(goToGameIntent, 1);
+                }else {
+                    Toast.makeText(HomeActivity.this,"You have to wait",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

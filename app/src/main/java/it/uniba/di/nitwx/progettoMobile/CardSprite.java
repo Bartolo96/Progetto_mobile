@@ -8,6 +8,7 @@ public class CardSprite {
     private Bitmap backImage;
     private Bitmap frontImage;
     private Bitmap actualImage;
+
     public int id;
     public int card_start_X;
     public int card_start_Y;
@@ -25,5 +26,9 @@ public class CardSprite {
     }
     public void update(){
         actualImage = actualImage == frontImage? backImage : frontImage;
+    }
+
+    public boolean isAlreadyTurned(){
+        return actualImage == frontImage;
     }
 }
