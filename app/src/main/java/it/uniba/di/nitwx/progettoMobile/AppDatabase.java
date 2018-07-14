@@ -11,7 +11,7 @@ import it.uniba.di.nitwx.progettoMobile.dummy.OfferContent.Offer;
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent.Product;
 import it.uniba.di.nitwx.progettoMobile.UserTransaction;
 
-@Database(version = 9, entities = {Product.class,Store.class,Offer.class,UserTransaction.class})
+@Database(version = 10, entities = {Product.class,Store.class,Offer.class,UserTransaction.class})
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 

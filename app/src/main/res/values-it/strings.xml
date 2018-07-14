@@ -73,6 +73,7 @@
     <string name="youHavePoints">Hai %d IcePoints</string>
     <string name="game">Gioca!</string>
     <string name="PickDate">Segli data</string>
+    <string name="goodOperation">Password cambiata con successo</string>
 </resources>
 
 

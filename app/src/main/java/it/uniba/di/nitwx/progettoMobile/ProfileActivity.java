@@ -5,12 +5,22 @@ import android.content.Context;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -40,16 +50,42 @@ public class ProfileActivity extends AppCompatActivity {
         bDayProfile.setText(date.toString());
 
         Button changePassword = (Button) findViewById(R.id.changePwButton);
-        changePassword.setOnClickListener(changePasswordListener);
+        String type = HttpController.userClaims.get(Constants.USER_TYPE, String.class);
+        if(Integer.valueOf(type)==Constants.REGISTERD_USER)
+            changePassword.setOnClickListener(changePasswordListener);
+        else
+            changePassword.setEnabled(false);
 
-        ImageView profileImage = (ImageView) findViewById(R.id.profile);
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
+
+    Response.Listener<String> responseListener = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+
+            try {
+                JSONObject temp = new JSONObject(response);
+                boolean ok= temp.getBoolean("password_update");
+
+                if(ok){
+                    Toast.makeText(ProfileActivity.this, getResources().getString(R.string.goodOperation), Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(ProfileActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    Response.ErrorListener responseErrorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            error.printStackTrace();
+            Toast.makeText(ProfileActivity.this, getResources().getString(R.string.newPwConfirmNoMatch), Toast.LENGTH_SHORT);
+        }
+    };
+
 
     View.OnClickListener changePasswordListener = new View.OnClickListener() {
         @Override
@@ -63,20 +99,33 @@ public class ProfileActivity extends AppCompatActivity {
             sendForm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EditText oldPw = (EditText) dialog.findViewById(R.id.oldPwEditText);
-                    EditText newPw = (EditText) dialog.findViewById(R.id.newPwEditText);
-                    EditText newPwConfirm = (EditText) dialog.findViewById(R.id.confirmNewPsEditText);
-                    String oldPwString = oldPw.getText().toString();
-                    String newPwString = newPw.getText().toString();
-                    String newPwConfirmString = newPwConfirm.getText().toString();
 
-                    if(newPwString.equals(newPwConfirmString)){
+                        Log.d("Prova","Porco Dio");
+                        EditText oldPw = (EditText) dialog.findViewById(R.id.oldPwEditText);
+                        EditText newPw = (EditText) dialog.findViewById(R.id.newPwEditText);
+                        EditText newPwConfirm = (EditText) dialog.findViewById(R.id.confirmNewPsEditText);
+                        String oldPwString = oldPw.getText().toString();
+                        String newPwString = newPw.getText().toString();
+                        String newPwConfirmString = newPwConfirm.getText().toString();
 
+                        if (newPwString.equals(newPwConfirmString)) {
+
+                            JSONObject body = new JSONObject();
+                            String hashedOldPassword = HttpController.get_SHA_512_SecurePassword(oldPwString);
+                            String hashedNewPassword = HttpController.get_SHA_512_SecurePassword(newPwConfirmString);
+                            try {
+                                body.put("old_password", hashedOldPassword );
+                                body.put("new_password", hashedNewPassword);
+                                HttpController.changePw(body, responseListener, responseErrorListener, ProfileActivity.this);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            Toast.makeText(ProfileActivity.this, getResources().getString(R.string.newPwConfirmNoMatch), Toast.LENGTH_SHORT);
+                        }
                     }
-                    else{
-                        Toast.makeText(ProfileActivity.this, getResources().getString(R.string.newPwConfirmNoMatch), Toast.LENGTH_SHORT);
-                    }
-                }
+
             });
         }
     };

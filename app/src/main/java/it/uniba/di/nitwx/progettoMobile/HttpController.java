@@ -151,13 +151,24 @@ public class HttpController {
         http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
     }
     static void redeemOffer(JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler,Context context){
-    String url = Constants.URL_REDEEM_OFFER;
-    http_request(Request.Method.POST,context,url,authorizationHeader,body,responseHandler,errorHandler);
+        String url = Constants.URL_REDEEM_OFFER;
+        http_request(Request.Method.POST,context,url,authorizationHeader,body,responseHandler,errorHandler);
     }
     static void checkTransactionAvailability(JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler,Context context){
         String url = Constants.URL_CHECK_TRANSACTION_AVAILABILITY;
         http_request(Request.Method.POST,context,url,authorizationHeader,body,responseHandler,errorHandler);
     }
+
+    static void changePw(JSONObject body,Response.Listener<String> responseHandler,Response.ErrorListener errorHandler,Context context){
+        String url = Constants.URL_CHANGE_PASSWORD;
+        http_request(Request.Method.POST,context,url,authorizationHeader,body,responseHandler,errorHandler);
+    }
+
+    static void updatePoints(Response.Listener<String> responseHandler,Response.ErrorListener errorHandler,Context context){
+        String url = Constants.URL_UPDATE_POINTS;
+        http_request(Request.Method.GET,context,url,authorizationHeader,null,responseHandler,errorHandler);
+    }
+
 
 
 
