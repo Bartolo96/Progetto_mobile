@@ -231,7 +231,7 @@ public class OfferDetailFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.txtNameOfferDetail)).setText(mItem.name);
             ((TextView) rootView.findViewById(R.id.pointPriceTextView)).setText(getResources().getString(R.string.redeemFor,mItem.points_cost));
             ((TextView) rootView.findViewById(R.id.offerPriceTextView)).setText(getResources().getString(R.string.buyFor)+mItem.offerPrice);
-            ((TextView) rootView.findViewById(R.id.OfferDescriptionText)).setText(mItem.product_list.toString());
+            ((TextView) rootView.findViewById(R.id.OfferDescriptionText)).setText(mItem.description);
             btnRedeem= (Button) rootView.findViewById(R.id.btnRedeem);
 
         }

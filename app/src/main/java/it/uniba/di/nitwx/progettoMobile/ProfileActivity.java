@@ -63,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             try {
                 JSONObject temp = new JSONObject(response);
-                boolean ok= temp.getBoolean("password_update");
+                boolean ok= temp.getBoolean("password_updated");
 
                 if(ok){
                     Toast.makeText(ProfileActivity.this, getResources().getString(R.string.goodOperation), Toast.LENGTH_SHORT);

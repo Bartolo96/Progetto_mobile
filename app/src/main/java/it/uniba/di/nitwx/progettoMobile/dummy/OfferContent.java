@@ -77,10 +77,11 @@ public class OfferContent {
         public int points_cost;
         public long validity_start;
         public long validity_end;
+        public String description;
 
         public List<OfferDao.ProductInOffer> product_list;
 
-        public Offer(@NonNull List<OfferDao.ProductInOffer>product_list, String id, String name, double offerPrice, String code, int points_cost,long validity_start,long validity_end ) {
+        public Offer(@NonNull List<OfferDao.ProductInOffer>product_list, String id, String name, double offerPrice, String code, int points_cost,long validity_start,long validity_end, String description ) {
             this.product_list = product_list;
             this.id = id;
             this.name = name;
@@ -89,6 +90,7 @@ public class OfferContent {
             this.points_cost = points_cost;
             this.validity_start=validity_start;
             this.validity_end=validity_end;
+            this.description=description;
         }
         public Offer(@NonNull JSONObject offer) {
             try {
@@ -106,6 +108,7 @@ public class OfferContent {
                 this.points_cost = offer.getInt("points_cost");
                 this.validity_start = offer.getLong("validity_start");
                 this.validity_end = offer.getLong("validity_end");
+                this.description = offer.getString("description");
             }
             catch (JSONException e){
                 e.printStackTrace();
