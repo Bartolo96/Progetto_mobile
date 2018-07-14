@@ -198,12 +198,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     Toast.makeText(ProfileActivity.this,waitToPlay,Toast.LENGTH_LONG).show();
                 }
                 break;
-            case R.id.settings:
-
-                Intent goToSettingsActivityIntent = new Intent(ProfileActivity.this, SettingsActivity.class);
-                startActivity(goToSettingsActivityIntent);
-
-                break;
             case R.id.help:
 
                 Intent goToHelpActivityIntent = new Intent(ProfileActivity.this, HelpActivity.class);
