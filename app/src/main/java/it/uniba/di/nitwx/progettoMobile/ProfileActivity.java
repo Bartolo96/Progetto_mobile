@@ -2,10 +2,17 @@ package it.uniba.di.nitwx.progettoMobile;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,15 +27,29 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        Toolbar homeToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(homeToolbar);
+
+        /**Inserimento drawerLayout + set Listener per la Navigation View**/
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, homeToolbar,R.string.app_name,R.string.app_name);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         int points = Integer.valueOf((String) HttpController.userClaims.get("points"));
 
@@ -46,8 +67,10 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         TextView bDayProfile = (TextView) findViewById(R.id.bDayTextView);
+
         java.util.Date date = new java.util.Date(Long.parseLong((String) HttpController.userClaims.get("birth_date"))*1000);
-        bDayProfile.setText(date.toString());
+        bDayProfile.setText(date.getDay()+"/"+date.getMonth()+"/"+date.getYear());
+
 
         Button changePassword = (Button) findViewById(R.id.changePwButton);
         String type = HttpController.userClaims.get(Constants.USER_TYPE, String.class);
@@ -57,6 +80,8 @@ public class ProfileActivity extends AppCompatActivity {
             changePassword.setEnabled(false);
 
     }
+
+
 
     Response.Listener<String> responseListener = new Response.Listener<String>() {
         @Override
@@ -129,5 +154,44 @@ public class ProfileActivity extends AppCompatActivity {
             });
         }
     };
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id=item.getItemId();
+        switch(id)
+        {
+            case R.id.productsItemMenu:
+                Intent goToProductsActivityIntent = new Intent(ProfileActivity.this, ProductListActivity.class);
+                startActivity(goToProductsActivityIntent);
+                break;
+            case R.id.myProfile:
+                Intent goToProfileActivityIntent = new Intent(ProfileActivity.this,ProfileActivity.class);
+                startActivity(goToProfileActivityIntent);
+                break;
+            case R.id.settings:
+
+                Intent goToSettingsActivityIntent = new Intent(ProfileActivity.this, SettingsActivity.class);
+                startActivity(goToSettingsActivityIntent);
+
+                break;
+            case R.id.help:
+
+                Intent goToHelpActivityIntent = new Intent(ProfileActivity.this, HelpActivity.class);
+                startActivity(goToHelpActivityIntent);
+                break;
+
+            case R.id.logOut:
+                //HomeActivity.functionLogOut();
+                Intent intent=new Intent(ProfileActivity.this,LogIn.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.homenavigation:
+                Intent goToHomeActivityIntent = new Intent(ProfileActivity.this, HomeActivity.class);
+                startActivity(goToHomeActivityIntent);
+                finish();
+        }
+        return false;
+    }
 
 }
