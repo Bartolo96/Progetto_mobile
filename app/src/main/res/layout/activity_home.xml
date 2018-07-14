@@ -31,7 +31,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/sfondo"
+            android:background="@drawable/backgound_home4"
             android:orientation="vertical"
             android:weightSum="10"
             android:paddingTop="80dp">
