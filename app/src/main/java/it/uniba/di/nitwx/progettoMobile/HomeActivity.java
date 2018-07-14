@@ -187,6 +187,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent goToProductsActivityIntent = new Intent(HomeActivity.this, ProductListActivity.class);
                 startActivity(goToProductsActivityIntent);
                 break;
+
+            case R.id.offersItemMenu:
+                Intent goToOffersActivityIntent = new Intent(HomeActivity.this, OfferListActivity.class);
+                startActivity(goToOffersActivityIntent);
+                break;
             case R.id.myProfile:
                 Intent goToProfileActivityIntent = new Intent(HomeActivity.this,ProfileActivity.class);
                 startActivity(goToProfileActivityIntent);

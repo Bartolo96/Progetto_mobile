@@ -13,13 +13,19 @@
         android:id="@+id/productsItemMenu"
         android:title="@string/title_product_list"
         android:icon="@drawable/ice_cream_black"/>
-    <item
-        android:id="@+id/myProfile"
-        android:title="@string/myProfile"
-        android:icon="@drawable/profile"/>
+
+     <item
+         android:id="@+id/offersItemMenu"
+         android:title="@string/title_offer_list"
+         android:icon="@drawable/percentage"/>
     </group>
     <group
         android:id="@+id/group2" android:checkableBehavior="single">
+
+        <item
+        android:id="@+id/myProfile"
+        android:title="@string/myProfile"
+        android:icon="@drawable/profile"/>
     <item
         android:id="@+id/settings"
         android:title="@string/settings"

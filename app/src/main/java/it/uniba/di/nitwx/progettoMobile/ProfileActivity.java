@@ -164,6 +164,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 Intent goToProductsActivityIntent = new Intent(ProfileActivity.this, ProductListActivity.class);
                 startActivity(goToProductsActivityIntent);
                 break;
+
+            case R.id.offersItemMenu:
+                Intent goToOffersActivityIntent = new Intent(ProfileActivity.this, OfferListActivity.class);
+                startActivity(goToOffersActivityIntent);
+                break;
             case R.id.myProfile:
                 Intent goToProfileActivityIntent = new Intent(ProfileActivity.this,ProfileActivity.class);
                 startActivity(goToProfileActivityIntent);
