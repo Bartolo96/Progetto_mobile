@@ -44,7 +44,6 @@ import io.jsonwebtoken.Jwts;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     GoogleSignInClient  mGoogleSignInClient;
     GoogleSignInOptions gso;
-    GoogleSignInAccount mGoogleSignInAccount;
 
     @Override
     public void onBackPressed() {
@@ -93,20 +92,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        /**Inserimento toolbar**/
-        Toolbar homeToolbar = (Toolbar) findViewById(R.id.toolbar);
+        //Inserimento toolbar
+        Toolbar homeToolbar = findViewById(R.id.toolbar);
         homeToolbar.inflateMenu(R.menu.right_menu_home);
         setSupportActionBar(homeToolbar);
-        /**Inserimento drawerLayout + set Listener per la Navigation View**/
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //Inserimento drawerLayout + set Listener per la Navigation View
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, homeToolbar,R.string.app_name,R.string.app_name);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView =  findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView loggedAsName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
+        TextView loggedAsName = navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
         loggedAsName.setText((String)HttpController.userClaims.get("email"));
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -116,10 +116,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
-        CardView goToProductsBtn = (CardView) findViewById(R.id.btnProducts);
-        CardView stores = (CardView) findViewById(R.id.storesBtn);
-        CardView offerBtn = (CardView) findViewById(R.id.btnOffer);
-        CardView gameBtn = (CardView) findViewById(R.id.playGameBtn);
+        CardView goToProductsBtn = findViewById(R.id.btnProducts);
+        CardView stores = findViewById(R.id.storesBtn);
+        CardView offerBtn = findViewById(R.id.btnOffer);
+        CardView gameBtn = findViewById(R.id.playGameBtn);
 
         stores.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,15 +168,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                 });
     }
-    View.OnClickListener logOutListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            functionLogOut();
-            Intent intent=new Intent(HomeActivity.this,LogIn.class);
-            startActivity(intent);
-            finish();
-        }
-    };
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

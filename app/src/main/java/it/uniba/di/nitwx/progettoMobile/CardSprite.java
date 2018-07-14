@@ -1,7 +1,6 @@
 package it.uniba.di.nitwx.progettoMobile;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 public class CardSprite {
@@ -13,7 +12,7 @@ public class CardSprite {
     public int card_start_X;
     public int card_start_Y;
 
-    public CardSprite(Bitmap backBmp,Bitmap frontBmp,int id, int width, int height){
+    CardSprite(Bitmap backBmp,Bitmap frontBmp,int id, int width, int height){
         this.id = id;
         backImage =  Bitmap.createScaledBitmap(backBmp,width,height,false);
         frontImage = Bitmap.createScaledBitmap(frontBmp,width,height,false);

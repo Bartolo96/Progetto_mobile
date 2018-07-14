@@ -9,14 +9,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.os.Build;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,23 +41,6 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
     private List<CardSprite> playingCards = new ArrayList<>();
     private Context mContext;
 
-    public static Point getNavigationBarSize(Context context) {
-        Point appUsableSize = getAppUsableScreenSize(context);
-        Point realScreenSize = getRealScreenSize(context);
-
-        // navigation bar on the side
-        if (appUsableSize.x < realScreenSize.x) {
-            return new Point(realScreenSize.x - appUsableSize.x, appUsableSize.y);
-        }
-
-        // navigation bar at the bottom
-        if (appUsableSize.y < realScreenSize.y) {
-            return new Point(appUsableSize.x, realScreenSize.y - appUsableSize.y);
-        }
-
-        // navigation bar is not present
-        return new Point();
-    }
 
     public static Point getAppUsableScreenSize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -69,14 +50,6 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
         return size;
     }
 
-    public static Point getRealScreenSize(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = windowManager.getDefaultDisplay();
-        Point size = new Point();
-        display.getRealSize(size);
-
-        return size;
-    }
     public GameView(Context context){
         super(context);
         this.mContext = context;

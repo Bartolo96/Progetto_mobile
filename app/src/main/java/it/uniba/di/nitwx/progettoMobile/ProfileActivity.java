@@ -1,9 +1,7 @@
 package it.uniba.di.nitwx.progettoMobile;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -11,28 +9,21 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -42,41 +33,41 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        Toolbar homeToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar homeToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(homeToolbar);
 
         /**Inserimento drawerLayout + set Listener per la Navigation View**/
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, homeToolbar,R.string.app_name,R.string.app_name);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         int points = Integer.valueOf((String) HttpController.userClaims.get("points"));
 
-        TextView emailProfile = (TextView) findViewById(R.id.emailProfileTextView);
+        TextView emailProfile = findViewById(R.id.emailProfileTextView);
         emailProfile.setText((String)HttpController.userClaims.get("email"));
 
-        TextView pointsProfile = (TextView) findViewById(R.id.pointsProfileTextView);
+        TextView pointsProfile = findViewById(R.id.pointsProfileTextView);
         pointsProfile.setText(getResources().getString(R.string.youHavePoints,points));
 
-        TextView genderProfile = (TextView) findViewById(R.id.genderTextView);
+        TextView genderProfile = findViewById(R.id.genderTextView);
         if(!((String)HttpController.userClaims.get("gender")).equals("M"))
             genderProfile.setText(getString(R.string.Female));
         else
             genderProfile.setText(getString(R.string.Male));
 
 
-        TextView bDayProfile = (TextView) findViewById(R.id.bDayTextView);
+        TextView bDayProfile = findViewById(R.id.bDayTextView);
         Long longDate =  Long.valueOf(HttpController.userClaims.get("birth_date",String.class))*1000;
         Date date = new Date(longDate);
         String displayDate = String.format("%02d/%02d/%d",date.getDay(),date.getMonth(),date.getYear()+1900);
         bDayProfile.setText(displayDate);
 
 
-        Button changePassword = (Button) findViewById(R.id.changePwButton);
+        Button changePassword = findViewById(R.id.changePwButton);
         String type = HttpController.userClaims.get(Constants.USER_TYPE, String.class);
         if(Integer.valueOf(type)==Constants.REGISTERD_USER)
             changePassword.setOnClickListener(changePasswordListener);
@@ -124,15 +115,14 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             dialog.show();
 
 
-            Button sendForm = (Button) dialog.findViewById(R.id.sendFormChangePwBtn);
+            Button sendForm = dialog.findViewById(R.id.sendFormChangePwBtn);
             sendForm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                        Log.d("Prova","Porco Dio");
-                        EditText oldPw = (EditText) dialog.findViewById(R.id.oldPwEditText);
-                        EditText newPw = (EditText) dialog.findViewById(R.id.newPwEditText);
-                        EditText newPwConfirm = (EditText) dialog.findViewById(R.id.confirmNewPsEditText);
+                        EditText oldPw = dialog.findViewById(R.id.oldPwEditText);
+                        EditText newPw = dialog.findViewById(R.id.newPwEditText);
+                        EditText newPwConfirm = dialog.findViewById(R.id.confirmNewPsEditText);
                         String oldPwString = oldPw.getText().toString();
                         String newPwString = newPw.getText().toString();
                         String newPwConfirmString = newPwConfirm.getText().toString();

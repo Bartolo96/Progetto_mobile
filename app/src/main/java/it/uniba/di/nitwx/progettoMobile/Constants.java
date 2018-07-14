@@ -20,6 +20,7 @@ public class Constants {
 
     static final int UNAUTHORIZED_STATUS_CODE = 401;
     static final int NO_TRANSACTION_FOUND = 420;
+
     /*HTTP_REQUEST HEADERS USSED*/
     static final String CONTENT_TYPE="Content-Type";
     static final String TOKEN_TYPE="token_type";
@@ -37,7 +38,7 @@ public class Constants {
 
 
         /*URLs*/
-    static final String BASE_URL = "https://nitwx.000webhostapp.com/";
+    static final private String BASE_URL = "https://nitwx.000webhostapp.com/";
     static final String URL_OFFERS = BASE_URL + "api/offers";
     static final String URL_PRODUCTS = BASE_URL  + "api/products";
     static final String URL_AUTH_USER =BASE_URL  + "auth/authenticate_user";

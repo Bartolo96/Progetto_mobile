@@ -1,28 +1,19 @@
 package it.uniba.di.nitwx.progettoMobile;
 
-import android.app.Activity;
+
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import net.glxn.qrgen.android.QRCode;
-import net.glxn.qrgen.core.image.ImageType;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -102,7 +93,7 @@ public class ProductDetailFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.productName)).setText(toName);
             ((TextView) rootView.findViewById(R.id.productPrice)).setText(toPrice);
 
-            Button buyNow = (Button) rootView.findViewById(R.id.ButtonBuyNow);
+            Button buyNow = rootView.findViewById(R.id.ButtonBuyNow);
             buyNow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

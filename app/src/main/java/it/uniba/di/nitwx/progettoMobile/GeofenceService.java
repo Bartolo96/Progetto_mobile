@@ -194,12 +194,16 @@ public class GeofenceService extends IntentService {
                 switch (geofencingEvent.getErrorCode()) {
                     case GeofenceStatusCodes.GEOFENCE_NOT_AVAILABLE:
                         errorMessage = "geofence service unavaible";
+                        break;
                     case GeofenceStatusCodes.GEOFENCE_TOO_MANY_GEOFENCES:
                         errorMessage = "too many geofences";
+                        break;
                     case GeofenceStatusCodes.GEOFENCE_TOO_MANY_PENDING_INTENTS:
                         errorMessage = "too many pending intents";
+                        break;
                     default:
                         errorMessage = "unknown errors";
+                        break;
                 }
                 Log.d("Geofence", errorMessage);
                 return;
@@ -227,7 +231,7 @@ public class GeofenceService extends IntentService {
 
             } else {
                 // Log the error.
-                Log.e("Geofence", "Errore??"+geofenceTransition);
+                Log.e("Geofence", "Errore " + geofenceTransition);
             }
         }
     }

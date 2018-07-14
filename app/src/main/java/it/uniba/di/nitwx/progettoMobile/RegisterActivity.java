@@ -1,11 +1,9 @@
 package it.uniba.di.nitwx.progettoMobile;
 
-import android.accounts.Account;
+
 import android.accounts.AccountManager;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,14 +21,10 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.security.MessageDigest;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    static final int DATE_DIALOG_ID=0;
     EditText email;
     EditText password;
     EditText confPassword;
@@ -40,9 +34,6 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     RadioButton female;
     RadioGroup gender;
     String sex;
-    Account userAccount;
-    Dialog dialog;
-    DatePicker datePicker;
     TextView datePickedText;
     Integer bdayDay;
     Integer bdayMonth;
@@ -86,14 +77,14 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        email = (EditText) findViewById(R.id.edTextEmailReg);
-        password=(EditText) findViewById(R.id.edTextPwdReg);
-        confPassword=(EditText)findViewById(R.id.edTextPwdConfReg);
-        bday = (Button) findViewById(R.id.btnPickDate);
-        register = (Button)findViewById(R.id.btnRegister);
-        gender =(RadioGroup) findViewById(R.id.radioGroupGender);
-        male=(RadioButton)findViewById(R.id.radioBtnMale);
-        female=(RadioButton)findViewById(R.id.radioBtnFemale);
+        email = findViewById(R.id.edTextEmailReg);
+        password = findViewById(R.id.edTextPwdReg);
+        confPassword = findViewById(R.id.edTextPwdConfReg);
+        bday = findViewById(R.id.btnPickDate);
+        register = findViewById(R.id.btnRegister);
+        gender = findViewById(R.id.radioGroupGender);
+        male = findViewById(R.id.radioBtnMale);
+        female = findViewById(R.id.radioBtnFemale);
         register.setOnClickListener(registerListener);
         datePickedText = findViewById(R.id.datePickedText);
         final Calendar c = Calendar.getInstance();
@@ -103,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         accountManager = AccountManager.get(RegisterActivity.this);
         datePickerDialog = new DatePickerDialog(
                 this, RegisterActivity.this, bdayYear, bdayMonth, bdayDay);
-        bday=(Button) findViewById(R.id.btnPickDate);
+        bday = findViewById(R.id.btnPickDate);
         bday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                                 body.put("gender", sex);
                                 Calendar test = Calendar.getInstance();
                                 test.set(bdayYear, bdayMonth, bdayDay);
-                                
+
                                 body.put("birth_date", test.getTimeInMillis()/1000);
                                 Log.d("gender", sex);
                                 HttpController.addUser(body, addUserResponseHandler, addUserErrorHandler, RegisterActivity.this);

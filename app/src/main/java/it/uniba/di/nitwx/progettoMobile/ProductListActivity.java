@@ -1,6 +1,5 @@
 package it.uniba.di.nitwx.progettoMobile;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -199,20 +196,20 @@ public class ProductListActivity extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
         db = AppDatabase.getDatabase(ProductListActivity.this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
         /**Inserimento drawerLayout + set Listener per la Navigation View**/
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.app_name,R.string.app_name);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView loggedAsName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
+        TextView loggedAsName = navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
         loggedAsName.setText((String)HttpController.userClaims.get("email"));
 
         if (findViewById(R.id.product_detail_container) != null) {
@@ -287,7 +284,6 @@ public class ProductListActivity extends AppCompatActivity implements Navigation
         public void onBindViewHolder(final ViewHolder holder, int position) {
             /*Una volta inserite tutte le immagini utilizzare questa riga mValues.get(position).content*/
             int drawableId = -1;
-            /*int drawableId= Resources.getSystem().getIdentifier("productimage"+mValues.get(position).code,"drawable",getPackageName());*/
 
             //Field c= Drawable.class.getDeclaredField("productimage"+mValues.get(position).code);
             drawableId=getResources().getIdentifier("productimage"+mValues.get(position).code,"drawable",getPackageName());
@@ -324,8 +320,8 @@ public class ProductListActivity extends AppCompatActivity implements Navigation
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (ImageView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mIdView = view.findViewById(R.id.id_text);
+                mContentView = view.findViewById(R.id.content);
             }
         }
     }
@@ -337,7 +333,7 @@ public class ProductListActivity extends AppCompatActivity implements Navigation
         {
             case R.id.productsItemMenu:
                 DrawerLayout mDrawerLayout;
-                mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+                mDrawerLayout = findViewById(R.id.drawer_layout);
                 mDrawerLayout.closeDrawers();
                 break;
 
