@@ -74,6 +74,7 @@
     <string name="game">Gioca!</string>
     <string name="PickDate">Segli data</string>
     <string name="goodOperation">Password cambiata con successo</string>
+    <string name="tyForSend">Grazie per la segnalazione!</string>
 </resources>
 
 

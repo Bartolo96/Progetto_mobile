@@ -83,4 +83,5 @@
     <string name="PickDate">Pick date</string>
     <string name="goodOperation">Password changed successfully</string>
     <string name="dateShowText">Date picked: </string>
+    <string name="tyForSend">Thank you for your feedback!</string>
 </resources>
