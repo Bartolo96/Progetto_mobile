@@ -29,6 +29,12 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,6 +70,8 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
     private List<OfferContent.Offer> offerList;
     private View recyclerView;
     private AppDatabase db;
+    GoogleSignInClient mGoogleSignInClient;
+    GoogleSignInOptions gso;
 
     private class InsertOffersAsync extends AsyncTask<Void, Void, Void> {
         @Override
@@ -206,23 +214,28 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_list);
         db = AppDatabase.getDatabase(OfferListActivity.this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        TextView txtPoints= (TextView) toolbar.findViewById(R.id.points);
+        TextView txtPoints =  toolbar.findViewById(R.id.points);
         txtPoints.setText("IcePoints: "+(HttpController.userClaims.get("points")).toString());
 
         /**Inserimento drawerLayout + set Listener per la Navigation View**/
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.app_name,R.string.app_name);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView =  findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView loggedAsName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
+        TextView loggedAsName = navigationView.getHeaderView(0).findViewById(R.id.loggedAsEmailTextView);
         loggedAsName.setText((String)HttpController.userClaims.get("email"));
 
         if (findViewById(R.id.offer_detail_container) != null) {
@@ -386,7 +399,7 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
                 break;
 
             case R.id.logOut:
-                //HomeActivity.functionLogOut();
+                functionLogOut();
                 Intent intent=new Intent(OfferListActivity.this,LogIn.class);
                 startActivity(intent);
                 finish();
@@ -410,6 +423,37 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
                 break;
         }
         return false;
+    }
+
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent=new Intent(OfferListActivity.this,LogIn.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+    }
+    public void functionLogOut(){
+        String tmp=(String) HttpController.userClaims.get(Constants.USER_TYPE);
+        switch (new Integer(tmp)){
+            case Constants.REGISTERD_USER:
+
+                break;
+            case Constants.FACEBOOK_USER:
+                LoginManager.getInstance().logOut();
+                break;
+            case Constants.GOOGLE_USER:
+                signOut();
+                break;
+        }
+
+        SharedPreferences sharedPref = OfferListActivity.this.getSharedPreferences(Constants.PACKAGE_NAME+Constants.REFRESH_TOKEN, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(Constants.REFRESH_TOKEN);
+        editor.apply();
     }
 }
 

@@ -202,7 +202,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.logOut:
                 functionLogOut();
-                Intent intent=new Intent(HomeActivity.this,LogIn.class);
+                Intent intent =new Intent(HomeActivity.this,LogIn.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -231,7 +231,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         String tmp=(String) HttpController.userClaims.get(Constants.USER_TYPE);
         switch (new Integer(tmp)){
             case Constants.REGISTERD_USER:
-
                 break;
             case Constants.FACEBOOK_USER:
                 LoginManager.getInstance().logOut();
