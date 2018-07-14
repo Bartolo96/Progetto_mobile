@@ -44,9 +44,9 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     Dialog dialog;
     DatePicker datePicker;
     TextView datePickedText;
-    int bdayDay;
-    int bdayMonth;
-    int bdayYear;
+    Integer bdayDay;
+    Integer bdayMonth;
+    Integer bdayYear;
     DatePickerDialog datePickerDialog;
     private AccountManager accountManager;
     Response.Listener<String> addUserResponseHandler = new Response.Listener<String>() {
@@ -128,32 +128,38 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     View.OnClickListener registerListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(password.getText().toString().equals(confPassword.getText().toString())) {
-                boolean emailIsValid = isValidEmail(email.getText().toString());
-                if(!emailIsValid){
-                    Toast.makeText(RegisterActivity.this,getString(R.string.WrongMail),Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    String hashedPwd = HttpController.get_SHA_512_SecurePassword(password.getText().toString());
-                    JSONObject body = new JSONObject();
-                    try {
-                        body.put("email", email.getText().toString());
-                        body.put("password", hashedPwd);
-                        body.put("gender", sex);
-                        body.put("birth_date", new Date(bdayYear, bdayMonth, bdayDay).getTime()/1000);
-                        Log.d("gender",sex);
-                        HttpController.addUser(body, addUserResponseHandler, addUserErrorHandler, RegisterActivity.this);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+            if (password != null && confPassword !=null && bdayDay != null && bdayMonth != null && bdayYear != null && sex != null && email != null) {
+                if (password.getText().toString().equals(confPassword.getText().toString())) {
+                    if (password.length() > 8) {
+                        boolean emailIsValid = isValidEmail(email.getText().toString());
+                        if (!emailIsValid) {
+                            Toast.makeText(RegisterActivity.this, getString(R.string.WrongMail), Toast.LENGTH_SHORT).show();
+                        } else {
+                            String hashedPwd = HttpController.get_SHA_512_SecurePassword(password.getText().toString());
+                            JSONObject body = new JSONObject();
+                            try {
+                                body.put("email", email.getText().toString());
+                                body.put("password", hashedPwd);
+                                body.put("gender", sex);
+                                Calendar test = Calendar.getInstance();
+                                test.set(bdayYear, bdayMonth, bdayDay);
+                                
+                                body.put("birth_date", test.getTimeInMillis()/1000);
+                                Log.d("gender", sex);
+                                HttpController.addUser(body, addUserResponseHandler, addUserErrorHandler, RegisterActivity.this);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else
+                        Toast.makeText(RegisterActivity.this, "La password è troppo corta", Toast.LENGTH_SHORT).show();
 
+                } else
+                    Toast.makeText(RegisterActivity.this, "La password e la sua conferma non sono uguali", Toast.LENGTH_SHORT).show();
+            }else
+                Toast.makeText(RegisterActivity.this, "Compila tutti i campi", Toast.LENGTH_SHORT).show();
 
-            }
-            else
-                Toast.makeText(RegisterActivity.this,"La password e la sua conferma non sono uguali",Toast.LENGTH_SHORT).show();
-        }
-    };
+        }};
 
     public static boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
