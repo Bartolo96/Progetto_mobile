@@ -10,12 +10,12 @@ public class TriesCounterSprite {
     private String displayTries;
     private Paint paint ;
 
-    public TriesCounterSprite() {
+    public TriesCounterSprite(int height) {
         this.currentTries = 0;
         this.displayTries = "Tries: " + String.valueOf(currentTries);
         this.paint = new Paint();
         this.paint.setColor(Color.RED);
-        this.paint.setTextSize(100);
+        this.paint.setTextSize(height);
     }
 
     public void update(boolean isProgressAdvancing){

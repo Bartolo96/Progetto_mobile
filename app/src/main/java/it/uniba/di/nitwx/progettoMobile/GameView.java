@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
@@ -27,6 +26,9 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
     private Point displaySize;
     private int cardWidth;
     private int cardHeight;
+    private int textHeight;
+    private int cardSpacingX;
+    private int cardSpacingY;
     private TimerSprite timerSprite;
     private TriesCounterSprite triesCounterSprite;
     private final int NUM_OF_CARDS = 16;
@@ -45,8 +47,11 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         this.displaySize = new Point();
         wm.getDefaultDisplay().getRealSize(displaySize);
-        this.cardWidth = (displaySize.x - 800) / 8;
+        this.cardSpacingX = (displaySize.x) / 27;
+        this.cardWidth = (displaySize.x - (cardSpacingX * 9)) / 8;
         this.cardHeight = cardWidth *2;
+        this.textHeight = cardHeight /2;
+        this.cardSpacingY = (displaySize.y - (cardHeight *2) - textHeight)/3 ;
         this.thread = new MainThread(getHolder(),this);
 
         setFocusable(true);
@@ -63,11 +68,11 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
         Collections.shuffle(playingCards);
         sfondo = BitmapFactory.decodeResource(getResources(),R.drawable.sfondo_gioco);
         sfondo = Bitmap.createScaledBitmap(sfondo,displaySize.x,displaySize.y,false);
-        timerSprite = new TimerSprite();
-        triesCounterSprite = new TriesCounterSprite();
+        timerSprite = new TimerSprite(textHeight);
+        triesCounterSprite = new TriesCounterSprite(textHeight);
         deafultPaint = new Paint();
         this.deafultPaint.setColor(Color.RED);
-        this.deafultPaint.setTextSize(100);
+        this.deafultPaint.setTextSize(textHeight);
         thread.setRunning(true);
         thread.start();
     }
@@ -142,26 +147,26 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
 
         if(canvas != null){
             canvas.drawBitmap(sfondo,0,0,null);
-            int positionLeft = 100;
-            int positionTop = 100;
+            int positionLeft = cardSpacingX;
+            int positionTop = cardSpacingY;
             int counter = 0;
 
             for(CardSprite card : playingCards){
                 card.draw(canvas,positionLeft,positionTop);
-                positionLeft += 200;
+                positionLeft += cardWidth + cardSpacingX;
                 counter++;
 
                 if(counter == playingCards.size()/2){
-                    positionTop += cardHeight + 100;
-                    positionLeft = 100;
+                    positionTop += cardHeight + cardSpacingY;
+                    positionLeft = cardSpacingX;
                 }
             }
             if(triesCounterSprite.gameProgress != 8) {
-                timerSprite.draw(canvas, 100, positionTop + cardHeight + 200);
-                triesCounterSprite.draw(canvas, 100 + (int) timerSprite.textWidth + 100, positionTop + cardHeight + 200);
+                timerSprite.draw(canvas, cardSpacingX, positionTop + textHeight/2 + cardHeight + cardSpacingY);
+                triesCounterSprite.draw(canvas, cardSpacingX + (int) timerSprite.textWidth + cardSpacingX, positionTop + textHeight/2 + cardHeight + cardSpacingY);
             }
             else {
-                canvas.drawText("Game Completed!!", 100, positionTop + cardHeight + 200, deafultPaint);
+                canvas.drawText("Game Completed!!", cardSpacingX, positionTop + cardHeight + cardSpacingY, deafultPaint);
                 this.thread.setRunning(false);
                 Intent returnIntent = new Intent();//.setClass(this.mContext,HomeActivity.class);
                 returnIntent.putExtra("completed",true);
