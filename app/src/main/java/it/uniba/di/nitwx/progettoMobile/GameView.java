@@ -36,16 +36,18 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
     private Bitmap sfondo;
     private Paint deafultPaint;
     private List<CardSprite> playingCards = new ArrayList<>();
+    private Context mContext;
 
     public GameView(Context context){
         super(context);
+        this.mContext = context;
         getHolder().addCallback(this);
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        displaySize = new Point();
+        this.displaySize = new Point();
         wm.getDefaultDisplay().getRealSize(displaySize);
-        cardWidth = (displaySize.x - 800) / 8;
-        cardHeight = cardWidth *2;
-        thread = new MainThread(getHolder(),this);
+        this.cardWidth = (displaySize.x - 800) / 8;
+        this.cardHeight = cardWidth *2;
+        this.thread = new MainThread(getHolder(),this);
 
         setFocusable(true);
 
@@ -160,8 +162,11 @@ public class GameView extends SurfaceView implements  SurfaceHolder.Callback {
             }
             else {
                 canvas.drawText("Game Completed!!", 100, positionTop + cardHeight + 200, deafultPaint);
-                //Intent intent = new Intent().setClass(getContext(),HomeActivity.class);
-                //((Activity)getContext()).startActivity(intent);
+                this.thread.setRunning(false);
+                Intent returnIntent = new Intent();//.setClass(this.mContext,HomeActivity.class);
+                returnIntent.putExtra("completed",true);
+                ((Activity)mContext).setResult(Activity.RESULT_OK,returnIntent);
+                ((Activity)mContext).finish();
             }
         }
     }
