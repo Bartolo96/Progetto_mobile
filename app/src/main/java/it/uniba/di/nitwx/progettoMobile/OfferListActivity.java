@@ -357,8 +357,9 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
                 break;
 
             case R.id.offersItemMenu:
-                Intent goToOffersActivityIntent = new Intent(OfferListActivity.this, OfferListActivity.class);
-                startActivity(goToOffersActivityIntent);
+                DrawerLayout mDrawerLayout;
+                mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+                mDrawerLayout.closeDrawers();
                 break;
             case R.id.myProfile:
                 Intent goToProfileActivityIntent = new Intent(OfferListActivity.this,ProfileActivity.class);

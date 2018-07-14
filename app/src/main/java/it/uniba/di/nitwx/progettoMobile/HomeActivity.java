@@ -215,9 +215,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 finish();
                 break;
             case R.id.homenavigation:
-                Intent goToHomeActivityIntent = new Intent(HomeActivity.this, HomeActivity.class);
-                startActivity(goToHomeActivityIntent);
-                finish();
+                DrawerLayout mDrawerLayout;
+                mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+                mDrawerLayout.closeDrawers();
         }
         return false;
     }

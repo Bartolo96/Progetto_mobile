@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -333,8 +334,9 @@ public class ProductListActivity extends AppCompatActivity implements Navigation
         switch(id)
         {
             case R.id.productsItemMenu:
-                Intent goToProductsActivityIntent = new Intent(ProductListActivity.this, ProductListActivity.class);
-                startActivity(goToProductsActivityIntent);
+                DrawerLayout mDrawerLayout;
+                mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+                mDrawerLayout.closeDrawers();
                 break;
 
             case R.id.offersItemMenu:
