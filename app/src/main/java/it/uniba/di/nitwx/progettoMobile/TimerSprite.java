@@ -15,12 +15,12 @@ public class TimerSprite {
     private Paint paint ;
     public float textWidth;
 
-    public TimerSprite(){
+    public TimerSprite(int height){
         mTimer = new Timer();
         mTimer.scheduleAtFixedRate(renderTime,0,1 * 1000L);
         paint = new Paint();
         paint.setColor(Color.RED);
-        paint.setTextSize(100);
+        paint.setTextSize(height);
         displayedTime =  String.format("%02d:%02d", currentTime / 60 ,currentTime%60);
         textWidth = paint.measureText(displayedTime);
 
