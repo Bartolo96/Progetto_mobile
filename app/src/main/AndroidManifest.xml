@@ -9,9 +9,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/avatar4"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/avatar4"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
@@ -84,7 +84,6 @@
                 android:value="it.uniba.di.nitwx.progettoMobile.OfferListActivity" />
         </activity>
         <activity android:name=".HelpActivity" />
-        <activity android:name=".SettingsActivity" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
