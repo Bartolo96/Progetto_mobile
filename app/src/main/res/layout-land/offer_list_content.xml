@@ -15,6 +15,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/txtExpiration2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="7dp"
+            android:text="@string/expireDate"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/relativeImage"
+            app:layout_constraintTop_toBottomOf="@+id/txtNameOffer" />
+
         <RelativeLayout
             android:id="@+id/relativeImage"
             android:layout_width="130dp"
@@ -38,11 +49,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:text="TextView"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textSize="18dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toEndOf="@+id/relativeImage"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="32dp"
             android:text="Per te a"
             app:layout_constraintStart_toEndOf="@+id/relativeImage"
             app:layout_constraintTop_toBottomOf="@+id/txtNameOffer" />
@@ -78,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="100dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="32dp"
             android:text="@string/Discount"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtNameOffer" />

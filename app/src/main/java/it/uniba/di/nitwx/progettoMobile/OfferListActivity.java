@@ -5,6 +5,7 @@ import android.arch.persistence.room.Transaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -48,6 +49,7 @@ import it.uniba.di.nitwx.progettoMobile.dummy.OfferContent;
 import it.uniba.di.nitwx.progettoMobile.dummy.ProductContent;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,6 +76,7 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
     GoogleSignInClient mGoogleSignInClient;
     GoogleSignInOptions gso;
     TextView txtPoints;
+    static public Context mContext;
 
     private class InsertOffersAsync extends AsyncTask<Void, Void, Void> {
         @Override
@@ -214,6 +217,7 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(R.layout.activity_offer_list);
         db = AppDatabase.getDatabase(OfferListActivity.this);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -318,6 +322,10 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
             holder.mIdView.setText(mValues.get(position).name);
             holder.mPriceView.setText(String.format("€%.2f",mValues.get(position).offerPrice));
             holder.mDiscount.setText(discount+"%");
+            Date date = new Date(mValues.get(position).validity_end * 1000);//);
+            String displayDate = mContext.getString(R.string.expireDate)+String.format(" %02d/%02d/%d %02d:%02d",date.getDate(),date.getMonth()+1,date.getYear()+1900,date.getHours(),date.getMinutes());
+            holder.mExpiration.setText(displayDate);
+
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -332,13 +340,15 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
             final TextView mIdView;
             final TextView mPriceView;
             final TextView mDiscount;
+            final TextView mExpiration;
 
             ViewHolder(View view) {
                 super(view);
 
-                mIdView = (TextView) view.findViewById(R.id.txtNameOffer);
-                mPriceView = (TextView) view.findViewById(R.id.txtDescriptionOffer);
-                mDiscount =(TextView) view.findViewById(R.id.txtDiscount);
+                mIdView =  view.findViewById(R.id.txtNameOffer);
+                mPriceView =  view.findViewById(R.id.txtDescriptionOffer);
+                mDiscount = view.findViewById(R.id.txtDiscount);
+                mExpiration = view.findViewById(R.id.txtExpiration);
             }
         }
     }

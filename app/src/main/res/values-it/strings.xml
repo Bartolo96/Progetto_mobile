@@ -79,6 +79,7 @@
     <string name="waitToPlay">Potrai giocare ancora in:</string>
     <string name="loginFailed">Password o email sbagliate</string>
     <string name="showQrCode">Mostra Qr Code</string>
+    <string name="expireDate">Offerta valida fino al</string>
 </resources>
 
 

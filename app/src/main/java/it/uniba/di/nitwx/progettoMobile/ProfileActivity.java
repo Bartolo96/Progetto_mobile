@@ -81,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         TextView bDayProfile = findViewById(R.id.bDayTextView);
         Long longDate =  Long.valueOf(HttpController.userClaims.get("birth_date",String.class))*1000;
         Date date = new Date(longDate);
-        String displayDate = String.format("%02d/%02d/%d",date.getDay(),date.getMonth(),date.getYear()+1900);
+        String displayDate = String.format("%02d/%02d/%d",date.getDay(),date.getMonth()+1,date.getYear()+1900);
         bDayProfile.setText(displayDate);
 
 

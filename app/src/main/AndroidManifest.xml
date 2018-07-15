@@ -72,7 +72,6 @@
         <activity
             android:name=".OfferListActivity"
             android:label="@string/title_offer_list"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OfferDetailActivity"
