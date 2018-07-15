@@ -323,7 +323,7 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
             holder.mPriceView.setText(String.format("€%.2f",mValues.get(position).offerPrice));
             holder.mDiscount.setText(discount+"%");
             Date date = new Date(mValues.get(position).validity_end * 1000);//);
-            String displayDate = mContext.getString(R.string.expireDate)+String.format(" %02d/%02d/%d %02d:%02d",date.getDate(),date.getMonth()+1,date.getYear()+1900,date.getHours(),date.getMinutes());
+            String displayDate = mContext.getString(R.string.expireDate)+String.format(" %02d/%02d %02d:%02d",date.getDate(),date.getMonth()+1,date.getHours(),date.getMinutes());
             holder.mExpiration.setText(displayDate);
 
 
