@@ -152,7 +152,7 @@ public class LogIn extends AppCompatActivity {
             JSONObject body = new JSONObject();
             body.put("token", idToken);
             body.put("user_type", Constants.GOOGLE_USER);
-
+            Log.d("Prova",idToken);
             HttpController.thirdPartyLogin(body, logInResponseHandler, logInErrorHandler, this);
         } catch (ApiException|JSONException e) {
             e.printStackTrace();

@@ -316,9 +316,9 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
             int discount = 0;
             double price=0;
             for (OfferDao.ProductInOffer p: mValues.get(position).product_list){
-                price  += p.price;
+                price  += p.price * p.quantity;
             }
-            discount=(int)(mValues.get(position).offerPrice/price*100);
+            discount=(int)(100 - (mValues.get(position).offerPrice/price*100));
             holder.mIdView.setText(mValues.get(position).name);
             holder.mPriceView.setText(String.format("€%.2f",mValues.get(position).offerPrice));
             holder.mDiscount.setText(discount+"%");
