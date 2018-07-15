@@ -78,6 +78,7 @@
     <string name="updatingPoints">I tuoi punti saranno aggiornati a breve</string>
     <string name="waitToPlay">Potrai giocare ancora in:</string>
     <string name="loginFailed">Password o email sbagliate</string>
+    <string name="showQrCode">Mostra Qr Code</string>
 </resources>
 
 

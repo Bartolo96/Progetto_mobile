@@ -126,7 +126,7 @@ public class OfferDetailFragment extends Fragment {
                 ImageView qrCodeImage = dialog.findViewById(R.id.qrCodeImageView);
                 qrCodeImage.setImageDrawable(qrCode);
                 dialog.show();
-                btnRedeem.setText("Mostra Codice Qr");
+                btnRedeem.setText(R.string.showQrCode);
                 btnRedeem.setOnClickListener(btnShowQrListener);
                 new insertTransactionAsync().execute(new UserTransaction((String) transactionClaims.get("id"),token,(String)HttpController.userClaims.get("id"), mItem.id));
 

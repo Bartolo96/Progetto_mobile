@@ -87,4 +87,5 @@
     <string name="updatingPoints">Your point will be updated shortly</string>
     <string name="waitToPlay">You will be able to play again in:</string>
     <string name="loginFailed">Wrong password or email</string>
+    <string name="showQrCode">Show Qr code</string>
 </resources>
