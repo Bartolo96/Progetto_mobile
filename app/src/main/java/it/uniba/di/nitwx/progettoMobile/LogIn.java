@@ -91,7 +91,6 @@ public class LogIn extends AppCompatActivity {
         public void onResponse(String response) {
             try {
                 if (progressBar != null) progressBar.setVisibility(View.INVISIBLE);
-                Log.d("Provaaaaa", response);
                 JSONObject jsonResponse = new JSONObject(response);
 
                 if (jsonResponse.has(Constants.AUTH_TOKEN)) {
@@ -100,14 +99,13 @@ public class LogIn extends AppCompatActivity {
                     HttpController.userClaims = Jwts.parser().setSigningKey(HttpController.getKey()).
                             parseClaimsJws(jsonAccessToken.getString(Constants.AUTH_TOKEN)).
                             getBody();
-                    Log.d("Prova", jsonAccessToken.toString());
                     String token_type = jsonAccessToken.getString(Constants.TOKEN_TYPE);
                     if (token_type != null && token_type.equals(Constants.TOKEN_TYPE_BEARER))
                         HttpController.authorizationHeader.put(Constants.AUTHORIZATON_HEADER, token_type + " " + jsonAccessToken.getString(Constants.AUTH_TOKEN));
                     if (jsonResponse.has(Constants.REFRESH_TOKEN)) {
                         JSONObject jsonRefreshToken = jsonResponse.getJSONObject(Constants.REFRESH_TOKEN);
                         Jwts.parser().setSigningKey(HttpController.getKey()).parseClaimsJws(jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
-                        Log.d("Token Salvato", jsonRefreshToken.getString(Constants.REFRESH_TOKEN));
+
                         HttpController.saveRefreshToken(jsonRefreshToken.getString(Constants.REFRESH_TOKEN), LogIn.this);
                     }
                     Intent goToHomeIntent = new Intent(LogIn.this, HomeActivity.class);
@@ -195,7 +193,6 @@ public class LogIn extends AppCompatActivity {
 
         String token = HttpController.getRefreshToken(LogIn.this);
         if (token != null) {
-            Log.d("Token Caricato", token);
             try {
                 Jwts.parser().require(Constants.USER_TYPE, Integer.toString(Constants.REGISTERD_USER)).
                         setSigningKey(HttpController.getKey()).
@@ -258,7 +255,7 @@ public class LogIn extends AppCompatActivity {
 
                     @Override
                     public void onCancel() {
-                        Log.d("porco", "porcoDio");
+
                     }
 
                     @Override
@@ -352,7 +349,6 @@ public class LogIn extends AppCompatActivity {
                     mGeofenceService = new GeofenceService();
                     mServiceIntent = new Intent(getCtx(), mGeofenceService.getClass());
                     if (!isMyServiceRunning(GeofenceService.class)) {
-                        Log.d("Geofence", "Service running");
                         Intent ishintent = new Intent(this, GeofenceService.class);
                         PendingIntent pintent = PendingIntent.getService(this, 0, ishintent, 0);
                         AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

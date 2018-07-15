@@ -24,10 +24,10 @@ public class OfferDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.offer_detail_toolbar);
+        Toolbar toolbar =  findViewById(R.id.offer_detail_toolbar);
         setSupportActionBar(toolbar);
 
-        TextView txtPoints= (TextView) toolbar.findViewById(R.id.points);
+        TextView txtPoints=  toolbar.findViewById(R.id.points);
         txtPoints.setText("IcePoints: "+(HttpController.userClaims.get("points")).toString());
 
 

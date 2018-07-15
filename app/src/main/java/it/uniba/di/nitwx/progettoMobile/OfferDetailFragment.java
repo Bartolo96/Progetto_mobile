@@ -176,7 +176,7 @@ public class OfferDetailFragment extends Fragment {
                //fai ciò che facevi prima,
             }else{
                 transactionToken = list.get(0).token;
-                btnRedeem.setText("Mostra Codice Qr");
+                btnRedeem.setText(R.string.showQrCode);
                 btnRedeem.setOnClickListener(btnShowPointsQrListener);
 
             }
@@ -230,7 +230,7 @@ public class OfferDetailFragment extends Fragment {
 
             ((TextView) rootView.findViewById(R.id.txtNameOfferDetail)).setText(mItem.name);
             ((TextView) rootView.findViewById(R.id.pointPriceTextView)).setText(getResources().getString(R.string.redeemFor,mItem.points_cost));
-            ((TextView) rootView.findViewById(R.id.offerPriceTextView)).setText(getResources().getString(R.string.buyFor)+mItem.offerPrice);
+            ((TextView) rootView.findViewById(R.id.offerPriceTextView)).setText(getResources().getString(R.string.buyFor)+String.format("%.2f",mItem.offerPrice));
             ((TextView) rootView.findViewById(R.id.OfferDescriptionText)).setText(mItem.description);
             btnRedeem= (Button) rootView.findViewById(R.id.btnRedeem);
 

@@ -49,7 +49,6 @@ public class GeofenceService extends IntentService {
     public GeofenceService() {
 
         super("Geofecenservice");
-        Log.d("Pollo", "please");
     }
 
     @Override
@@ -275,7 +274,6 @@ public class GeofenceService extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("Geofence", "ondestroy!");
         //Intent broadcastIntent = new Intent("it.uniba.di.nitwx.progettoMobile.RestartService");
         //sendBroadcast(broadcastIntent);
     }

@@ -89,7 +89,7 @@ public class ProductDetailFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.productDescription)).setText(mItem.description);
             String stringArrayProduct[] = getResources().getStringArray(R.array.productAttributes);
             String toName = stringArrayProduct[1]+": "+mItem.name;
-            String toPrice = stringArrayProduct[3]+": €"+String.valueOf(mItem.price);
+            String toPrice = stringArrayProduct[3]+String.format(": €%.2f",mItem.price);
             ((TextView) rootView.findViewById(R.id.productName)).setText(toName);
             ((TextView) rootView.findViewById(R.id.productPrice)).setText(toPrice);
 

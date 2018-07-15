@@ -311,14 +311,12 @@ public class OfferListActivity extends AppCompatActivity implements NavigationVi
         public void onBindViewHolder(final ViewHolder holder, int position) {
             int discount = 0;
             double price=0;
-            Log.d("Prova", mValues.get(position).product_list.toString());
             for (OfferDao.ProductInOffer p: mValues.get(position).product_list){
-                Log.d("Prova", ""+p.price);
                 price  += p.price;
             }
             discount=(int)(mValues.get(position).offerPrice/price*100);
             holder.mIdView.setText(mValues.get(position).name);
-            holder.mPriceView.setText("€ "+String.valueOf(mValues.get(position).offerPrice));
+            holder.mPriceView.setText(String.format("€%.2f",mValues.get(position).offerPrice));
             holder.mDiscount.setText(discount+"%");
 
             holder.itemView.setTag(mValues.get(position));
