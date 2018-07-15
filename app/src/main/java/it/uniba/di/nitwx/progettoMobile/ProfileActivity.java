@@ -210,6 +210,10 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 startActivity(intent);
                 finish();
                 break;
+            case R.id.storesItemMenu:
+                Intent goToStoresActivityIntent = new Intent(ProfileActivity.this,StoresActivity.class);
+                startActivity(goToStoresActivityIntent);
+                break;
             case R.id.homenavigation:
                 Intent goToHomeActivityIntent = new Intent(ProfileActivity.this, HomeActivity.class);
                 startActivity(goToHomeActivityIntent);
