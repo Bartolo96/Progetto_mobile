@@ -114,7 +114,7 @@ public class LogIn extends AppCompatActivity {
                     startActivity(goToHomeIntent);
 
                 } else {
-                    Toast.makeText(LogIn.this, "Da mettere stringa login", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LogIn.this, getString(R.string.loginFailed), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
