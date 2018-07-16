@@ -72,18 +72,20 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         pointsProfile.setText(getResources().getString(R.string.youHavePoints,points));
 
         TextView genderProfile = findViewById(R.id.genderTextView);
-        if(!((String)HttpController.userClaims.get("gender")).equals("M"))
+        if(HttpController.userClaims.get("gender")!= null && !((String)HttpController.userClaims.get("gender")).equals("M"))
             genderProfile.setText(getString(R.string.Female));
         else
             genderProfile.setText(getString(R.string.Male));
 
-
+        Long longDate;
+        Date date;
         TextView bDayProfile = findViewById(R.id.bDayTextView);
-        Long longDate =  Long.valueOf(HttpController.userClaims.get("birth_date",String.class))*1000;
-        Date date = new Date(longDate);
-        String displayDate = String.format("%02d/%02d/%d",date.getDay(),date.getMonth()+1,date.getYear()+1900);
-        bDayProfile.setText(displayDate);
-
+        if (HttpController.userClaims.get("birth_date",String.class) != null) {
+            longDate = Long.valueOf(HttpController.userClaims.get("birth_date", String.class)) * 1000;
+            date = new Date(longDate);
+            String displayDate = String.format("%02d/%02d/%d", date.getDay(), date.getMonth() + 1, date.getYear() + 1900);
+            bDayProfile.setText(displayDate);
+        }
 
         Button changePassword = findViewById(R.id.changePwButton);
         String type = HttpController.userClaims.get(Constants.USER_TYPE, String.class);

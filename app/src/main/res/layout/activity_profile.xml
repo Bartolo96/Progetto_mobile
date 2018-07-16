@@ -156,11 +156,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="50dp"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
+                    android:layout_marginRight="50dp"
                     android:clickable="true"
-                    android:text="O+"
+                    android:text="01/02/2018"
                     android:textSize="32px" />
             </RelativeLayout>
 
